@@ -559,7 +559,7 @@ impl TaggedUrn {
     ///
     /// From order theory: in a partial order, two elements are **comparable**
     /// when one is ≤ the other. Elements that are NOT comparable are in
-    /// different branches of the specialization lattice (e.g., `media:pdf;bytes`
+    /// different branches of the specialization lattice (e.g., `media:pdf`
     /// vs `media:txt;textable` — neither accepts the other).
     ///
     /// This is the weakest relation: it finds all URNs on the same
@@ -2208,8 +2208,8 @@ mod tests {
     // TEST579: Non-equivalent URNs where one is more specific
     #[test]
     fn test579_not_equivalent_when_one_more_specific() {
-        let general = TaggedUrn::from_string("media:bytes").unwrap();
-        let specific = TaggedUrn::from_string("media:pdf;bytes").unwrap();
+        let general = TaggedUrn::from_string("media:").unwrap();
+        let specific = TaggedUrn::from_string("media:pdf").unwrap();
         assert!(!general.is_equivalent(&specific).unwrap());
         assert!(!specific.is_equivalent(&general).unwrap());
     }
@@ -2217,9 +2217,9 @@ mod tests {
     // TEST580: Comparable URNs on the same specialization chain
     #[test]
     fn test580_comparable_specialization_chain() {
-        let general = TaggedUrn::from_string("media:bytes").unwrap();
-        let specific = TaggedUrn::from_string("media:pdf;bytes").unwrap();
-        // general.accepts(specific) = true (bytes ⊆ pdf;bytes)
+        let general = TaggedUrn::from_string("media:").unwrap();
+        let specific = TaggedUrn::from_string("media:pdf").unwrap();
+        // general.accepts(specific) = true (wildcard ⊆ pdf)
         // specific.accepts(general) = false (pdf missing from general)
         // OR → true
         assert!(general.is_comparable(&specific).unwrap());
@@ -2229,7 +2229,7 @@ mod tests {
     // TEST581: Incomparable URNs in different branches of the lattice
     #[test]
     fn test581_incomparable_different_branches() {
-        let pdf = TaggedUrn::from_string("media:pdf;bytes").unwrap();
+        let pdf = TaggedUrn::from_string("media:pdf").unwrap();
         let txt = TaggedUrn::from_string("media:txt;textable").unwrap();
         // pdf.accepts(txt) = false (pdf missing from txt)
         // txt.accepts(pdf) = false (txt missing from pdf)
@@ -2258,7 +2258,7 @@ mod tests {
     #[test]
     fn test583_prefix_mismatch_errors() {
         let cap = TaggedUrn::from_string("cap:op=test").unwrap();
-        let media = TaggedUrn::from_string("media:bytes").unwrap();
+        let media = TaggedUrn::from_string("media:").unwrap();
         assert!(cap.is_equivalent(&media).is_err());
         assert!(cap.is_comparable(&media).is_err());
     }
@@ -2267,7 +2267,7 @@ mod tests {
     #[test]
     fn test584_empty_tags_comparable_to_all() {
         let empty = TaggedUrn::from_string("media:").unwrap();
-        let specific = TaggedUrn::from_string("media:pdf;bytes;thumbnail").unwrap();
+        let specific = TaggedUrn::from_string("media:pdf;thumbnail").unwrap();
         // empty.accepts(specific) = true (empty has no constraints)
         assert!(empty.is_comparable(&specific).unwrap());
         // but NOT equivalent (specific has tags empty doesn't)
@@ -2280,10 +2280,10 @@ mod tests {
     // TEST585: String variants of is_equivalent and is_comparable
     #[test]
     fn test585_string_variants() {
-        let urn = TaggedUrn::from_string("media:pdf;bytes").unwrap();
-        assert!(urn.is_equivalent_str("media:bytes;pdf").unwrap()); // same tags
-        assert!(!urn.is_equivalent_str("media:bytes").unwrap()); // different
-        assert!(urn.is_comparable_str("media:bytes").unwrap()); // on same chain
+        let urn = TaggedUrn::from_string("media:pdf").unwrap();
+        assert!(urn.is_equivalent_str("media:pdf").unwrap()); // same tags
+        assert!(!urn.is_equivalent_str("media:").unwrap()); // different
+        assert!(urn.is_comparable_str("media:").unwrap()); // on same chain
         assert!(!urn.is_comparable_str("media:txt;textable").unwrap()); // different branch
     }
 
