@@ -44,16 +44,104 @@ impl Ord for TaggedUrn {
     }
 }
 
-/// Parser states for the state machine
+/// Parser states for the state machine.
+///
+/// The parser handles six tag forms — the canonical alphabet of the
+/// constraint truth table:
+///
+/// | Authored                | Canonical | Stored value | Score | Reading                                  |
+/// |-------------------------|-----------|--------------|------:|------------------------------------------|
+/// | `?x` ≡ `x?`             | `?x`      | `"?"`        |     0 | no constraint                            |
+/// | `?x=v` ≡ `x?=v`         | `x?=v`    | `"?=v"`      |     1 | absent OR (present and not v)            |
+/// | `x` ≡ `x=*`             | `x`       | `"*"`        |     2 | present with any value                   |
+/// | `!x=v` ≡ `x!=v`         | `x!=v`    | `"!=v"`      |     3 | present and not v                        |
+/// | `x=v`                   | `x=v`     | `"v"`        |     4 | present and exactly v (`v ∉ {?, !, *}`)  |
+/// | `!x` ≡ `x!`             | `!x`      | `"!"`        |     5 | absent (must-not-have)                   |
+///
+/// The qualifier `?` or `!` may appear EITHER as a key prefix
+/// (`?x`, `!x`, `?x=v`, `!x=v`) OR as an infix immediately before `=`
+/// (`x?`, `x!`, `x?=v`, `x!=v`). The two notations are exact aliases;
+/// the parser collapses both to the same canonical storage.
+///
+/// **Disallowed** — these are hard parse errors, not silently
+/// accepted shorthands:
+/// - `x=?v`, `x=!v`: a value starting with `?` or `!` is not a
+///   qualifier; it would be an exact value, but exact values may not
+///   start with `?` or `!` (reserved for syntactic qualifiers). Use
+///   `x?=v` or `x!=v` for the qualified forms.
+/// - `?x?`, `?x?=v`, `!x!=v`, `!x?`, `?!x`, `!?x`: mixing prefix and
+///   infix qualifiers, or mixing `?` and `!`, is contradictory.
+/// - `?x=*`, `!x=*`, `?x=` (empty value): a `?`/`!` qualifier with
+///   `*` or empty contradicts the qualifier's own semantics.
+/// - `x=`: empty exact value.
 #[derive(Debug, Clone, Copy, PartialEq)]
 enum ParseState {
     ExpectingKey,
+    /// Saw a leading `?` at key position; the next character must
+    /// begin a key. After the key, the only valid follow-ups are
+    /// `;`/end (canonical `?x`) or `=v` (canonical `x?=v`).
+    AfterPrefixQuestion,
+    /// Saw a leading `!` at key position; same shape as above with
+    /// `!` semantics. After the key: `;`/end (canonical `!x`) or
+    /// `=v` (canonical `x!=v`).
+    AfterPrefixBang,
     InKey,
+    /// In a key, saw `?`. Awaiting `=` to confirm infix qualifier
+    /// (`x?=v`) or `;`/end to confirm bare-suffix (`x?` ≡ `?x`).
+    /// Anything else is a parse error.
+    InKeyAfterQuestion,
+    /// Same as above for `!` — `x!` (canonical `!x`) or `x!=v`.
+    InKeyAfterBang,
     ExpectingValue,
     InUnquotedValue,
     InQuotedValue,
     InQuotedValueEscape,
     ExpectingSemiOrEnd,
+}
+
+/// Per-tag truth-table specificity score. Applied uniformly to any
+/// stored tag value; missing keys score 0 (the caller filters them
+/// out before calling this).
+///
+/// | Stored value     | Form           | Score |
+/// |------------------|----------------|------:|
+/// | `"?"`            | `?x`           |     0 |
+/// | starts with `?=` | `x?=v`         |     1 |
+/// | `"*"`            | `x` (`x=*`)    |     2 |
+/// | starts with `!=` | `x!=v`         |     3 |
+/// | exact value      | `x=v`          |     4 |
+/// | `"!"`            | `!x`           |     5 |
+pub fn score_tag_value(value: &str) -> usize {
+    match value {
+        "?" => 0,
+        "*" => 2,
+        "!" => 5,
+        v if v.starts_with("?=") => 1,
+        v if v.starts_with("!=") => 3,
+        _ => 4,
+    }
+}
+
+/// Internal classification of a tag's stored value into one of the
+/// six canonical constraint forms (plus the implicit "missing" form
+/// for keys with no entry). Used by the truth-table matcher and
+/// specificity scorer; never serialized.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+enum Form<'a> {
+    /// Key absent from the tag map.
+    Missing,
+    /// Stored as `"?"` — no constraint.
+    NoConstraint,
+    /// Stored as `"?=v"` — absent OR (present and not v).
+    AbsentOrNotValue(&'a str),
+    /// Stored as `"*"` — present with any value.
+    MustHaveAny,
+    /// Stored as `"!=v"` — present and not v.
+    PresentNotValue(&'a str),
+    /// Stored as a non-sigil string — present and exactly equal.
+    Exact(&'a str),
+    /// Stored as `"!"` — absent (must-not-have).
+    MustNotHave,
 }
 
 impl TaggedUrn {
@@ -119,6 +207,12 @@ impl TaggedUrn {
         let mut state = ParseState::ExpectingKey;
         let mut current_key = String::new();
         let mut current_value = String::new();
+        // Tracks the qualifier for the tag currently being parsed:
+        //   None      — no qualifier seen yet (the four "neutral" forms)
+        //   Some('?') — `?` qualifier (prefix `?x` or infix `x?=`)
+        //   Some('!') — `!` qualifier (prefix `!x` or infix `x!=`)
+        // Reset to None on each finish_tag.
+        let mut qualifier: Option<char> = None;
         let chars: Vec<char> = tags_part.chars().collect();
         let mut pos = 0;
 
@@ -131,6 +225,12 @@ impl TaggedUrn {
                         // Empty segment, skip
                         pos += 1;
                         continue;
+                    } else if c == '?' {
+                        qualifier = Some('?');
+                        state = ParseState::AfterPrefixQuestion;
+                    } else if c == '!' {
+                        qualifier = Some('!');
+                        state = ParseState::AfterPrefixBang;
                     } else if Self::is_valid_key_char(c) {
                         current_key.push(c.to_ascii_lowercase());
                         state = ParseState::InKey;
@@ -138,6 +238,22 @@ impl TaggedUrn {
                         return Err(TaggedUrnError::InvalidCharacter(format!(
                             "invalid character '{}' at position {}",
                             c, pos
+                        )));
+                    }
+                }
+
+                ParseState::AfterPrefixQuestion | ParseState::AfterPrefixBang => {
+                    // After `?` or `!` prefix, the next character MUST
+                    // begin a key. No second qualifier, no `=`, no
+                    // `;` (a bare prefix-and-nothing is meaningless).
+                    if Self::is_valid_key_char(c) {
+                        current_key.push(c.to_ascii_lowercase());
+                        state = ParseState::InKey;
+                    } else {
+                        let q = qualifier.unwrap();
+                        return Err(TaggedUrnError::InvalidCharacter(format!(
+                            "expected key character after '{}' qualifier, got '{}' at position {}",
+                            q, c, pos
                         )));
                     }
                 }
@@ -150,15 +266,39 @@ impl TaggedUrn {
                             ));
                         }
                         state = ParseState::ExpectingValue;
+                    } else if c == '?' {
+                        // Infix qualifier: `x?` so far. Next must be
+                        // `=` (continue to value) or `;`/end (bare
+                        // suffix, equivalent to `?x`).
+                        if qualifier.is_some() {
+                            return Err(TaggedUrnError::InvalidCharacter(format!(
+                                "duplicate qualifier '?' at position {}: prefix and infix \
+                                 qualifiers cannot be combined on the same key '{}'",
+                                pos, current_key
+                            )));
+                        }
+                        qualifier = Some('?');
+                        state = ParseState::InKeyAfterQuestion;
+                    } else if c == '!' {
+                        if qualifier.is_some() {
+                            return Err(TaggedUrnError::InvalidCharacter(format!(
+                                "duplicate qualifier '!' at position {}: prefix and infix \
+                                 qualifiers cannot be combined on the same key '{}'",
+                                pos, current_key
+                            )));
+                        }
+                        qualifier = Some('!');
+                        state = ParseState::InKeyAfterBang;
                     } else if c == ';' {
-                        // Value-less tag: treat as wildcard
+                        // Value-less tag.
                         if current_key.is_empty() {
                             return Err(TaggedUrnError::EmptyTagComponent(
                                 "empty key".to_string(),
                             ));
                         }
-                        current_value = "*".to_string();
+                        current_value = Self::canonical_no_value(qualifier);
                         Self::finish_tag(&mut tags, &mut current_key, &mut current_value)?;
+                        qualifier = None;
                         state = ParseState::ExpectingKey;
                     } else if Self::is_valid_key_char(c) {
                         current_key.push(c.to_ascii_lowercase());
@@ -166,6 +306,28 @@ impl TaggedUrn {
                         return Err(TaggedUrnError::InvalidCharacter(format!(
                             "invalid character '{}' in key at position {}",
                             c, pos
+                        )));
+                    }
+                }
+
+                ParseState::InKeyAfterQuestion | ParseState::InKeyAfterBang => {
+                    // Saw `?` or `!` after a key in `InKey`. Only
+                    // `=` (to continue to a value) or `;`/end (bare
+                    // suffix qualifier) are valid.
+                    if c == '=' {
+                        state = ParseState::ExpectingValue;
+                    } else if c == ';' {
+                        // `x?` or `x!` alone — bare suffix, identical
+                        // to `?x` or `!x`.
+                        current_value = Self::canonical_no_value(qualifier);
+                        Self::finish_tag(&mut tags, &mut current_key, &mut current_value)?;
+                        qualifier = None;
+                        state = ParseState::ExpectingKey;
+                    } else {
+                        let q = qualifier.unwrap();
+                        return Err(TaggedUrnError::InvalidCharacter(format!(
+                            "expected '=' or ';' after '{}{}' suffix qualifier, got '{}' at position {}",
+                            current_key, q, c, pos
                         )));
                     }
                 }
@@ -191,7 +353,9 @@ impl TaggedUrn {
 
                 ParseState::InUnquotedValue => {
                     if c == ';' {
+                        Self::canonicalize_value(qualifier, &current_key, &mut current_value)?;
                         Self::finish_tag(&mut tags, &mut current_key, &mut current_value)?;
+                        qualifier = None;
                         state = ParseState::ExpectingKey;
                     } else if Self::is_valid_unquoted_value_char(c) {
                         current_value.push(c.to_ascii_lowercase());
@@ -225,7 +389,9 @@ impl TaggedUrn {
 
                 ParseState::ExpectingSemiOrEnd => {
                     if c == ';' {
+                        Self::canonicalize_value(qualifier, &current_key, &mut current_value)?;
                         Self::finish_tag(&mut tags, &mut current_key, &mut current_value)?;
+                        qualifier = None;
                         state = ParseState::ExpectingKey;
                     } else {
                         return Err(TaggedUrnError::InvalidCharacter(format!(
@@ -242,22 +408,40 @@ impl TaggedUrn {
         // Handle end of input
         match state {
             ParseState::InUnquotedValue | ParseState::ExpectingSemiOrEnd => {
+                Self::canonicalize_value(qualifier, &current_key, &mut current_value)?;
                 Self::finish_tag(&mut tags, &mut current_key, &mut current_value)?;
             }
             ParseState::ExpectingKey => {
-                // Valid - trailing semicolon or empty input after prefix
+                // Valid — trailing semicolon or empty input after prefix.
             }
             ParseState::InQuotedValue | ParseState::InQuotedValueEscape => {
                 return Err(TaggedUrnError::UnterminatedQuote(pos));
             }
+            ParseState::AfterPrefixQuestion | ParseState::AfterPrefixBang => {
+                let q = qualifier.unwrap();
+                return Err(TaggedUrnError::EmptyTagComponent(format!(
+                    "qualifier '{}' at end of input has no key",
+                    q
+                )));
+            }
             ParseState::InKey => {
-                // Value-less tag at end: treat as wildcard
+                // Value-less tag at end. Canonical form depends on
+                // qualifier:
+                //   None       -> "*" (bare key, must-have-any)
+                //   Some('?')  -> "?" (no constraint)
+                //   Some('!')  -> "!" (must-not-have)
                 if current_key.is_empty() {
                     return Err(TaggedUrnError::EmptyTagComponent(
                         "empty key".to_string(),
                     ));
                 }
-                current_value = "*".to_string();
+                current_value = Self::canonical_no_value(qualifier);
+                Self::finish_tag(&mut tags, &mut current_key, &mut current_value)?;
+            }
+            ParseState::InKeyAfterQuestion | ParseState::InKeyAfterBang => {
+                // `x?` or `x!` at end of input — bare suffix
+                // qualifier, no value.
+                current_value = Self::canonical_no_value(qualifier);
                 Self::finish_tag(&mut tags, &mut current_key, &mut current_value)?;
             }
             ParseState::ExpectingValue => {
@@ -299,6 +483,72 @@ impl TaggedUrn {
 
         tags.insert(std::mem::take(key), std::mem::take(value));
         Ok(())
+    }
+
+    /// Canonical stored value for a value-less tag, given its
+    /// qualifier (if any). Used by the parser when a tag is
+    /// terminated with `;`/end while in `InKey` /
+    /// `InKeyAfterQuestion` / `InKeyAfterBang`.
+    ///
+    ///   None      -> "*"  (bare `x`, the must-have-any sigil)
+    ///   Some('?') -> "?"  (`?x`, `x?`, or `x=?`, the no-constraint sigil)
+    ///   Some('!') -> "!"  (`!x`, `x!`, or `x=!`, the must-not-have sigil)
+    fn canonical_no_value(qualifier: Option<char>) -> String {
+        match qualifier {
+            None => "*".to_string(),
+            Some('?') => "?".to_string(),
+            Some('!') => "!".to_string(),
+            Some(_) => unreachable!("qualifier may only be None, Some('?'), or Some('!')"),
+        }
+    }
+
+    /// Canonicalize a parsed `(qualifier, value)` pair into the
+    /// stored form on the way to `finish_tag`. The four shapes:
+    ///
+    ///   (None,      "*")  -> "*"     (`x=*` ≡ bare `x`)
+    ///   (None,      v  )  -> v       (`x=v`, exact)
+    ///   (Some('?'), v  )  -> "?=v"   (`?x=v`, `x?=v`, must be ≠ "*")
+    ///   (Some('!'), v  )  -> "!=v"   (`!x=v`, `x!=v`, must be ≠ "*")
+    ///
+    /// Combining `?`/`!` with `*` is a contradiction (`?x=*`,
+    /// `!x=*`): the qualifier and the wildcard make incompatible
+    /// claims. Hard reject. Same for combining a qualifier with a
+    /// sigil-only value `?` or `!` (`?x=?`, `?x=!`, etc.).
+    fn canonicalize_value(
+        qualifier: Option<char>,
+        key: &str,
+        value: &mut String,
+    ) -> Result<(), TaggedUrnError> {
+        match qualifier {
+            None => {
+                // No qualifier — value is either "*" (already
+                // canonical for bare-x equivalent) or an exact
+                // value. The parser already ensured non-empty.
+                Ok(())
+            }
+            Some(q @ '?') | Some(q @ '!') => {
+                // Reject `*` and the sigil-only values `?` / `!`.
+                // These would conflate the qualifier semantics with
+                // the bare-form semantics.
+                if value == "*" || value == "?" || value == "!" {
+                    return Err(TaggedUrnError::InvalidCharacter(format!(
+                        "qualifier '{}' on key '{}' cannot combine with sigil value '{}': \
+                         use a real value (e.g. '{}{}=v') or drop the qualifier",
+                        q, key, value, q, key
+                    )));
+                }
+                let mut canonical = String::with_capacity(value.len() + 2);
+                canonical.push(q);
+                canonical.push('=');
+                canonical.push_str(value);
+                *value = canonical;
+                Ok(())
+            }
+            Some(other) => unreachable!(
+                "qualifier may only be None, Some('?'), or Some('!'); got Some({})",
+                other
+            ),
+        }
     }
 
     /// Check if character is valid for a key
@@ -359,15 +609,49 @@ impl TaggedUrn {
     ///
     /// Returns the tags in canonical form with proper quoting and sorting.
     /// This is the portion after the ":" in a full URN string.
+    ///
+    /// Canonical serialization per stored value:
+    ///
+    /// | Stored value | Emitted             | Form                          |
+    /// |--------------|---------------------|-------------------------------|
+    /// | `"*"`        | `k`                 | bare key (must-have-any)      |
+    /// | `"?"`        | `?k`                | prefix qualifier (no constraint) |
+    /// | `"!"`        | `!k`                | prefix qualifier (must-not-have) |
+    /// | `"?=v"`      | `k?=v`              | infix qualifier (absent or not v) |
+    /// | `"!=v"`      | `k!=v`              | infix qualifier (present and not v) |
+    /// | other `v`    | `k=v` or `k="v"`    | exact value (with quoting if needed) |
+    ///
+    /// Note that the prefix forms (`?k`, `!k`) and infix forms
+    /// (`k?=v`, `k!=v`) are the canonical outputs even when the
+    /// authored input used the alternative shape (`k?`, `k!`,
+    /// `?k=v`, `!k=v`). The parser collapses all aliases to the
+    /// single stored form; serialization emits the canonical
+    /// representative deterministically.
     pub fn tags_to_string(&self) -> String {
         self
             .tags
             .iter()
             .map(|(k, v)| {
                 match v.as_str() {
-                    "*" => k.clone(),                      // Valueless sugar: key
-                    "?" => format!("{}=?", k),             // Explicit: key=?
-                    "!" => format!("{}=!", k),             // Explicit: key=!
+                    "*" => k.clone(),                       // bare key
+                    "?" => format!("?{}", k),               // prefix `?k`
+                    "!" => format!("!{}", k),               // prefix `!k`
+                    qv if qv.starts_with("?=") => {
+                        let raw = &qv[2..];
+                        if Self::needs_quoting(raw) {
+                            format!("{}?={}", k, Self::quote_value(raw))
+                        } else {
+                            format!("{}?={}", k, raw)
+                        }
+                    }
+                    qv if qv.starts_with("!=") => {
+                        let raw = &qv[2..];
+                        if Self::needs_quoting(raw) {
+                            format!("{}!={}", k, Self::quote_value(raw))
+                        } else {
+                            format!("{}!={}", k, raw)
+                        }
+                    }
                     _ if Self::needs_quoting(v) => format!("{}={}", k, Self::quote_value(v)),
                     _ => format!("{}={}", k, v),
                 }
@@ -497,58 +781,118 @@ impl TaggedUrn {
         Ok(true)
     }
 
-    /// Check if instance value matches pattern constraint
+    /// One of the six canonical constraint forms a tag value can take,
+    /// plus the implicit "missing" form (no entry in the tag map).
+    /// The tag-storage strings map to these forms as follows:
     ///
-    /// Full cross-product truth table:
-    /// | Instance | Pattern | Match? | Reason |
-    /// |----------|---------|--------|--------|
-    /// | (none)   | (none)  | OK     | No constraint either side |
-    /// | (none)   | K=?     | OK     | Pattern doesn't care |
-    /// | (none)   | K=!     | OK     | Pattern wants absent, it is |
-    /// | (none)   | K=*     | NO     | Pattern wants present |
-    /// | (none)   | K=v     | NO     | Pattern wants exact value |
-    /// | K=?      | (any)   | OK     | Instance doesn't care |
-    /// | K=!      | (none)  | OK     | Symmetric: absent |
-    /// | K=!      | K=?     | OK     | Pattern doesn't care |
-    /// | K=!      | K=!     | OK     | Both want absent |
-    /// | K=!      | K=*     | NO     | Conflict: absent vs present |
-    /// | K=!      | K=v     | NO     | Conflict: absent vs value |
-    /// | K=*      | (none)  | OK     | Pattern has no constraint |
-    /// | K=*      | K=?     | OK     | Pattern doesn't care |
-    /// | K=*      | K=!     | NO     | Conflict: present vs absent |
-    /// | K=*      | K=*     | OK     | Both accept any presence |
-    /// | K=*      | K=v     | OK     | Instance accepts any, v is fine |
-    /// | K=v      | (none)  | OK     | Pattern has no constraint |
-    /// | K=v      | K=?     | OK     | Pattern doesn't care |
-    /// | K=v      | K=!     | NO     | Conflict: value vs absent |
-    /// | K=v      | K=*     | OK     | Pattern wants any, v satisfies |
-    /// | K=v      | K=v     | OK     | Exact match |
-    /// | K=v      | K=w     | NO     | Value mismatch (v≠w) |
-    fn values_match(inst: Option<&str>, patt: Option<&str>) -> bool {
-        match (inst, patt) {
-            // Pattern has no constraint (no entry or explicit ?)
-            (_, None) | (_, Some("?")) => true,
+    ///   None entry           -> Form::Missing
+    ///   "?"                  -> Form::NoConstraint
+    ///   "?=v"                -> Form::AbsentOrNotValue(v)
+    ///   "*"                  -> Form::MustHaveAny
+    ///   "!=v"                -> Form::PresentNotValue(v)
+    ///   "!"                  -> Form::MustNotHave
+    ///   exact `v`            -> Form::Exact(v)  (where v ∉ {"?", "!", "*"} and
+    ///                                            v does not start with "?=" or "!=")
+    fn classify_form(value: Option<&str>) -> Form<'_> {
+        match value {
+            None => Form::Missing,
+            Some("?") => Form::NoConstraint,
+            Some("*") => Form::MustHaveAny,
+            Some("!") => Form::MustNotHave,
+            Some(v) if v.starts_with("?=") => Form::AbsentOrNotValue(&v[2..]),
+            Some(v) if v.starts_with("!=") => Form::PresentNotValue(&v[2..]),
+            Some(v) => Form::Exact(v),
+        }
+    }
 
-            // Instance doesn't care (explicit ?)
-            (Some("?"), _) => true,
+    /// Check if instance value matches pattern constraint, per the
+    /// truth table over the six canonical forms.
+    ///
+    /// Full cross-product (instance row × pattern column):
+    ///
+    /// | Inst ↓ \ Pat → | Missing | `?` | `?=p` | `*` | `!=p` | `q` (exact) | `!` |
+    /// |----------------|:-------:|:---:|:-----:|:---:|:-----:|:-----------:|:---:|
+    /// | Missing        | ✓       | ✓   | ✓     | ✗   | ✗     | ✗           | ✓   |
+    /// | `?`            | ✓       | ✓   | ✓     | ✓   | ✓     | ✓           | ✓   |
+    /// | `?=v`          | ✓       | ✓   | ✓     | ✗   | ✗     | ✗           | ✓   |
+    /// | `*`            | ✓       | ✓   | ✓     | ✓   | ✓     | ✓           | ✗   |
+    /// | `!=v`          | ✓       | ✓   | ✓     | ✓   | ✓     | v==q ? ✗ : ✓| ✗   |
+    /// | `q` (exact)    | ✓       | ✓   | q==p ? ✗ : ✓ | ✓ | q==p ? ✗ : ✓ | q==p ? ✓ : ✗ | ✗ |
+    /// | `!`            | ✓       | ✓   | ✓     | ✗   | ✗     | ✗           | ✓   |
+    ///
+    /// Reading rules:
+    /// - `?` (instance OR pattern) means "no constraint, anything goes."
+    /// - `?=v` means "absent OR (present and not v)" — permissive.
+    /// - `*` means "present with any value" — instance defers value
+    ///   identity to runtime; pattern admits any value.
+    /// - `!=v` means "present and not v" — strict presence with one
+    ///   forbidden value.
+    /// - exact `v` means "present and exactly v."
+    /// - `!` means "absent" (must-not-have any value at this key).
+    /// - `Missing` is symmetric to `?`: the key contributes no
+    ///   constraint when not present in the URN.
+    ///
+    /// Cells where the pattern uses `?=p`, `!=p`, or exact `q` and
+    /// the instance is also a value-bearing form: the result depends
+    /// on whether the values overlap. The instance-`*` and
+    /// pattern-side cases defer to runtime (instance has not pinned
+    /// itself; pattern is permissive enough to accept some run).
+    /// Per-key truth-table cell evaluation for the six canonical
+    /// constraint forms (plus implicit Missing). Both arguments are
+    /// stored tag values (or `None` to mean "key absent"). Returns
+    /// true iff the instance value satisfies the pattern's
+    /// constraint at this key.
+    ///
+    /// Exposed for callers (e.g. CapUrn's y-axis matcher) that walk
+    /// tag sets themselves and need the same per-cell decision the
+    /// tagged-URN matcher uses internally.
+    pub fn values_match(inst: Option<&str>, patt: Option<&str>) -> bool {
+        let i = Self::classify_form(inst);
+        let p = Self::classify_form(patt);
 
-            // Pattern: must-not-have (!)
-            (None, Some("!")) => true,           // Instance absent, pattern wants absent
-            (Some("!"), Some("!")) => true,      // Both say absent
-            (Some(_), Some("!")) => false,       // Instance has value, pattern wants absent
+        match (i, p) {
+            // Pattern is unconditionally permissive on this key.
+            (_, Form::Missing) | (_, Form::NoConstraint) => true,
 
-            // Instance: must-not-have conflicts with pattern wanting value
-            (Some("!"), Some("*")) => false,     // Conflict: absent vs present
-            (Some("!"), Some(_)) => false,       // Conflict: absent vs value
+            // Instance is unconditionally permissive — defers to
+            // pattern entirely.
+            (Form::NoConstraint, _) => true,
 
-            // Pattern: must-have-any (*)
-            (None, Some("*")) => false,          // Instance missing, pattern wants present
-            (Some(_), Some("*")) => true,        // Instance has value, pattern wants any
+            // Pattern requires absent.
+            (Form::Missing, Form::MustNotHave) => true,
+            (Form::MustNotHave, Form::MustNotHave) => true,
+            (Form::AbsentOrNotValue(_), Form::MustNotHave) => true, // absent satisfies
+            (_, Form::MustNotHave) => false,                        // any presence fails
 
-            // Pattern: exact value
-            (None, Some(_)) => false,            // Instance missing, pattern wants value
-            (Some("*"), Some(_)) => true,        // Instance accepts any, pattern's value is fine
-            (Some(i), Some(p)) => i == p,        // Both have values, must match exactly
+            // Pattern requires present (any).
+            (Form::Missing, Form::MustHaveAny) => false,
+            (Form::AbsentOrNotValue(_), Form::MustHaveAny) => false, // may be absent
+            (Form::MustNotHave, Form::MustHaveAny) => false,
+            (_, Form::MustHaveAny) => true,                          // *, !=v, exact, ?
+
+            // Pattern: present-and-not-p.
+            (Form::Missing, Form::PresentNotValue(_)) => false,
+            (Form::AbsentOrNotValue(_), Form::PresentNotValue(_)) => false, // may be absent
+            (Form::MustNotHave, Form::PresentNotValue(_)) => false,
+            (Form::MustHaveAny, Form::PresentNotValue(_)) => true, // defer
+            (Form::PresentNotValue(_), Form::PresentNotValue(_)) => true, // defer
+            (Form::Exact(q), Form::PresentNotValue(p)) => q != p,
+
+            // Pattern: absent-or-not-p.
+            (Form::Missing, Form::AbsentOrNotValue(_)) => true,
+            (Form::AbsentOrNotValue(_), Form::AbsentOrNotValue(_)) => true,
+            (Form::MustNotHave, Form::AbsentOrNotValue(_)) => true,
+            (Form::MustHaveAny, Form::AbsentOrNotValue(_)) => true, // defer
+            (Form::PresentNotValue(_), Form::AbsentOrNotValue(_)) => true, // defer
+            (Form::Exact(q), Form::AbsentOrNotValue(p)) => q != p,
+
+            // Pattern: exact q.
+            (Form::Missing, Form::Exact(_)) => false,
+            (Form::AbsentOrNotValue(_), Form::Exact(_)) => false,
+            (Form::MustNotHave, Form::Exact(_)) => false,
+            (Form::MustHaveAny, Form::Exact(_)) => true, // defer
+            (Form::PresentNotValue(v), Form::Exact(q)) => v != q,
+            (Form::Exact(q), Form::Exact(p)) => q == p,
         }
     }
 
@@ -618,38 +962,58 @@ impl TaggedUrn {
 
     /// Calculate specificity score for URN matching
     ///
-    /// More specific URNs have higher scores and are preferred
-    /// Graded scoring:
-    /// - `K=v` (exact value): 3 points (most specific)
-    /// - `K=*` (must-have-any): 2 points
-    /// - `K=!` (must-not-have): 1 point
-    /// - `K=?` (unspecified): 0 points (least specific)
+    /// Calculate specificity score: sum of per-tag truth-table scores.
+    ///
+    /// Graded scoring per the canonical form ladder:
+    ///
+    /// | Stored value | Form           | Score |
+    /// |--------------|----------------|------:|
+    /// | `"?"`        | `?x`           |     0 |
+    /// | `"?=v"`      | `x?=v`         |     1 |
+    /// | `"*"`        | `x` (`x=*`)    |     2 |
+    /// | `"!=v"`      | `x!=v`         |     3 |
+    /// | exact `v`    | `x=v`          |     4 |
+    /// | `"!"`        | `!x`           |     5 |
+    ///
+    /// Higher scores indicate more constrained (more specific) tags.
+    /// Identity (`prefix:` with no tags) scores 0. The ladder is
+    /// monotone within each "branch": `?x` (0) → `x?=v` (1) → `x` (2)
+    /// → exact `x=v` (4) tightens positively; `?x` (0) → `x?=v` (1)
+    /// → `x!=v` (3) → `!x` (5) tightens negatively.
     pub fn specificity(&self) -> usize {
-        self.tags.values().map(|v| match v.as_str() {
-            "?" => 0,
-            "!" => 1,
-            "*" => 2,
-            _ => 3,  // exact value
-        }).sum()
+        self.tags.values().map(|v| score_tag_value(v.as_str())).sum()
     }
 
-    /// Get specificity as a tuple for tie-breaking
+    /// Get specificity as a tuple for tie-breaking. Counts how many
+    /// tags fall into each non-zero form bucket. Compare tuples
+    /// lexicographically when sum scores are equal.
     ///
-    /// Returns (exact_count, must_have_any_count, must_not_count)
-    /// Compare tuples lexicographically when sum scores are equal
-    pub fn specificity_tuple(&self) -> (usize, usize, usize) {
+    /// Returns `(exact, present_not_value, must_have_any, present_not_value_count, absent_or_not_value, must_not_have)` —
+    /// ordered from highest score to lowest, so a lex-greater tuple
+    /// means a denser concentration of high-specificity tags.
+    pub fn specificity_tuple(&self) -> (usize, usize, usize, usize, usize) {
+        let mut must_not_have = 0;
         let mut exact = 0;
+        let mut present_not_value = 0;
         let mut must_have_any = 0;
-        let mut must_not = 0;
+        let mut absent_or_not_value = 0;
         for v in self.tags.values() {
-            match v.as_str() {
-                "?" => {}
-                "!" => must_not += 1,
-                "*" => must_have_any += 1,
-                _ => exact += 1,
+            match Self::classify_form(Some(v.as_str())) {
+                Form::MustNotHave => must_not_have += 1,
+                Form::Exact(_) => exact += 1,
+                Form::PresentNotValue(_) => present_not_value += 1,
+                Form::MustHaveAny => must_have_any += 1,
+                Form::AbsentOrNotValue(_) => absent_or_not_value += 1,
+                Form::NoConstraint | Form::Missing => {}
             }
         }
-        (exact, must_have_any, must_not)
+        (
+            must_not_have,
+            exact,
+            present_not_value,
+            must_have_any,
+            absent_or_not_value,
+        )
     }
 
     /// Check if this URN is more specific than another
@@ -1334,30 +1698,38 @@ mod tests {
     // TEST523: Compute graded specificity scores and tuples for URN tags
     #[test]
     fn test_specificity() {
-        // GRADED SPECIFICITY:
-        // K=v (exact value): 3 points
-        // K=* (must-have-any): 2 points
-        // K=! (must-not-have): 1 point
-        // K=? (unspecified): 0 points
+        // Six-form per-tag specificity ladder:
+        //   ?x        : 0  (no constraint)
+        //   x?=v      : 1  (absent OR not v)
+        //   x (=x=*)  : 2  (must-have-any)
+        //   x!=v      : 3  (present and not v)
+        //   x=v       : 4  (must-have-this-value)
+        //   !x        : 5  (must-not-have)
 
-        let urn1 = TaggedUrn::from_string("cap:general").unwrap();    // 1 marker (general = *)
-        let urn2 = TaggedUrn::from_string("cap:ext=pdf").unwrap();    // 1 exact-valued tag
-        let urn3 = TaggedUrn::from_string("cap:gen;ext=pdf").unwrap(); // 1 marker + 1 exact
-        let urn4 = TaggedUrn::from_string("cap:ext=?").unwrap();      // 1 unspecified
-        let urn5 = TaggedUrn::from_string("cap:ext=!").unwrap();      // 1 must-not-have
+        let urn1 = TaggedUrn::from_string("cap:general").unwrap();      // bare marker -> 2
+        let urn2 = TaggedUrn::from_string("cap:ext=pdf").unwrap();      // exact -> 4
+        let urn3 = TaggedUrn::from_string("cap:gen;ext=pdf").unwrap();  // marker + exact = 2+4
+        let urn4 = TaggedUrn::from_string("cap:?ext").unwrap();         // ?x -> 0
+        let urn5 = TaggedUrn::from_string("cap:!ext").unwrap();         // !x -> 5
+        let urn6 = TaggedUrn::from_string("cap:ext?=pdf").unwrap();     // x?=v -> 1
+        let urn7 = TaggedUrn::from_string("cap:ext!=pdf").unwrap();     // x!=v -> 3
 
-        assert_eq!(urn1.specificity(), 2); // * = 2
-        assert_eq!(urn2.specificity(), 3); // exact = 3
-        assert_eq!(urn3.specificity(), 5); // * + exact = 2 + 3
-        assert_eq!(urn4.specificity(), 0); // ? = 0
-        assert_eq!(urn5.specificity(), 1); // ! = 1
+        assert_eq!(urn1.specificity(), 2);
+        assert_eq!(urn2.specificity(), 4);
+        assert_eq!(urn3.specificity(), 6);
+        assert_eq!(urn4.specificity(), 0);
+        assert_eq!(urn5.specificity(), 5);
+        assert_eq!(urn6.specificity(), 1);
+        assert_eq!(urn7.specificity(), 3);
 
-        // Specificity tuple for tie-breaking: (exact_count, must_have_any_count, must_not_count)
-        assert_eq!(urn2.specificity_tuple(), (1, 0, 0));
-        assert_eq!(urn3.specificity_tuple(), (1, 1, 0));
-        assert_eq!(urn5.specificity_tuple(), (0, 0, 1));
+        // Five-tuple specificity for tie-breaking — counts of tags in
+        // each non-zero form bucket: (must_not_have, exact,
+        // present_not_value, must_have_any, absent_or_not_value).
+        assert_eq!(urn2.specificity_tuple(), (0, 1, 0, 0, 0)); // 1 exact
+        assert_eq!(urn3.specificity_tuple(), (0, 1, 0, 1, 0)); // 1 exact + 1 marker
+        assert_eq!(urn5.specificity_tuple(), (1, 0, 0, 0, 0)); // 1 must-not-have
 
-        assert!(urn2.is_more_specific_than(&urn1).unwrap()); // 3 > 2
+        assert!(urn2.is_more_specific_than(&urn1).unwrap()); // exact(4) > marker(2)
     }
 
     // TEST524: Build URN with multiple tags using TaggedUrnBuilder
@@ -1890,16 +2262,14 @@ mod tests {
     // TEST560: Score value-less wildcard tags with graded specificity
     #[test]
     fn test_valueless_tag_specificity() {
-        // GRADED SPECIFICITY:
-        // K=v (exact): 3, K=* (must-have-any / marker): 2, K=! (must-not): 1, K=? (unspecified): 0
-
+        // Six-form ladder: ?x=0, x?=v=1, x=*=2, x!=v=3, x=v=4, !x=5.
         let urn1 = TaggedUrn::from_string("cap:generate").unwrap();          // 1 marker
         let urn2 = TaggedUrn::from_string("cap:generate;optimize").unwrap(); // 2 markers
         let urn3 = TaggedUrn::from_string("cap:ext=pdf;generate").unwrap();  // 1 marker + 1 exact
 
         assert_eq!(urn1.specificity(), 2); // 1 marker = 2
         assert_eq!(urn2.specificity(), 4); // 2 markers = 2 + 2 = 4
-        assert_eq!(urn3.specificity(), 5); // 1 marker + 1 exact = 2 + 3 = 5
+        assert_eq!(urn3.specificity(), 6); // 1 marker + 1 exact = 2 + 4 = 6
     }
 
     // TEST561: Round-trip value-less tags through parse and serialize
@@ -2002,24 +2372,27 @@ mod tests {
     // NEW SEMANTICS TESTS: ? (unspecified) and ! (must-not-have)
     // ============================================================================
 
-    // TEST567: Parse question mark as unspecified value and verify serialization
+    // TEST567: Parse question mark as unspecified value and verify
+    // serialization. All three input aliases (?x, x?, x=?) parse to
+    // the same stored value `"?"` and serialize as the canonical
+    // prefix form `?x`.
     #[test]
     fn test_unspecified_question_mark_parsing() {
-        // ? parses as unspecified
         let urn = TaggedUrn::from_string("cap:ext=?").unwrap();
         assert_eq!(urn.get_tag("ext"), Some(&"?".to_string()));
-        // Serializes as key=?
-        assert_eq!(urn.to_string(), "cap:ext=?");
+        // Canonical form is `?ext` (prefix), not `ext=?`.
+        assert_eq!(urn.to_string(), "cap:?ext");
     }
 
-    // TEST568: Parse exclamation mark as must-not-have value and verify serialization
+    // TEST568: Parse exclamation mark as must-not-have value and
+    // verify serialization. All three input aliases (!x, x!, x=!)
+    // parse to stored value `"!"` and serialize as canonical `!x`.
     #[test]
     fn test_must_not_have_exclamation_parsing() {
-        // ! parses as must-not-have
         let urn = TaggedUrn::from_string("cap:ext=!").unwrap();
         assert_eq!(urn.get_tag("ext"), Some(&"!".to_string()));
-        // Serializes as key=!
-        assert_eq!(urn.to_string(), "cap:ext=!");
+        // Canonical form is `!ext` (prefix), not `ext=!`.
+        assert_eq!(urn.to_string(), "cap:!ext");
     }
 
     // TEST569: Match any instance against pattern with unspecified (?) tag value
@@ -2346,27 +2719,30 @@ mod tests {
     }
 
     // TEST577: Verify graded specificity scores and tuples for special value types
+    // under the six-form ladder.
     #[test]
     fn test_specificity_with_special_values() {
-        // Verify graded specificity scoring
-        let exact = TaggedUrn::from_string("cap:a=x;b=y;c=z").unwrap(); // 3*3 = 9
-        let must_have = TaggedUrn::from_string("cap:a;b;c").unwrap(); // 3*2 = 6
-        let must_not = TaggedUrn::from_string("cap:a=!;b=!;c=!").unwrap(); // 3*1 = 3
-        let unspecified = TaggedUrn::from_string("cap:a=?;b=?;c=?").unwrap(); // 3*0 = 0
-        let mixed = TaggedUrn::from_string("cap:a=x;b;c=!;d=?").unwrap(); // 3+2+1+0 = 6
+        // Six-form ladder: ?x=0, x?=v=1, x=*=2, x!=v=3, x=v=4, !x=5
+        let exact = TaggedUrn::from_string("cap:a=x;b=y;c=z").unwrap();      // 3 * 4 = 12
+        let must_have = TaggedUrn::from_string("cap:a;b;c").unwrap();        // 3 * 2 = 6
+        let must_not = TaggedUrn::from_string("cap:!a;!b;!c").unwrap();      // 3 * 5 = 15
+        let unspecified = TaggedUrn::from_string("cap:?a;?b;?c").unwrap();   // 3 * 0 = 0
+        // mixed: a=x (4) + b (2) + !c (5) + ?d (0) = 11
+        let mixed = TaggedUrn::from_string("cap:!c;?d;a=x;b").unwrap();
 
-        assert_eq!(exact.specificity(), 9);
+        assert_eq!(exact.specificity(), 12);
         assert_eq!(must_have.specificity(), 6);
-        assert_eq!(must_not.specificity(), 3);
+        assert_eq!(must_not.specificity(), 15);
         assert_eq!(unspecified.specificity(), 0);
-        assert_eq!(mixed.specificity(), 6);
+        assert_eq!(mixed.specificity(), 11);
 
-        // Test specificity tuples
-        assert_eq!(exact.specificity_tuple(), (3, 0, 0));
-        assert_eq!(must_have.specificity_tuple(), (0, 3, 0));
-        assert_eq!(must_not.specificity_tuple(), (0, 0, 3));
-        assert_eq!(unspecified.specificity_tuple(), (0, 0, 0));
-        assert_eq!(mixed.specificity_tuple(), (1, 1, 1));
+        // Five-tuple form-bucket counts:
+        //   (must_not_have, exact, present_not_value, must_have_any, absent_or_not_value)
+        assert_eq!(exact.specificity_tuple(), (0, 3, 0, 0, 0));
+        assert_eq!(must_have.specificity_tuple(), (0, 0, 0, 3, 0));
+        assert_eq!(must_not.specificity_tuple(), (3, 0, 0, 0, 0));
+        assert_eq!(unspecified.specificity_tuple(), (0, 0, 0, 0, 0));
+        assert_eq!(mixed.specificity_tuple(), (1, 1, 0, 1, 0));
     }
 
     // =========================================================================
@@ -2439,8 +2815,8 @@ mod tests {
 
         assert_eq!(urn.to_string(), "cap:type=utility");
         assert_eq!(urn.get_tag("type"), Some(&"utility".to_string()));
-        // NEW GRADED SPECIFICITY: exact value = 3 points
-        assert_eq!(urn.specificity(), 3);
+        // Six-form ladder: exact value = 4 points.
+        assert_eq!(urn.specificity(), 4);
     }
 
     // TEST592: Builder with complex multi-tag URN
@@ -2467,8 +2843,8 @@ mod tests {
         assert_eq!(urn.get_tag("framerate"), Some(&"30fps".to_string()));
         assert_eq!(urn.get_tag("output"), Some(&"binary".to_string()));
 
-        // GRADED SPECIFICITY: 7 exact-valued tags × 3 + 1 marker (transcode) × 2 = 21 + 2 = 23
-        assert_eq!(urn.specificity(), 23);
+        // Six-form ladder: 7 exact-valued tags × 4 + 1 marker (transcode) × 2 = 28 + 2 = 30.
+        assert_eq!(urn.specificity(), 30);
     }
 
     // TEST593: Builder with wildcards
@@ -2538,10 +2914,10 @@ mod tests {
         // Check specificity
         assert!(specific_instance.is_more_specific_than(&general_pattern).unwrap());
 
-        // NEW GRADED SPECIFICITY: exact value = 3 points, * = 2 points
-        assert_eq!(specific_instance.specificity(), 9); // 3 exact values × 3 = 9
-        assert_eq!(general_pattern.specificity(), 3); // 1 exact value × 3 = 3
-        assert_eq!(wildcard_pattern.specificity(), 8); // 2 exact × 3 + 1 * × 2 = 6 + 2 = 8
+        // Six-form ladder: exact = 4 points, * (must-have-any) = 2 points.
+        assert_eq!(specific_instance.specificity(), 12); // 3 exact × 4 = 12
+        assert_eq!(general_pattern.specificity(), 4);    // 1 exact × 4 = 4
+        assert_eq!(wildcard_pattern.specificity(), 10);  // 2 exact × 4 + 1 * × 2 = 8 + 2 = 10
     }
 }
 
