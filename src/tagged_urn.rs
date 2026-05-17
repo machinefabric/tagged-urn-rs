@@ -144,6 +144,47 @@ enum Form<'a> {
     MustNotHave,
 }
 
+/// Order-theoretic classification of the relation between two tagged URNs.
+///
+/// This is derived from the existing `accepts` / `is_comparable` /
+/// `is_equivalent` semantics; it does not replace them. It is attached to
+/// coordinate deltas so callers can distinguish same-point edits from
+/// same-chain edits and cross-branch edits without pretending that delta is
+/// only valid for comparable pairs.
+#[derive(Debug, Clone, Copy, PartialEq, Eq, Hash, PartialOrd, Ord)]
+pub enum TaggedUrnRelationKind {
+    Equivalent,
+    Comparable,
+    Incomparable,
+}
+
+/// Coordinate-space edit from one tagged URN to another with the same prefix.
+///
+/// `removed` contains the exact canonical coordinate entries present in the
+/// base but absent or changed in the target. `added` contains the exact
+/// canonical coordinate entries absent from the base or changed in the target.
+///
+/// For a changed key, that key appears in both maps:
+/// - removed[key] = old value
+/// - added[key]   = new value
+#[derive(Debug, Clone, PartialEq, Eq)]
+pub struct TaggedUrnCoordinateDelta {
+    prefix: String,
+    pub removed: BTreeMap<String, String>,
+    pub added: BTreeMap<String, String>,
+    pub relation_kind: TaggedUrnRelationKind,
+}
+
+impl TaggedUrnCoordinateDelta {
+    pub fn prefix(&self) -> &str {
+        &self.prefix
+    }
+
+    pub fn is_empty(&self) -> bool {
+        self.removed.is_empty() && self.added.is_empty()
+    }
+}
+
 impl TaggedUrn {
     /// Create a new tagged URN from tags with a specified prefix
     /// Keys are normalized to lowercase; values are preserved as-is
@@ -958,6 +999,82 @@ impl TaggedUrn {
     pub fn is_comparable_str(&self, other_str: &str) -> Result<bool, TaggedUrnError> {
         let other = TaggedUrn::from_string(other_str)?;
         self.is_comparable(&other)
+    }
+
+    /// Compute the coordinate-space delta from `base` to `self`.
+    ///
+    /// This operates on the explicit canonical coordinate representation, not
+    /// on quotient-level semantic equivalence. Two URNs that are equivalent
+    /// under matching may still produce a non-empty delta if one explicitly
+    /// authors additional no-op coordinates.
+    pub fn delta_from(&self, base: &TaggedUrn) -> Result<TaggedUrnCoordinateDelta, TaggedUrnError> {
+        if self.prefix != base.prefix {
+            return Err(TaggedUrnError::PrefixMismatch {
+                expected: base.prefix.clone(),
+                actual: self.prefix.clone(),
+            });
+        }
+
+        let relation_kind = if self.is_equivalent(base)? {
+            TaggedUrnRelationKind::Equivalent
+        } else if self.is_comparable(base)? {
+            TaggedUrnRelationKind::Comparable
+        } else {
+            TaggedUrnRelationKind::Incomparable
+        };
+
+        let mut removed = BTreeMap::new();
+        let mut added = BTreeMap::new();
+        let all_keys: std::collections::BTreeSet<String> = base
+            .tags
+            .keys()
+            .chain(self.tags.keys())
+            .cloned()
+            .collect();
+
+        for key in all_keys {
+            let base_value = base.tags.get(&key);
+            let target_value = self.tags.get(&key);
+            if base_value == target_value {
+                continue;
+            }
+            if let Some(value) = base_value {
+                removed.insert(key.clone(), value.clone());
+            }
+            if let Some(value) = target_value {
+                added.insert(key.clone(), value.clone());
+            }
+        }
+
+        Ok(TaggedUrnCoordinateDelta {
+            prefix: self.prefix.clone(),
+            removed,
+            added,
+            relation_kind,
+        })
+    }
+
+    /// Apply a coordinate delta to this tagged URN.
+    ///
+    /// Keys named in `removed` are deleted regardless of their current value,
+    /// then keys named in `added` are inserted with the target value. Unrelated
+    /// coordinates are preserved unchanged.
+    pub fn apply_delta(&self, delta: &TaggedUrnCoordinateDelta) -> Result<Self, TaggedUrnError> {
+        if self.prefix != delta.prefix {
+            return Err(TaggedUrnError::PrefixMismatch {
+                expected: delta.prefix.clone(),
+                actual: self.prefix.clone(),
+            });
+        }
+
+        let mut next = self.clone();
+        for key in delta.removed.keys() {
+            next.tags.remove(key);
+        }
+        for (key, value) in &delta.added {
+            next.tags.insert(key.clone(), value.clone());
+        }
+        Ok(next)
     }
 
     /// Calculate specificity score for URN matching
