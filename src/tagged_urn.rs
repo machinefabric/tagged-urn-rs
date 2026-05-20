@@ -1406,14 +1406,36 @@ impl TaggedUrnBuilder {
                 key
             )));
         }
-        self.tags.insert(key.to_lowercase(), value.to_string());
+        let key_lower = key.to_lowercase();
+        if self.tags.contains_key(&key_lower) {
+            return Err(TaggedUrnError::DuplicateKey(key_lower));
+        }
+        let mut validated_key = key_lower;
+        let mut validated_value = value.to_string();
+        let mut single_tag = BTreeMap::new();
+        TaggedUrn::finish_tag(&mut single_tag, &mut validated_key, &mut validated_value)?;
+        let (final_key, final_value) = single_tag.into_iter().next().expect(
+            "TaggedUrn::finish_tag must insert exactly one validated tag for TaggedUrnBuilder::tag",
+        );
+        self.tags.insert(final_key, final_value);
         Ok(self)
     }
 
 	/// Add a tag with key (normalized to lowercase) and wildcard value
-    pub fn marker(mut self, key: &str) -> Self {
-        self.tags.insert(key.to_lowercase(), "*".to_string());
-        self
+    pub fn marker(mut self, key: &str) -> Result<Self, TaggedUrnError> {
+        let key_lower = key.to_lowercase();
+        if self.tags.contains_key(&key_lower) {
+            return Err(TaggedUrnError::DuplicateKey(key_lower));
+        }
+        let mut validated_key = key_lower;
+        let mut validated_value = "*".to_string();
+        let mut single_tag = BTreeMap::new();
+        TaggedUrn::finish_tag(&mut single_tag, &mut validated_key, &mut validated_value)?;
+        let (final_key, final_value) = single_tag.into_iter().next().expect(
+            "TaggedUrn::finish_tag must insert exactly one validated tag for TaggedUrnBuilder::marker",
+        );
+        self.tags.insert(final_key, final_value);
+        Ok(self)
     }
 
     pub fn build(self) -> Result<TaggedUrn, TaggedUrnError> {
@@ -1497,9 +1519,9 @@ mod tests {
     #[test]
     fn test_builder_with_prefix() {
         let urn = TaggedUrnBuilder::new("custom")
-            .tag("key", "value").unwrap()
+            .tag("key", "value").expect("builder tag fixture must be valid")
             .build()
-            .unwrap();
+            .expect("builder fixture must serialize");
 
         assert_eq!(urn.get_prefix(), "custom");
         assert_eq!(urn.to_string(), "custom:key=value");
@@ -1617,42 +1639,45 @@ mod tests {
     #[test]
     fn test_serialization_smart_quoting() {
         // Simple lowercase value - no quoting needed
-        let urn = TaggedUrnBuilder::new("cap").tag("key", "simple").unwrap().build().unwrap();
+        let urn = TaggedUrnBuilder::new("cap")
+            .tag("key", "simple").expect("simple key fixture must be valid")
+            .build()
+            .expect("simple key fixture must serialize");
         assert_eq!(urn.to_string(), "cap:key=simple");
 
         // Value with spaces - needs quoting
         let urn2 = TaggedUrnBuilder::new("cap")
-            .tag("key", "has spaces").unwrap()
+            .tag("key", "has spaces").expect("spaced value fixture must be valid")
             .build()
-            .unwrap();
+            .expect("spaced value fixture must serialize");
         assert_eq!(urn2.to_string(), r#"cap:key="has spaces""#);
 
         // Value with semicolons - needs quoting
         let urn3 = TaggedUrnBuilder::new("cap")
-            .tag("key", "has;semi").unwrap()
+            .tag("key", "has;semi").expect("semicolon value fixture must be valid")
             .build()
-            .unwrap();
+            .expect("semicolon value fixture must serialize");
         assert_eq!(urn3.to_string(), r#"cap:key="has;semi""#);
 
         // Value with uppercase - needs quoting to preserve
         let urn4 = TaggedUrnBuilder::new("cap")
-            .tag("key", "HasUpper").unwrap()
+            .tag("key", "HasUpper").expect("mixed-case value fixture must be valid")
             .build()
-            .unwrap();
+            .expect("mixed-case value fixture must serialize");
         assert_eq!(urn4.to_string(), r#"cap:key="HasUpper""#);
 
         // Value with quotes - needs quoting and escaping
         let urn5 = TaggedUrnBuilder::new("cap")
-            .tag("key", r#"has"quote"#).unwrap()
+            .tag("key", r#"has"quote"#).expect("quoted value fixture must be valid")
             .build()
-            .unwrap();
+            .expect("quoted value fixture must serialize");
         assert_eq!(urn5.to_string(), r#"cap:key="has\"quote""#);
 
         // Value with backslashes - needs quoting and escaping
         let urn6 = TaggedUrnBuilder::new("cap")
-            .tag("key", r#"path\file"#).unwrap()
+            .tag("key", r#"path\file"#).expect("backslash value fixture must be valid")
             .build()
-            .unwrap();
+            .expect("backslash value fixture must serialize");
         assert_eq!(urn6.to_string(), r#"cap:key="path\\file""#);
     }
 
@@ -1853,12 +1878,12 @@ mod tests {
     #[test]
     fn test_builder() {
         let urn = TaggedUrnBuilder::new("cap")
-            .marker("generate")
-            .tag("target", "thumbnail").unwrap()
-            .tag("ext", "pdf").unwrap()
-            .tag("output", "binary").unwrap()
+            .marker("generate").expect("generate marker fixture must be valid")
+            .tag("target", "thumbnail").expect("target fixture must be valid")
+            .tag("ext", "pdf").expect("ext fixture must be valid")
+            .tag("output", "binary").expect("output fixture must be valid")
             .build()
-            .unwrap();
+            .expect("builder fixture must serialize");
 
         assert!(urn.has_marker_tag("generate"));
         assert_eq!(urn.get_tag("output"), Some(&"binary".to_string()));
@@ -1868,9 +1893,9 @@ mod tests {
     #[test]
     fn test_builder_preserves_case() {
         let urn = TaggedUrnBuilder::new("cap")
-            .tag("KEY", "ValueWithCase").unwrap()
+            .tag("KEY", "ValueWithCase").expect("case-preserving fixture must be valid")
             .build()
-            .unwrap();
+            .expect("case-preserving fixture must serialize");
 
         // Key is lowercase
         assert_eq!(urn.get_tag("key"), Some(&"ValueWithCase".to_string()));
@@ -2870,12 +2895,12 @@ mod tests {
     #[test]
     fn test587_builder_fluent_api() {
         let urn = TaggedUrnBuilder::new("cap")
-            .marker("generate")
-            .tag("target", "thumbnail").unwrap()
-            .tag("format", "pdf").unwrap()
-            .tag("output", "binary").unwrap()
+            .marker("generate").expect("generate marker fixture must be valid")
+            .tag("target", "thumbnail").expect("target fixture must be valid")
+            .tag("format", "pdf").expect("format fixture must be valid")
+            .tag("output", "binary").expect("output fixture must be valid")
             .build()
-            .unwrap();
+            .expect("builder fixture must serialize");
 
         assert!(urn.has_marker_tag("generate"));
         assert_eq!(urn.get_tag("target"), Some(&"thumbnail".to_string()));
@@ -2887,11 +2912,11 @@ mod tests {
     #[test]
     fn test588_builder_custom_tags() {
         let urn = TaggedUrnBuilder::new("cap")
-            .tag("engine", "v2").unwrap()
-            .tag("quality", "high").unwrap()
-            .marker("compress")
+            .tag("engine", "v2").expect("engine fixture must be valid")
+            .tag("quality", "high").expect("quality fixture must be valid")
+            .marker("compress").expect("compress marker fixture must be valid")
             .build()
-            .unwrap();
+            .expect("builder fixture must serialize");
 
         assert_eq!(urn.get_tag("engine"), Some(&"v2".to_string()));
         assert_eq!(urn.get_tag("quality"), Some(&"high".to_string()));
@@ -2902,10 +2927,10 @@ mod tests {
     #[test]
     fn test589_builder_tag_overrides() {
         let urn = TaggedUrnBuilder::new("cap")
-            .marker("convert")
-            .tag("format", "jpg").unwrap()
+            .marker("convert").expect("convert marker fixture must be valid")
+            .tag("format", "jpg").expect("format fixture must be valid")
             .build()
-            .unwrap();
+            .expect("builder fixture must serialize");
 
         assert!(urn.has_marker_tag("convert"));
         assert_eq!(urn.get_tag("format"), Some(&"jpg".to_string()));
@@ -2926,9 +2951,9 @@ mod tests {
     #[test]
     fn test591_builder_single_tag() {
         let urn = TaggedUrnBuilder::new("cap")
-            .tag("type", "utility").unwrap()
+            .tag("type", "utility").expect("single-tag fixture must be valid")
             .build()
-            .unwrap();
+            .expect("single-tag fixture must serialize");
 
         assert_eq!(urn.to_string(), "cap:type=utility");
         assert_eq!(urn.get_tag("type"), Some(&"utility".to_string()));
@@ -2940,16 +2965,16 @@ mod tests {
     #[test]
     fn test592_builder_complex() {
         let urn = TaggedUrnBuilder::new("cap")
-            .tag("type", "media").unwrap()
-            .marker("transcode")
-            .tag("target", "video").unwrap()
-            .tag("format", "mp4").unwrap()
-            .tag("codec", "h264").unwrap()
-            .tag("quality", "1080p").unwrap()
-            .tag("framerate", "30fps").unwrap()
-            .tag("output", "binary").unwrap()
+            .tag("type", "media").expect("type fixture must be valid")
+            .marker("transcode").expect("transcode marker fixture must be valid")
+            .tag("target", "video").expect("target fixture must be valid")
+            .tag("format", "mp4").expect("format fixture must be valid")
+            .tag("codec", "h264").expect("codec fixture must be valid")
+            .tag("quality", "1080p").expect("quality fixture must be valid")
+            .tag("framerate", "30fps").expect("framerate fixture must be valid")
+            .tag("output", "binary").expect("output fixture must be valid")
             .build()
-            .unwrap();
+            .expect("builder fixture must serialize");
 
         assert_eq!(urn.get_tag("type"), Some(&"media".to_string()));
         assert!(urn.has_marker_tag("transcode"));
@@ -2968,11 +2993,11 @@ mod tests {
     #[test]
     fn test593_builder_wildcards() {
         let urn = TaggedUrnBuilder::new("cap")
-            .marker("convert")
-            .marker("ext")
-            .marker("quality")
+            .marker("convert").expect("convert marker fixture must be valid")
+            .marker("ext").expect("ext marker fixture must be valid")
+            .marker("quality").expect("quality marker fixture must be valid")
             .build()
-            .unwrap();
+            .expect("builder fixture must serialize");
 
         // All three markers serialize as value-less, sorted alphabetically.
         assert_eq!(urn.to_string(), "cap:convert;ext;quality");
