@@ -1,0 +1,104 @@
+[
+  {
+    "lean_name": "TaggedUrn.Constraint",
+    "kind": "type",
+    "rust_path": "Constraint",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.comparable",
+    "kind": "function",
+    "rust_path": "exec::comparable",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.equivalent",
+    "kind": "function",
+    "rust_path": "exec::equivalent",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.make",
+    "kind": "function",
+    "rust_path": "exec::make",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.refines",
+    "kind": "function",
+    "rust_path": "exec::refines",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.specificity",
+    "kind": "function",
+    "rust_path": "exec::specificity",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.valuesMatch",
+    "kind": "function",
+    "rust_path": "exec::values_match",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.missing",
+    "kind": "constructor",
+    "rust_path": "Constraint::Missing",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.unconstrained",
+    "kind": "constructor",
+    "rust_path": "Constraint::Unconstrained",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.optionalNot",
+    "kind": "constructor",
+    "rust_path": "Constraint::OptionalNot",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.optionalNot.value",
+    "kind": "field",
+    "rust_path": "Constraint::OptionalNot.value",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.present",
+    "kind": "constructor",
+    "rust_path": "Constraint::Present",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.presentNot",
+    "kind": "constructor",
+    "rust_path": "Constraint::PresentNot",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.presentNot.value",
+    "kind": "field",
+    "rust_path": "Constraint::PresentNot.value",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.exact",
+    "kind": "constructor",
+    "rust_path": "Constraint::Exact",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.exact.value",
+    "kind": "field",
+    "rust_path": "Constraint::Exact.value",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.absent",
+    "kind": "constructor",
+    "rust_path": "Constraint::Absent",
+    "renamed": true
+  }
+]

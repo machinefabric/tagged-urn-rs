@@ -14,17 +14,49 @@ use std::str::FromStr;
 /// - `cap:generate;ext=pdf;output=binary;target=thumbnail`
 /// - `myapp:key="Value With Spaces"`
 /// - `custom:a=1;b=2`
-#[derive(Debug, Clone, Eq, Hash)]
+#[derive(Clone)]
 pub struct TaggedUrn {
     /// The prefix for this URN (e.g., "cap", "myapp", "custom")
-    pub prefix: String,
+    prefix: String,
     /// The tags that define this URN, stored in sorted order for canonical representation
-    pub tags: BTreeMap<String, String>,
+    tags: BTreeMap<String, String>,
+    /// The same URN on the proved model's side: its tags with the proof that
+    /// their keys are strictly increasing. Every semantic question — does one
+    /// refine another, are they equivalent, how specific is it — is asked of
+    /// this, through code generated from `../formal`, so what this crate
+    /// answers is what the theorems there are about.
+    ///
+    /// Built once, when the URN is; the fields are private so that it can
+    /// never describe a different URN from the one beside it.
+    formal: FormalUrn,
+}
+
+/// A URN as the generated code takes it: a handle, shared by reference count,
+/// which passes into the proved functions without conversion. Crates whose own
+/// generated code shares the URN type map `TaggedUrn.Exec.Wf` to this.
+pub type FormalUrn = lungo::LeanValue<crate::formal::__opaque::Wf>;
+
+impl fmt::Debug for TaggedUrn {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        f.debug_struct("TaggedUrn")
+            .field("prefix", &self.prefix)
+            .field("tags", &self.tags)
+            .finish()
+    }
 }
 
 impl PartialEq for TaggedUrn {
     fn eq(&self, other: &Self) -> bool {
         self.prefix == other.prefix && self.tags == other.tags
+    }
+}
+
+impl Eq for TaggedUrn {}
+
+impl std::hash::Hash for TaggedUrn {
+    fn hash<H: std::hash::Hasher>(&self, state: &mut H) {
+        self.prefix.hash(state);
+        self.tags.hash(state);
     }
 }
 
@@ -185,7 +217,35 @@ impl TaggedUrnCoordinateDelta {
     }
 }
 
+/// The model's form for a stored tag value (`None` is a key the URN omits).
+fn constraint_of(value: Option<&str>) -> crate::formal::Constraint {
+    use crate::formal::Constraint as C;
+    match value {
+        None => C::Missing,
+        Some("?") => C::Unconstrained,
+        Some("*") => C::Present,
+        Some("!") => C::Absent,
+        Some(v) if v.starts_with("?=") => C::OptionalNot { value: v[2..].to_string() },
+        Some(v) if v.starts_with("!=") => C::PresentNot { value: v[2..].to_string() },
+        Some(v) => C::Exact { value: v.to_string() },
+    }
+}
+
 impl TaggedUrn {
+    /// The one way a `TaggedUrn` is made: the Rust fields and the model's
+    /// handle, together, from the same tags.
+    fn assemble(prefix: String, tags: BTreeMap<String, String>) -> Self {
+        let model_tags: lungo::List<(String, crate::formal::Constraint)> = tags
+            .iter()
+            .map(|(k, v)| (k.clone(), constraint_of(Some(v))))
+            .collect();
+        let formal = crate::formal::exec::make(prefix.clone(), model_tags)
+            // A BTreeMap's keys are strictly increasing, in the order Lean's
+            // `String <` uses (UTF-8 byte order is code-point order).
+            .expect("a tag map's keys are strictly increasing");
+        TaggedUrn { prefix, tags, formal }
+    }
+
     /// Create a new tagged URN from tags with a specified prefix
     /// Keys are normalized to lowercase; values are preserved as-is
     pub fn new(prefix: String, tags: BTreeMap<String, String>) -> Self {
@@ -193,18 +253,32 @@ impl TaggedUrn {
             .into_iter()
             .map(|(k, v)| (k.to_lowercase(), v))
             .collect();
-        Self {
-            prefix: prefix.to_lowercase(),
-            tags: normalized_tags,
-        }
+        Self::assemble(prefix.to_lowercase(), normalized_tags)
     }
 
     /// Create an empty tagged URN with the specified prefix
     pub fn empty(prefix: String) -> Self {
-        Self {
-            prefix: prefix.to_lowercase(),
-            tags: BTreeMap::new(),
-        }
+        Self::assemble(prefix.to_lowercase(), BTreeMap::new())
+    }
+
+    /// The prefix (`media`, `cap`, …).
+    pub fn prefix(&self) -> &str {
+        &self.prefix
+    }
+
+    /// The tags, in key order, as stored values (`*`, `?`, `!`, `?=v`, `!=v`, or an exact value).
+    pub fn tags(&self) -> &BTreeMap<String, String> {
+        &self.tags
+    }
+
+    /// The model's handle for this URN, for generated code that shares the type.
+    pub fn formal(&self) -> &FormalUrn {
+        &self.formal
+    }
+
+    /// The same prefix with other tags: every edit builds a new URN, handle included.
+    fn with_tags(&self, tags: BTreeMap<String, String>) -> Self {
+        Self::assemble(self.prefix.clone(), tags)
     }
 
     /// Create a tagged URN from a string representation
@@ -242,7 +316,7 @@ impl TaggedUrn {
 
         // Handle empty tagged URN (prefix: with no tags)
         if tags_part.is_empty() || tags_part == ";" {
-            return Ok(Self { prefix, tags });
+            return Ok(Self::assemble(prefix, tags));
         }
 
         let mut state = ParseState::ExpectingKey;
@@ -487,7 +561,7 @@ impl TaggedUrn {
             }
         }
 
-        Ok(Self { prefix, tags })
+        Ok(Self::assemble(prefix, tags))
     }
 
     /// Finish a tag by validating and inserting it
@@ -732,100 +806,68 @@ impl TaggedUrn {
     /// Add or update a tag
     /// Key is normalized to lowercase; value is preserved as-is
     /// Returns error if value is empty (use "*" for wildcard)
-    pub fn with_tag(mut self, key: String, value: String) -> Result<Self, TaggedUrnError> {
+    pub fn with_tag(self, key: String, value: String) -> Result<Self, TaggedUrnError> {
         if value.is_empty() {
             return Err(TaggedUrnError::EmptyTagComponent(format!(
                 "empty value for key '{}' (use '*' for wildcard)",
                 key
             )));
         }
-        self.tags.insert(key.to_lowercase(), value);
-        Ok(self)
+        Ok(self.with_tag_unchecked(key, value))
     }
 
     /// Add or update a tag (infallible version for internal use where value is known valid)
-    fn with_tag_unchecked(mut self, key: String, value: String) -> Self {
-        self.tags.insert(key.to_lowercase(), value);
-        self
+    fn with_tag_unchecked(self, key: String, value: String) -> Self {
+        let mut tags = self.tags;
+        tags.insert(key.to_lowercase(), value);
+        Self::assemble(self.prefix, tags)
     }
 
     /// Remove a tag
     /// Key is normalized to lowercase for case-insensitive removal
-    pub fn without_tag(mut self, key: &str) -> Self {
-        self.tags.remove(&key.to_lowercase());
-        self
+    pub fn without_tag(self, key: &str) -> Self {
+        let mut tags = self.tags;
+        tags.remove(&key.to_lowercase());
+        Self::assemble(self.prefix, tags)
     }
 
-    /// Check if this URN (instance) matches a pattern based on tag compatibility
+    /// Whether this URN (the instance) satisfies `pattern`: `self ⪯ pattern`.
     ///
-    /// IMPORTANT: Both URNs must have the same prefix. Comparing URNs with
-    /// different prefixes is a programming error and will return an error.
+    /// Decided by the proved model (`TaggedUrn.Exec.refines`, which
+    /// `refines_decides` shows is exactly the specified relation): every tag
+    /// form means the set of states it allows — on either side — and the
+    /// instance satisfies the pattern when, key by key, its set lies inside
+    /// the pattern's. A key the instance omits promises nothing, `?x`
+    /// promises nothing, and `x` promises presence but no particular value.
     ///
-    /// Per-tag matching semantics:
-    /// | Pattern Form | Interpretation              | Instance Missing | Instance = v | Instance = x≠v |
-    /// |--------------|-----------------------------|--------------------|--------------|----------------|
-    /// | (no entry)   | no constraint               | OK match           | OK match     | OK match       |
-    /// | `K=?`        | no constraint (explicit)    | OK                 | OK           | OK             |
-    /// | `K=!`        | **must-not-have**           | OK                 | NO           | NO             |
-    /// | `K=*`        | **must-have, any value**    | NO                 | OK           | OK             |
-    /// | `K=v`        | **must-have, exact value**  | NO                 | OK           | NO             |
+    /// Both URNs must have the same prefix; comparing across prefixes is a
+    /// programming error, reported as `PrefixMismatch`.
     ///
-    /// Special values work symmetrically on both instance and pattern sides.
-    ///
-    /// `self` is the instance, `pattern` is the pattern whose constraints must be satisfied.
     /// Equivalent to `pattern.accepts(self)`.
     pub fn conforms_to(&self, pattern: &TaggedUrn) -> Result<bool, TaggedUrnError> {
-        Self::check_match(&self.tags, &self.prefix, &pattern.tags, &pattern.prefix)
+        Self::same_prefix(self, pattern)?;
+        Ok(crate::formal::exec::refines(self.formal.clone(), pattern.formal.clone()))
     }
 
-    /// Check if this URN (as a pattern) accepts the given instance.
+    /// Whether this URN (as a pattern) accepts `instance`: `instance ⪯ self`.
     ///
-    /// `self` is the pattern defining constraints, `instance` is tested against them.
     /// Equivalent to `instance.conforms_to(self)`.
     pub fn accepts(&self, instance: &TaggedUrn) -> Result<bool, TaggedUrnError> {
-        Self::check_match(&instance.tags, &instance.prefix, &self.tags, &self.prefix)
+        instance.conforms_to(self)
     }
 
-    /// Core matching: does `instance` satisfy `pattern`'s constraints?
-    fn check_match(
-        instance_tags: &BTreeMap<String, String>,
-        instance_prefix: &str,
-        pattern_tags: &BTreeMap<String, String>,
-        pattern_prefix: &str,
-    ) -> Result<bool, TaggedUrnError> {
-        if instance_prefix != pattern_prefix {
+    fn same_prefix(instance: &TaggedUrn, pattern: &TaggedUrn) -> Result<(), TaggedUrnError> {
+        if instance.prefix != pattern.prefix {
             return Err(TaggedUrnError::PrefixMismatch {
-                expected: pattern_prefix.to_string(),
-                actual: instance_prefix.to_string(),
+                expected: pattern.prefix.clone(),
+                actual: instance.prefix.clone(),
             });
         }
-
-        let all_keys: std::collections::HashSet<&String> =
-            instance_tags.keys().chain(pattern_tags.keys()).collect();
-
-        for key in all_keys {
-            let inst = instance_tags.get(key).map(|s| s.as_str());
-            let patt = pattern_tags.get(key).map(|s| s.as_str());
-
-            if !Self::values_match(inst, patt) {
-                return Ok(false);
-            }
-        }
-        Ok(true)
+        Ok(())
     }
 
-    /// One of the six canonical constraint forms a tag value can take,
-    /// plus the implicit "missing" form (no entry in the tag map).
-    /// The tag-storage strings map to these forms as follows:
-    ///
-    ///   None entry           -> Form::Missing
-    ///   "?"                  -> Form::NoConstraint
-    ///   "?=v"                -> Form::AbsentOrNotValue(v)
-    ///   "*"                  -> Form::MustHaveAny
-    ///   "!=v"                -> Form::PresentNotValue(v)
-    ///   "!"                  -> Form::MustNotHave
-    ///   exact `v`            -> Form::Exact(v)  (where v ∉ {"?", "!", "*"} and
-    ///                                            v does not start with "?=" or "!=")
+    /// Classify a stored value into its form, for the tie-break counts of
+    /// [`specificity_tuple`](Self::specificity_tuple).
     fn classify_form(value: Option<&str>) -> Form<'_> {
         match value {
             None => Form::Missing,
@@ -838,95 +880,12 @@ impl TaggedUrn {
         }
     }
 
-    /// Check if instance value matches pattern constraint, per the
-    /// truth table over the six canonical forms.
-    ///
-    /// Full cross-product (instance row × pattern column):
-    ///
-    /// | Inst ↓ \ Pat → | Missing | `?` | `?=p` | `*` | `!=p` | `q` (exact) | `!` |
-    /// |----------------|:-------:|:---:|:-----:|:---:|:-----:|:-----------:|:---:|
-    /// | Missing        | ✓       | ✓   | ✓     | ✗   | ✗     | ✗           | ✓   |
-    /// | `?`            | ✓       | ✓   | ✓     | ✓   | ✓     | ✓           | ✓   |
-    /// | `?=v`          | ✓       | ✓   | ✓     | ✗   | ✗     | ✗           | ✓   |
-    /// | `*`            | ✓       | ✓   | ✓     | ✓   | ✓     | ✓           | ✗   |
-    /// | `!=v`          | ✓       | ✓   | ✓     | ✓   | ✓     | v==q ? ✗ : ✓| ✗   |
-    /// | `q` (exact)    | ✓       | ✓   | q==p ? ✗ : ✓ | ✓ | q==p ? ✗ : ✓ | q==p ? ✓ : ✗ | ✗ |
-    /// | `!`            | ✓       | ✓   | ✓     | ✗   | ✗     | ✗           | ✓   |
-    ///
-    /// Reading rules:
-    /// - `?` (instance OR pattern) means "no constraint, anything goes."
-    /// - `?=v` means "absent OR (present and not v)" — permissive.
-    /// - `*` means "present with any value" — instance defers value
-    ///   identity to runtime; pattern admits any value.
-    /// - `!=v` means "present and not v" — strict presence with one
-    ///   forbidden value.
-    /// - exact `v` means "present and exactly v."
-    /// - `!` means "absent" (must-not-have any value at this key).
-    /// - `Missing` is symmetric to `?`: the key contributes no
-    ///   constraint when not present in the URN.
-    ///
-    /// Cells where the pattern uses `?=p`, `!=p`, or exact `q` and
-    /// the instance is also a value-bearing form: the result depends
-    /// on whether the values overlap. The instance-`*` and
-    /// pattern-side cases defer to runtime (instance has not pinned
-    /// itself; pattern is permissive enough to accept some run).
-    /// Per-key truth-table cell evaluation for the six canonical
-    /// constraint forms (plus implicit Missing). Both arguments are
-    /// stored tag values (or `None` to mean "key absent"). Returns
-    /// true iff the instance value satisfies the pattern's
-    /// constraint at this key.
-    ///
-    /// Exposed for callers (e.g. CapUrn's y-axis matcher) that walk
-    /// tag sets themselves and need the same per-cell decision the
-    /// tagged-URN matcher uses internally.
+    /// One key: does the instance's stored value satisfy the pattern's?
+    /// (`None` is a key the URN omits.) The proved model's per-key rule
+    /// (`TaggedUrn.Exec.valuesMatch`), exposed for callers such as `CapUrn`'s
+    /// cap-tag matcher that walk tag sets themselves.
     pub fn values_match(inst: Option<&str>, patt: Option<&str>) -> bool {
-        let i = Self::classify_form(inst);
-        let p = Self::classify_form(patt);
-
-        match (i, p) {
-            // Pattern is unconditionally permissive on this key.
-            (_, Form::Missing) | (_, Form::NoConstraint) => true,
-
-            // Instance is unconditionally permissive — defers to
-            // pattern entirely.
-            (Form::NoConstraint, _) => true,
-
-            // Pattern requires absent.
-            (Form::Missing, Form::MustNotHave) => true,
-            (Form::MustNotHave, Form::MustNotHave) => true,
-            (Form::AbsentOrNotValue(_), Form::MustNotHave) => true, // absent satisfies
-            (_, Form::MustNotHave) => false,                        // any presence fails
-
-            // Pattern requires present (any).
-            (Form::Missing, Form::MustHaveAny) => false,
-            (Form::AbsentOrNotValue(_), Form::MustHaveAny) => false, // may be absent
-            (Form::MustNotHave, Form::MustHaveAny) => false,
-            (_, Form::MustHaveAny) => true, // *, !=v, exact, ?
-
-            // Pattern: present-and-not-p.
-            (Form::Missing, Form::PresentNotValue(_)) => false,
-            (Form::AbsentOrNotValue(_), Form::PresentNotValue(_)) => false, // may be absent
-            (Form::MustNotHave, Form::PresentNotValue(_)) => false,
-            (Form::MustHaveAny, Form::PresentNotValue(_)) => true, // defer
-            (Form::PresentNotValue(_), Form::PresentNotValue(_)) => true, // defer
-            (Form::Exact(q), Form::PresentNotValue(p)) => q != p,
-
-            // Pattern: absent-or-not-p.
-            (Form::Missing, Form::AbsentOrNotValue(_)) => true,
-            (Form::AbsentOrNotValue(_), Form::AbsentOrNotValue(_)) => true,
-            (Form::MustNotHave, Form::AbsentOrNotValue(_)) => true,
-            (Form::MustHaveAny, Form::AbsentOrNotValue(_)) => true, // defer
-            (Form::PresentNotValue(_), Form::AbsentOrNotValue(_)) => true, // defer
-            (Form::Exact(q), Form::AbsentOrNotValue(p)) => q != p,
-
-            // Pattern: exact q.
-            (Form::Missing, Form::Exact(_)) => false,
-            (Form::AbsentOrNotValue(_), Form::Exact(_)) => false,
-            (Form::MustNotHave, Form::Exact(_)) => false,
-            (Form::MustHaveAny, Form::Exact(_)) => true, // defer
-            (Form::PresentNotValue(v), Form::Exact(q)) => v != q,
-            (Form::Exact(q), Form::Exact(p)) => q == p,
-        }
+        crate::formal::exec::values_match(constraint_of(inst), constraint_of(patt))
     }
 
     pub fn conforms_to_str(&self, pattern_str: &str) -> Result<bool, TaggedUrnError> {
@@ -956,7 +915,8 @@ impl TaggedUrn {
     /// `accepts`/`conforms_to` — both sides return false on mismatch, but
     /// since we AND them, the error propagates).
     pub fn is_equivalent(&self, other: &TaggedUrn) -> Result<bool, TaggedUrnError> {
-        Ok(self.accepts(other)? && other.accepts(self)?)
+        Self::same_prefix(other, self)?;
+        Ok(crate::formal::exec::equivalent(self.formal.clone(), other.formal.clone()))
     }
 
     /// Check if two URNs are comparable (one is a specialization of the other).
@@ -978,7 +938,8 @@ impl TaggedUrn {
     /// Returns `PrefixMismatch` error if prefixes differ (inherited from
     /// `accepts`/`conforms_to`).
     pub fn is_comparable(&self, other: &TaggedUrn) -> Result<bool, TaggedUrnError> {
-        Ok(self.accepts(other)? || other.accepts(self)?)
+        Self::same_prefix(other, self)?;
+        Ok(crate::formal::exec::comparable(self.formal.clone(), other.formal.clone()))
     }
 
     /// String variant of `is_equivalent`.
@@ -1055,14 +1016,14 @@ impl TaggedUrn {
             });
         }
 
-        let mut next = self.clone();
+        let mut tags = self.tags.clone();
         for key in delta.removed.keys() {
-            next.tags.remove(key);
+            tags.remove(key);
         }
         for (key, value) in &delta.added {
-            next.tags.insert(key.clone(), value.clone());
+            tags.insert(key.clone(), value.clone());
         }
-        Ok(next)
+        Ok(self.with_tags(tags))
     }
 
     /// Calculate specificity score for URN matching
@@ -1086,10 +1047,10 @@ impl TaggedUrn {
     /// → exact `x=v` (4) tightens positively; `?x` (0) → `x?=v` (1)
     /// → `x!=v` (3) → `!x` (5) tightens negatively.
     pub fn specificity(&self) -> usize {
-        self.tags
-            .values()
-            .map(|v| score_tag_value(v.as_str()))
-            .sum()
+        let score = crate::formal::exec::specificity(self.formal.clone());
+        score
+            .to_u64()
+            .expect("a sum of per-tag scores fits in u64") as usize
     }
 
     /// Get specificity as a tuple for tie-breaking. Counts how many
@@ -1156,10 +1117,7 @@ impl TaggedUrn {
                 tags.insert(key.to_string(), value.clone());
             }
         }
-        Self {
-            prefix: self.prefix.clone(),
-            tags,
-        }
+        self.with_tags(tags)
     }
 
     /// Merge with another URN (other takes precedence for conflicts)
@@ -1176,10 +1134,7 @@ impl TaggedUrn {
         for (key, value) in &other.tags {
             tags.insert(key.clone(), value.clone());
         }
-        Ok(Self {
-            prefix: self.prefix.clone(),
-            tags,
-        })
+        Ok(self.with_tags(tags))
     }
 
     pub fn canonical(tagged_urn: &str) -> Result<String, TaggedUrnError> {
@@ -1441,18 +1396,12 @@ impl TaggedUrnBuilder {
         if self.tags.is_empty() {
             return Err(TaggedUrnError::Empty);
         }
-        Ok(TaggedUrn {
-            prefix: self.prefix,
-            tags: self.tags,
-        })
+        Ok(TaggedUrn::assemble(self.prefix, self.tags))
     }
 
     /// Build allowing empty tags (creates an empty URN that matches everything)
     pub fn build_allow_empty(self) -> TaggedUrn {
-        TaggedUrn {
-            prefix: self.prefix,
-            tags: self.tags,
-        }
+        TaggedUrn::assemble(self.prefix, self.tags)
     }
 }
 
@@ -2273,19 +2222,17 @@ mod tests {
         );
     }
 
-    // TEST0547: Match when instance has wildcard satisfying pattern's specific value
+    // TEST0547: An instance's wildcard promises presence, not the value asked for
+    //
+    // `ext` is "some ext". It used to satisfy a pattern asking for `ext=pdf` —
+    // "decided later" — which let a cap promising some ext stand in for one that
+    // produces a pdf. A pdf satisfies "some ext"; "some ext" does not satisfy pdf.
     #[test]
     fn test0547_matching_semantics_test5_urn_has_wildcard() {
-        // Test 5: URN has wildcard
-        // URN:     cap:ext;generate;in=media:;out=media:
-        // Request: cap:ext=pdf;generate;in=media:;out=media:
-        // Result:  MATCH (URN handles any ext)
         let urn = TaggedUrn::from_string("cap:ext;generate;in=media:;out=media:").unwrap();
         let request = TaggedUrn::from_string("cap:ext=pdf;generate;in=media:;out=media:").unwrap();
-        assert!(
-            urn.conforms_to(&request).unwrap(),
-            "Test 5: URN wildcard should match"
-        );
+        assert!(!urn.conforms_to(&request).unwrap(), "some ext does not satisfy ext=pdf");
+        assert!(request.conforms_to(&urn).unwrap(), "ext=pdf satisfies some ext");
     }
 
     // TEST0548: Reject match when tag values conflict between instance and pattern
@@ -2467,10 +2414,13 @@ mod tests {
         assert_eq!(wildcard.to_string(), "cap:ext");
     }
 
-    // TEST0558: Match value-less wildcard tag against any specific value
+    // TEST0558: A valueless tag promises presence, not a value
+    //
+    // Reading `ext` as "whatever the pattern wants" made `ext` and `ext=pdf`
+    // refine each other — equivalent — and refinement non-transitive. Refinement
+    // is inclusion of what each form allows: every pdf is some ext.
     #[test]
     fn test0558_valueless_tag_matching() {
-        // Value-less tag (wildcard) matches any value
         let urn = TaggedUrn::from_string("cap:ext;generate;in=media:;out=media:").unwrap();
 
         let request_pdf =
@@ -2480,9 +2430,11 @@ mod tests {
         let request_any =
             TaggedUrn::from_string("cap:ext=anything;generate;in=media:;out=media:").unwrap();
 
-        assert!(urn.conforms_to(&request_pdf).unwrap());
-        assert!(urn.conforms_to(&request_docx).unwrap());
-        assert!(urn.conforms_to(&request_any).unwrap());
+        assert!(!urn.conforms_to(&request_pdf).unwrap(), "some ext is not a promise of pdf");
+        assert!(!urn.conforms_to(&request_docx).unwrap(), "some ext is not a promise of docx");
+        assert!(!urn.conforms_to(&request_any).unwrap(), "nor of any particular value");
+        assert!(request_pdf.conforms_to(&urn).unwrap(), "a pdf is some ext");
+        assert!(!urn.is_equivalent(&request_pdf).unwrap(), "ext and ext=pdf are different tag sets");
     }
 
     // TEST0559: Require value-less tag in pattern to be present in instance
@@ -2679,10 +2631,14 @@ mod tests {
         );
     }
 
-    // TEST0570: Match instance with unspecified (?) tag against any pattern constraint
+    // TEST0570: An instance with K=? promises nothing about K
+    //
+    // `?` is "no constraint" on either side. As an instance it used to satisfy
+    // every pattern, which made refinement non-transitive:
+    // missing ⪯ ?k ⪯ k=v, yet missing ⋠ k=v. It satisfies exactly the patterns
+    // that ask for nothing.
     #[test]
     fn test0570_question_mark_in_instance() {
-        // Instance with K=? matches any pattern constraint
         let instance = TaggedUrn::from_string("cap:ext=?").unwrap();
 
         let pattern_pdf = TaggedUrn::from_string("cap:ext=pdf").unwrap();
@@ -2691,18 +2647,9 @@ mod tests {
         let pattern_question = TaggedUrn::from_string("cap:ext=?").unwrap();
         let pattern_missing = TaggedUrn::from_string("cap:").unwrap();
 
-        assert!(
-            instance.conforms_to(&pattern_pdf).unwrap(),
-            "ext=? should match ext=pdf"
-        );
-        assert!(
-            instance.conforms_to(&pattern_wildcard).unwrap(),
-            "ext=? should match ext=*"
-        );
-        assert!(
-            instance.conforms_to(&pattern_must_not).unwrap(),
-            "ext=? should match ext=!"
-        );
+        assert!(!instance.conforms_to(&pattern_pdf).unwrap(), "ext=? promises no pdf");
+        assert!(!instance.conforms_to(&pattern_wildcard).unwrap(), "ext=? promises no presence");
+        assert!(!instance.conforms_to(&pattern_must_not).unwrap(), "ext=? promises no absence");
         assert!(
             instance.conforms_to(&pattern_question).unwrap(),
             "ext=? should match ext=?"
@@ -2713,10 +2660,15 @@ mod tests {
         );
     }
 
-    // TEST0571: Require tag to be absent when pattern uses must-not-have (!) value
+    // TEST0571: Pattern with K=! requires the instance to SAY K is absent
+    //
+    // A key an instance does not mention is not a promise that it is absent:
+    // as a pattern the same omission means "anything", and one form cannot
+    // mean two things. `media:pdf` satisfied `media:pdf;!compressed` while
+    // `media:pdf;compressed` satisfied `media:pdf` and not the `!compressed`
+    // pattern, so refinement was not transitive.
     #[test]
     fn test0571_must_not_have_pattern_requires_absent() {
-        // Pattern with K=! requires instance to NOT have K
         let pattern = TaggedUrn::from_string("cap:ext=!").unwrap();
 
         let instance_missing = TaggedUrn::from_string("cap:").unwrap();
@@ -2725,8 +2677,8 @@ mod tests {
         let instance_must_not = TaggedUrn::from_string("cap:ext=!").unwrap();
 
         assert!(
-            instance_missing.conforms_to(&pattern).unwrap(),
-            "(no ext) should match ext=!"
+            !instance_missing.conforms_to(&pattern).unwrap(),
+            "(no ext) does not promise ext is absent"
         );
         assert!(
             !instance_pdf.conforms_to(&pattern).unwrap(),
@@ -2779,8 +2731,9 @@ mod tests {
     // TEST0573: Verify full cross-product truth table for all instance/pattern value combinations
     #[test]
     fn test0573_full_cross_product_matching() {
-        // Comprehensive test of all instance/pattern combinations
-        // Based on the truth table in the plan
+        // Each form means the set of states it allows, on either side, and an
+        // instance satisfies a pattern when its set is inside the pattern's
+        // (../formal, `tagMatch_iff_allows`).
 
         // Helper to test a single case
         fn check(instance: &str, pattern: &str, expected: bool, msg: &str) {
@@ -2799,16 +2752,16 @@ mod tests {
         // Instance missing, Pattern variations
         check("cap:", "cap:", true, "(none)/(none)");
         check("cap:", "cap:k=?", true, "(none)/K=?");
-        check("cap:", "cap:k=!", true, "(none)/K=!");
+        check("cap:", "cap:k=!", false, "(none)/K=!");
         check("cap:", "cap:k", false, "(none)/K=*"); // K is valueless = *
         check("cap:", "cap:k=v", false, "(none)/K=v");
 
         // Instance K=?, Pattern variations
         check("cap:k=?", "cap:", true, "K=?/(none)");
         check("cap:k=?", "cap:k=?", true, "K=?/K=?");
-        check("cap:k=?", "cap:k=!", true, "K=?/K=!");
-        check("cap:k=?", "cap:k", true, "K=?/K=*");
-        check("cap:k=?", "cap:k=v", true, "K=?/K=v");
+        check("cap:k=?", "cap:k=!", false, "K=?/K=!");
+        check("cap:k=?", "cap:k", false, "K=?/K=*");
+        check("cap:k=?", "cap:k=v", false, "K=?/K=v");
 
         // Instance K=!, Pattern variations
         check("cap:k=!", "cap:", true, "K=!/(none)");
@@ -2822,7 +2775,7 @@ mod tests {
         check("cap:k", "cap:k=?", true, "K=*/K=?");
         check("cap:k", "cap:k=!", false, "K=*/K=!");
         check("cap:k", "cap:k", true, "K=*/K=*");
-        check("cap:k", "cap:k=v", true, "K=*/K=v");
+        check("cap:k", "cap:k=v", false, "K=*/K=v");
 
         // Instance K=v, Pattern variations
         check("cap:k=v", "cap:", true, "K=v/(none)");
@@ -2840,10 +2793,17 @@ mod tests {
         let pattern =
             TaggedUrn::from_string("cap:required;optional=?;forbidden=!;exact=pdf").unwrap();
 
-        // Instance that satisfies all constraints
+        // Instance that satisfies all constraints — including stating that the
+        // forbidden key is absent, which leaving it out does not promise.
         let good_instance =
-            TaggedUrn::from_string("cap:required=yes;optional=maybe;exact=pdf").unwrap();
+            TaggedUrn::from_string("cap:required=yes;optional=maybe;forbidden=!;exact=pdf").unwrap();
         assert!(good_instance.conforms_to(&pattern).unwrap());
+        let silent_on_forbidden =
+            TaggedUrn::from_string("cap:required=yes;optional=maybe;exact=pdf").unwrap();
+        assert!(
+            !silent_on_forbidden.conforms_to(&pattern).unwrap(),
+            "saying nothing about forbidden is not saying it is absent"
+        );
 
         // Instance missing required tag
         let missing_required = TaggedUrn::from_string("cap:optional=maybe;exact=pdf").unwrap();
@@ -3014,9 +2974,11 @@ mod tests {
         let must_not = TaggedUrn::from_string("cap:ext=!").unwrap(); // ext=!
         let unspecified = TaggedUrn::from_string("cap:ext=?").unwrap(); // ext=?
 
-        // must_have (*) and exact (pdf): equivalent — * accepts any value
-        // bidirectionally (instance * is fine with pattern pdf, pattern * accepts instance pdf)
-        assert!(must_have.is_equivalent(&exact).unwrap());
+        // must_have (*) and exact (pdf): comparable — a pdf is some ext — and
+        // NOT equivalent: equivalence is "the same tag set", and they are not
+        // (../formal, `equivalent_iff_same_forms`). Reading * as "whatever the
+        // pattern wants" made them equivalent, and equivalence not transitive.
+        assert!(!must_have.is_equivalent(&exact).unwrap());
         assert!(must_have.is_comparable(&exact).unwrap());
 
         // must_not (!) and exact (pdf): incomparable (conflict both directions)
@@ -3027,10 +2989,14 @@ mod tests {
         assert!(!must_not.is_comparable(&must_have).unwrap());
         assert!(!must_not.is_equivalent(&must_have).unwrap());
 
-        // unspecified (?) is equivalent to everything — ? matches anything
-        assert!(unspecified.is_equivalent(&exact).unwrap());
-        assert!(unspecified.is_equivalent(&must_have).unwrap());
-        assert!(unspecified.is_equivalent(&must_not).unwrap());
+        // unspecified (?) accepts everything, and is equivalent only to what
+        // also constrains nothing: every form refines it, it refines none.
+        assert!(!unspecified.is_equivalent(&exact).unwrap());
+        assert!(!unspecified.is_equivalent(&must_have).unwrap());
+        assert!(!unspecified.is_equivalent(&must_not).unwrap());
+        assert!(unspecified.is_comparable(&exact).unwrap());
+        assert!(unspecified.is_comparable(&must_not).unwrap());
+        assert!(unspecified.is_equivalent(&TaggedUrn::from_string("cap:").unwrap()).unwrap());
     }
 
     // TEST0577: Verify graded specificity scores and tuples for special value types

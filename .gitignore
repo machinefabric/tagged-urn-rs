@@ -81,3 +81,6 @@ flame.svg
 
 .wsb/
 diffs/
+# Machine-specific paths; nothing compiles it (see lungo.toml).
+src/generated/*/build-info.json
+
