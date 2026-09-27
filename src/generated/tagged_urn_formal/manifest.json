@@ -2,7 +2,7 @@
   "lean_version": "4.34.1",
   "lean_githash": "5045d0056413266e57c625dcd7c365b10e377c52",
   "bir_version": 3,
-  "generator_version": "0.27.1270",
+  "generator_version": "1.65.2807",
   "runtime_abi": 1,
   "modules": [
     "Init.Prelude",
@@ -666,7 +666,7 @@
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::comparable",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "../formal/TaggedUrn/Exec.lean:51:1",
+      "source": "formal/TaggedUrn/Exec.lean:51:1",
       "trust": {
         "axioms": [
           "Classical.choice",
@@ -687,7 +687,7 @@
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::equivalent",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "../formal/TaggedUrn/Exec.lean:45:1",
+      "source": "formal/TaggedUrn/Exec.lean:45:1",
       "trust": {
         "axioms": [
           "Classical.choice",
@@ -708,7 +708,7 @@
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::make",
       "lean_type": "String → List (String × TaggedUrn.Constraint) → Option TaggedUrn.Exec.Wf",
-      "source": "../formal/TaggedUrn/Exec.lean:26:1",
+      "source": "formal/TaggedUrn/Exec.lean:26:1",
       "trust": {
         "axioms": [
           "Classical.choice",
@@ -728,7 +728,7 @@
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::refines",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "../formal/TaggedUrn/Exec.lean:38:1",
+      "source": "formal/TaggedUrn/Exec.lean:38:1",
       "trust": {
         "axioms": [
           "Classical.choice",
@@ -749,7 +749,7 @@
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::specificity",
       "lean_type": "TaggedUrn.Exec.Wf → Nat",
-      "source": "../formal/TaggedUrn/Exec.lean:57:1",
+      "source": "formal/TaggedUrn/Exec.lean:57:1",
       "trust": {
         "axioms": [
           "Classical.choice",
@@ -769,7 +769,7 @@
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::values_match",
       "lean_type": "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
-      "source": "../formal/TaggedUrn/Exec.lean:60:1",
+      "source": "formal/TaggedUrn/Exec.lean:60:1",
       "trust": {
         "axioms": [],
         "depends_on_sorry": false,

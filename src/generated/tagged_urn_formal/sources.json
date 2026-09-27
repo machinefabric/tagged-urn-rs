@@ -1225,7 +1225,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.absent.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       24,
       68
@@ -1237,7 +1237,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.ctorElim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       21,
       1
@@ -1249,13 +1249,13 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.ctorIdx",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
     "lean_name": "TaggedUrn.Constraint.exact.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       24,
       43
@@ -1267,7 +1267,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.missing.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       23,
       3
@@ -1279,7 +1279,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.norm",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       119,
       1
@@ -1291,7 +1291,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.optionalNot.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       23,
       29
@@ -1303,7 +1303,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.present.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       24,
       3
@@ -1315,7 +1315,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.presentNot.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       24,
       13
@@ -1327,7 +1327,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.unconstrained.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       23,
       13
@@ -1339,7 +1339,7 @@
   },
   {
     "lean_name": "TaggedUrn.Constraint.val",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       85,
       1
@@ -1351,7 +1351,7 @@
   },
   {
     "lean_name": "TaggedUrn.Exec.comparable",
-    "file": "../formal/TaggedUrn/Exec.lean",
+    "file": "formal/TaggedUrn/Exec.lean",
     "start": [
       51,
       1
@@ -1363,7 +1363,7 @@
   },
   {
     "lean_name": "TaggedUrn.Exec.equivalent",
-    "file": "../formal/TaggedUrn/Exec.lean",
+    "file": "formal/TaggedUrn/Exec.lean",
     "start": [
       45,
       1
@@ -1375,7 +1375,7 @@
   },
   {
     "lean_name": "TaggedUrn.Exec.make",
-    "file": "../formal/TaggedUrn/Exec.lean",
+    "file": "formal/TaggedUrn/Exec.lean",
     "start": [
       26,
       1
@@ -1387,7 +1387,7 @@
   },
   {
     "lean_name": "TaggedUrn.Exec.refines",
-    "file": "../formal/TaggedUrn/Exec.lean",
+    "file": "formal/TaggedUrn/Exec.lean",
     "start": [
       38,
       1
@@ -1399,7 +1399,7 @@
   },
   {
     "lean_name": "TaggedUrn.Exec.specificity",
-    "file": "../formal/TaggedUrn/Exec.lean",
+    "file": "formal/TaggedUrn/Exec.lean",
     "start": [
       57,
       1
@@ -1411,7 +1411,7 @@
   },
   {
     "lean_name": "TaggedUrn.Exec.valuesMatch",
-    "file": "../formal/TaggedUrn/Exec.lean",
+    "file": "formal/TaggedUrn/Exec.lean",
     "start": [
       60,
       1
@@ -1423,7 +1423,7 @@
   },
   {
     "lean_name": "TaggedUrn.KeyState.ctorElim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       27,
       1
@@ -1435,13 +1435,13 @@
   },
   {
     "lean_name": "TaggedUrn.KeyState.ctorIdx",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
     "lean_name": "TaggedUrn.KeyState.set.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       30,
       3
@@ -1453,7 +1453,7 @@
   },
   {
     "lean_name": "TaggedUrn.KeyState.unset.elim",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       29,
       3
@@ -1465,7 +1465,7 @@
   },
   {
     "lean_name": "TaggedUrn.Urn.keys",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       25,
       1
@@ -1477,7 +1477,7 @@
   },
   {
     "lean_name": "TaggedUrn.Urn.tag",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       22,
       1
@@ -1489,7 +1489,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqConstraint",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       25,
       12
@@ -1501,7 +1501,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqConstraint.decEq",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       25,
       12
@@ -1513,7 +1513,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqKeyState",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       31,
       12
@@ -1525,7 +1525,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqKeyState.decEq",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       31,
       12
@@ -1537,7 +1537,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqUrn",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       20,
       18
@@ -1549,7 +1549,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqUrn.decEq",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       20,
       18
@@ -1561,7 +1561,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableEquivalent",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       74,
       1
@@ -1573,7 +1573,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableRefines",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       32,
       1
@@ -1585,7 +1585,7 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableSorted",
-    "file": "../formal/TaggedUrn/Sorted.lean",
+    "file": "formal/TaggedUrn/Sorted.lean",
     "start": [
       29,
       1
@@ -1597,7 +1597,7 @@
   },
   {
     "lean_name": "TaggedUrn.instReprConstraint",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       25,
       25
@@ -1609,7 +1609,7 @@
   },
   {
     "lean_name": "TaggedUrn.instReprConstraint.repr",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       25,
       25
@@ -1621,7 +1621,7 @@
   },
   {
     "lean_name": "TaggedUrn.instReprKeyState",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       31,
       25
@@ -1633,7 +1633,7 @@
   },
   {
     "lean_name": "TaggedUrn.instReprKeyState.repr",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       31,
       25
@@ -1645,7 +1645,7 @@
   },
   {
     "lean_name": "TaggedUrn.instReprUrn",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       20,
       12
@@ -1657,7 +1657,7 @@
   },
   {
     "lean_name": "TaggedUrn.instReprUrn.repr",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       20,
       12
@@ -1669,7 +1669,7 @@
   },
   {
     "lean_name": "TaggedUrn.lookup",
-    "file": "../formal/TaggedUrn/Sorted.lean",
+    "file": "formal/TaggedUrn/Sorted.lean",
     "start": [
       20,
       1
@@ -1681,7 +1681,7 @@
   },
   {
     "lean_name": "TaggedUrn.mergeTags",
-    "file": "../formal/TaggedUrn/Sorted.lean",
+    "file": "formal/TaggedUrn/Sorted.lean",
     "start": [
       81,
       1
@@ -1693,7 +1693,7 @@
   },
   {
     "lean_name": "TaggedUrn.tagMatch",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       44,
       1
@@ -1705,7 +1705,7 @@
   },
   {
     "lean_name": "TaggedUrn.tagScore",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       106,
       1
@@ -1717,7 +1717,7 @@
   },
   {
     "lean_name": "TaggedUrn.urnScore",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": [
       115,
       1
@@ -1933,25 +1933,25 @@
   },
   {
     "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.allows.match_1.splitter",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
     "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.norm.match_1.splitter",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
     "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.val.match_1.splitter",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
     "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.fresh",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": [
       65,
       1
@@ -1963,25 +1963,25 @@
   },
   {
     "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.tagMatch.match_1.splitter",
-    "file": "../formal/TaggedUrn/Constraint.lean",
+    "file": "formal/TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
     "lean_name": "_private.TaggedUrn.Sorted.0.TaggedUrn.mergeTags.match_1.splitter",
-    "file": "../formal/TaggedUrn/Sorted.lean",
+    "file": "formal/TaggedUrn/Sorted.lean",
     "start": null,
     "end": null
   },
   {
     "lean_name": "_private.TaggedUrn.Urn.0.TaggedUrn.Constraint.norm.match_1.splitter",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": null,
     "end": null
   },
   {
     "lean_name": "_private.TaggedUrn.Urn.0.TaggedUrn.tagScore.match_1.splitter",
-    "file": "../formal/TaggedUrn/Urn.lean",
+    "file": "formal/TaggedUrn/Urn.lean",
     "start": null,
     "end": null
   },

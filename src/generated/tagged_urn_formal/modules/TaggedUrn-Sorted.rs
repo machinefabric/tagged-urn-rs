@@ -83,7 +83,7 @@ pub(crate) unsafe extern "C" fn l_List_dall_d__at___dTaggedUrn_dmergeTags_dspec_
 }
 
 // Lean: TaggedUrn.instDecidableSorted
-// Source: ../formal/TaggedUrn/Sorted.lean:29:1
+// Source: formal/TaggedUrn/Sorted.lean:29:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableSorted(x_1: Obj) -> u8 {
     let x_2: Obj = l_TaggedUrn_dinstDecidableSorted_d__closed__0();
     let x_3: u8 = l_List_dinstDecidablePairwise_d__redArg(x_2, x_1);
@@ -92,7 +92,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableSorted(x_1: Obj) -> u8
 
 // Lean: TaggedUrn.instDecidableSorted._boxed
 // Compiled from: TaggedUrn.instDecidableSorted
-// Source: ../formal/TaggedUrn/Sorted.lean:29:1
+// Source: formal/TaggedUrn/Sorted.lean:29:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableSorted_d__boxed(x_1: Obj) -> Obj {
     let x_2: u8 = l_TaggedUrn_dinstDecidableSorted(x_1);
     let x_3: Obj = rt::lean_box(x_2 as usize);
@@ -101,7 +101,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableSorted_d__boxed(x_1: O
 
 // Lean: TaggedUrn.instDecidableSorted._closed_0
 // Compiled from: TaggedUrn.instDecidableSorted
-// Source: ../formal/TaggedUrn/Sorted.lean:29:1
+// Source: formal/TaggedUrn/Sorted.lean:29:1
 static C_l_TaggedUrn_dinstDecidableSorted_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstDecidableSorted_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_alloc_closure(l_TaggedUrn_dinstDecidableSorted_d__lam__0_d__boxed as *const (), 2, 0);
@@ -114,7 +114,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstDecidableSorted_d__closed__0() -> Obj {
 
 // Lean: TaggedUrn.instDecidableSorted._lam_0
 // Compiled from: TaggedUrn.instDecidableSorted
-// Source: ../formal/TaggedUrn/Sorted.lean:29:1
+// Source: formal/TaggedUrn/Sorted.lean:29:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableSorted_d__lam__0(x_1: Obj, x_2: Obj) -> u8 {
     let x_3: Obj = rt::lean_ctor_get(x_1, 0);
     let x_4: Obj = rt::lean_ctor_get(x_2, 0);
@@ -124,7 +124,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableSorted_d__lam__0(x_1: 
 
 // Lean: TaggedUrn.instDecidableSorted._lam_0._boxed
 // Compiled from: TaggedUrn.instDecidableSorted
-// Source: ../formal/TaggedUrn/Sorted.lean:29:1
+// Source: formal/TaggedUrn/Sorted.lean:29:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableSorted_d__lam__0_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dinstDecidableSorted_d__lam__0(x_1, x_2);
     rt::lean_dec_ref(x_2);
@@ -134,7 +134,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableSorted_d__lam__0_d__bo
 }
 
 // Lean: TaggedUrn.lookup
-// Source: ../formal/TaggedUrn/Sorted.lean:20:1
+// Source: formal/TaggedUrn/Sorted.lean:20:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dlookup(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_List_dfind_x3f__d__at___dTaggedUrn_dUrn_dtag_dspec__0(x_2, x_1);
     match rt::lean_obj_tag(x_3) {
@@ -156,7 +156,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dlookup(x_1: Obj, x_2: Obj) -> Obj {
 
 // Lean: TaggedUrn.lookup._boxed
 // Compiled from: TaggedUrn.lookup
-// Source: ../formal/TaggedUrn/Sorted.lean:20:1
+// Source: formal/TaggedUrn/Sorted.lean:20:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dlookup_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dlookup(x_1, x_2);
     rt::lean_dec_ref(x_2);
@@ -165,7 +165,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dlookup_d__boxed(x_1: Obj, x_2: Obj)
 }
 
 // Lean: TaggedUrn.mergeTags
-// Source: ../formal/TaggedUrn/Sorted.lean:81:1
+// Source: formal/TaggedUrn/Sorted.lean:81:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dmergeTags(mut x_1: Obj, mut x_2: Obj) -> u8 {
     'tail: loop {
         match rt::lean_obj_tag(x_1) {
@@ -252,7 +252,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dmergeTags(mut x_1: Obj, mut x_2: Ob
 
 // Lean: TaggedUrn.mergeTags._boxed
 // Compiled from: TaggedUrn.mergeTags
-// Source: ../formal/TaggedUrn/Sorted.lean:81:1
+// Source: formal/TaggedUrn/Sorted.lean:81:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dmergeTags_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dmergeTags(x_1, x_2);
     rt::lean_dec(x_2);
@@ -262,7 +262,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dmergeTags_d__boxed(x_1: Obj, x_2: O
 }
 
 // Lean: _private.TaggedUrn.Sorted.0.TaggedUrn.mergeTags.match_1.splitter
-// Source: ../formal/TaggedUrn/Sorted.lean
+// Source: formal/TaggedUrn/Sorted.lean
 pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dSorted_d0_dTaggedUrn_dmergeTags_dmatch__1_dsplitter(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj, x_6: Obj) -> Obj {
     match rt::lean_obj_tag(x_2) {
         0 => {
@@ -311,7 +311,7 @@ pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dSorted_d0_dTaggedUrn_dme
 
 // Lean: _private.TaggedUrn.Sorted.0.TaggedUrn.mergeTags.match_1.splitter._redArg
 // Compiled from: _private.TaggedUrn.Sorted.0.TaggedUrn.mergeTags.match_1.splitter
-// Source: ../formal/TaggedUrn/Sorted.lean
+// Source: formal/TaggedUrn/Sorted.lean
 pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dSorted_d0_dTaggedUrn_dmergeTags_dmatch__1_dsplitter_d__redArg(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
