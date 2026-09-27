@@ -1,8 +1,14 @@
 [dependencies]
-# The runtime the code generated from ../formal runs on (see lungo.toml).
-lungo = "=0.27.1270"
 regex = "1.0"
 serde_json = "1.0"
+
+# The runtime the code generated from ../formal runs on (see ../lungo.toml). The
+# generated code is lungo's of the same version, so the runtime is pinned exactly.
+[dependencies.lungo]
+# MFR_LOCAL_LIBS was set when this was rendered: the working copy in this
+# workspace rather than a published release. Re-render without it before
+# committing or releasing — a path resolves on this machine only.
+path = "../../lungo/crates/lungo"
 
 [dependencies.serde]
 features = ["derive"]
@@ -18,4 +24,4 @@ edition = "2021"
 rust-version = "1.89"
 license = "MIT"
 name = "tagged-urn"
-version = "1.51.204"
+version = "1.52.0"
