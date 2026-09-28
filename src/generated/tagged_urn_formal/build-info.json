@@ -1,10 +1,10 @@
 {
-  "build_key": "2e03e7526937b0f8af8945542e90ede91fe50fe328ad34f4ee96f11b33df623f",
+  "build_key": "f7bbfb9ec531ce1dd00074433b42951c5e7f7205a6282d386b35ebe2d9a11750",
   "lean_version": "4.34.1",
   "lean_githash": "5045d0056413266e57c625dcd7c365b10e377c52",
   "bir_version": 3,
   "adapter_version": 1,
-  "lungo_version": "1.74.3213",
+  "lungo_version": "1.75.3221",
   "runtime_abi": 1,
   "worker_identity": "0587064dd2f5b65f8d77fefae9b7a41737221883cc74030f7cd7469534700252",
   "input_digests": {
@@ -20,7 +20,7 @@
   "link_directives": [],
   "output_digests": {
     "externs.json": "c896d16c961cb3aae90c0ba27c399ed35f2d4776b14d54057ebd79eface7d25b",
-    "manifest.json": "18d33a6b6b312688b8c8560bd9742af94c0375173af668a07e931dc9371f7777",
+    "manifest.json": "2985e42eeba76eb7dfce58a51f8218dbe0feb484de9a4b96f84994189adae655",
     "modules/Init-Core.rs": "aedd8c212ce64038c340c32491a83469ae7d010415d55d4628c37f0efdac5c3f",
     "modules/Init-Data-ByteArray-Basic.rs": "069f7e2a4d36a9b61b5767337e69d9d2c4b0f6d711013b8ad56d065dfc4b29da",
     "modules/Init-Data-ByteArray-Extra.rs": "807f961a62ae3606e1332b588f94813d92e2cbbfc9802fc05d4906b50d881f2a",
@@ -49,6 +49,6 @@
     "modules/TaggedUrn-Urn.rs": "92e755204a9a01f36f7997ca8bf04d17ea000ec892627ab8330d401057ba78d6",
     "names.json": "936b6f2a709bda9c7b470457c522efa5c09152b1c80ad35e4b66aafaf6ea749f",
     "sources.json": "5423f45f0b6b383da1656813826cef62a3b4982538f68764a6e3632578f4def5",
-    "tagged_urn_formal.rs": "c1e714ec4ed0259ad95e88cb170791d7cde756b973a3c33d54361474a28b5d5f"
+    "tagged_urn_formal.rs": "b484bd75a0ec4744c90686a0cb4d22b50979d166556f20582b229473e7432998"
   }
 }
