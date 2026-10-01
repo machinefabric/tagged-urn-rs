@@ -5,7 +5,9 @@
 //! stored-value encoding, and how a `TaggedUrn` hands itself to the generated
 //! code. Every row of `../formal/conformance.json` (written by the model,
 //! `lake exe conformance`) is parsed by this crate's parser and must get the
-//! model's verdict. The same table runs in every mirror.
+//! model's verdict — for the guarantee (`conforms_to`), the possibility
+//! (`meets`), and the complete reading of the instance (`satisfies`,
+//! `may_satisfy`). The same table runs in every mirror.
 
 use tagged_urn::TaggedUrn;
 
@@ -28,6 +30,15 @@ fn test599_every_row_of_the_model_s_table() {
         }
         if a.is_equivalent(&b).unwrap() != r["equivalent"].as_bool().unwrap() {
             wrong.push(format!("{a} ≡ {b}: model {}", r["equivalent"]));
+        }
+        if a.meets(&b).unwrap() != r["meets"].as_bool().unwrap() {
+            wrong.push(format!("{a} meets {b}: model {}", r["meets"]));
+        }
+        if a.satisfies(&b).unwrap() != r["satisfies"].as_bool().unwrap() {
+            wrong.push(format!("{a} satisfies {b}: model {}", r["satisfies"]));
+        }
+        if a.may_satisfy(&b).unwrap() != r["may_satisfy"].as_bool().unwrap() {
+            wrong.push(format!("{a} may satisfy {b}: model {}", r["may_satisfy"]));
         }
     }
     let scores = table["scores"].as_array().unwrap();

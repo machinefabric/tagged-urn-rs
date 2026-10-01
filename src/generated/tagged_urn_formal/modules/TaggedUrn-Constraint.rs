@@ -15,6 +15,30 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dabsent_delim_d__redArg(
     return x_3;
 }
 
+// Lean: TaggedUrn.Constraint.closed
+// Source: formal/TaggedUrn/Constraint.lean:226:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dclosed(x_1: Obj) -> Obj {
+    match rt::lean_obj_tag(x_1) {
+        0 => {
+            let x_2: Obj = rt::lean_box(6);
+            return x_2;
+        }
+        _ => {
+            rt::lean_inc(x_1);
+            return x_1;
+        }
+    }
+}
+
+// Lean: TaggedUrn.Constraint.closed._boxed
+// Compiled from: TaggedUrn.Constraint.closed
+// Source: formal/TaggedUrn/Constraint.lean:226:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dclosed_d__boxed(x_1: Obj) -> Obj {
+    let x_2: Obj = l_TaggedUrn_dConstraint_dclosed(x_1);
+    rt::lean_dec(x_1);
+    return x_2;
+}
+
 // Lean: TaggedUrn.Constraint.ctorElim
 // Source: formal/TaggedUrn/Constraint.lean:21:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dctorElim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj) -> Obj {
@@ -268,6 +292,124 @@ unsafe fn l_TaggedUrn_dConstraint_dval_d__closed__0__init() -> Obj {
 #[inline]
 pub(crate) unsafe fn l_TaggedUrn_dConstraint_dval_d__closed__0() -> Obj {
     C_l_TaggedUrn_dConstraint_dval_d__closed__0.get(l_TaggedUrn_dConstraint_dval_d__closed__0__init)
+}
+
+// Lean: TaggedUrn.Constraint.witness
+// Source: formal/TaggedUrn/Constraint.lean:145:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness(x_1: Obj) -> Obj {
+    match rt::lean_obj_tag(x_1) {
+        2 => {
+            rt::lean_dec_ref(x_1);
+            let x_2: Obj = rt::lean_box(0);
+            return x_2;
+        }
+        3 => {
+            let x_3: Obj = l_TaggedUrn_dConstraint_dwitness_d__closed__0();
+            return x_3;
+        }
+        4 => {
+            let x_4: Obj = rt::lean_ctor_get(x_1, 0);
+            let mut x_6: Obj;
+            let mut x_7: u8;
+            'b5: {
+                let x_12: u8 = (!rt::lean_is_exclusive(x_1)) as u8;
+                match x_12 {
+                    0 => {
+                        x_6 = x_1;
+                        x_7 = x_12;
+                        break 'b5;
+                    }
+                    _ => {
+                        rt::lean_inc(x_4);
+                        rt::lean_dec(x_1);
+                        x_6 = rt::lean_box(0);
+                        x_7 = x_12;
+                        break 'b5;
+                    }
+                }
+            }
+            rt::lean_inc_ref(x_4);
+            let x_8: Obj = l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dfresh(x_4, x_4);
+            rt::lean_dec_ref(x_4);
+            let mut x_10: Obj;
+            'b9: {
+                match x_7 {
+                    0 => {
+                        rt::lean_ctor_set_tag(x_6, 1);
+                        rt::lean_ctor_set(x_6, 0, x_8);
+                        x_10 = x_6;
+                        break 'b9;
+                    }
+                    _ => {
+                        let x_11: Obj = rt::lean_alloc_ctor(1, 1, 0);
+                        rt::lean_ctor_set(x_11, 0, x_8);
+                        x_10 = x_11;
+                        break 'b9;
+                    }
+                }
+            }
+            return x_10;
+        }
+        5 => {
+            let x_13: Obj = rt::lean_ctor_get(x_1, 0);
+            let mut x_15: Obj;
+            let mut x_16: u8;
+            'b14: {
+                let x_20: u8 = (!rt::lean_is_exclusive(x_1)) as u8;
+                match x_20 {
+                    0 => {
+                        x_15 = x_1;
+                        x_16 = x_20;
+                        break 'b14;
+                    }
+                    _ => {
+                        rt::lean_inc(x_13);
+                        rt::lean_dec(x_1);
+                        x_15 = rt::lean_box(0);
+                        x_16 = x_20;
+                        break 'b14;
+                    }
+                }
+            }
+            let mut x_18: Obj;
+            'b17: {
+                match x_16 {
+                    0 => {
+                        rt::lean_ctor_set_tag(x_15, 1);
+                        x_18 = x_15;
+                        break 'b17;
+                    }
+                    _ => {
+                        let x_19: Obj = rt::lean_alloc_ctor(1, 1, 0);
+                        rt::lean_ctor_set(x_19, 0, x_13);
+                        x_18 = x_19;
+                        break 'b17;
+                    }
+                }
+            }
+            return x_18;
+        }
+        _ => {
+            rt::lean_dec(x_1);
+            let x_21: Obj = rt::lean_box(0);
+            return x_21;
+        }
+    }
+}
+
+// Lean: TaggedUrn.Constraint.witness._closed_0
+// Compiled from: TaggedUrn.Constraint.witness
+// Source: formal/TaggedUrn/Constraint.lean:145:1
+static C_l_TaggedUrn_dConstraint_dwitness_d__closed__0: rt::LazyObj = rt::LazyObj::new();
+unsafe fn l_TaggedUrn_dConstraint_dwitness_d__closed__0__init() -> Obj {
+    let x_1: Obj = l_TaggedUrn_dConstraint_dval_d__closed__0();
+    let x_2: Obj = rt::lean_alloc_ctor(1, 1, 0);
+    rt::lean_ctor_set(x_2, 0, x_1);
+    return x_2;
+}
+#[inline]
+pub(crate) unsafe fn l_TaggedUrn_dConstraint_dwitness_d__closed__0() -> Obj {
+    C_l_TaggedUrn_dConstraint_dwitness_d__closed__0.get(l_TaggedUrn_dConstraint_dwitness_d__closed__0__init)
 }
 
 // Lean: TaggedUrn.KeyState.ctorElim
@@ -1522,6 +1664,372 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__4() -> Obj {
     C_l_TaggedUrn_dinstReprKeyState_drepr_d__closed__4.get(l_TaggedUrn_dinstReprKeyState_drepr_d__closed__4__init)
 }
 
+// Lean: TaggedUrn.meetState
+// Source: formal/TaggedUrn/Constraint.lean:167:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dmeetState(x_1: Obj, x_2: Obj) -> Obj {
+    let mut x_4: Obj;
+    let mut x_5: Obj;
+    'b3: {
+        match rt::lean_obj_tag(x_1) {
+            5 => {
+                rt::lean_dec(x_2);
+                let x_10: Obj = rt::lean_ctor_get(x_1, 0);
+                let mut x_12: Obj;
+                let mut x_13: u8;
+                'b11: {
+                    let x_17: u8 = (!rt::lean_is_exclusive(x_1)) as u8;
+                    match x_17 {
+                        0 => {
+                            x_12 = x_1;
+                            x_13 = x_17;
+                            break 'b11;
+                        }
+                        _ => {
+                            rt::lean_inc(x_10);
+                            rt::lean_dec(x_1);
+                            x_12 = rt::lean_box(0);
+                            x_13 = x_17;
+                            break 'b11;
+                        }
+                    }
+                }
+                let mut x_15: Obj;
+                'b14: {
+                    match x_13 {
+                        0 => {
+                            rt::lean_ctor_set_tag(x_12, 1);
+                            x_15 = x_12;
+                            break 'b14;
+                        }
+                        _ => {
+                            let x_16: Obj = rt::lean_alloc_ctor(1, 1, 0);
+                            rt::lean_ctor_set(x_16, 0, x_10);
+                            x_15 = x_16;
+                            break 'b14;
+                        }
+                    }
+                }
+                return x_15;
+            }
+            6 => {
+                match rt::lean_obj_tag(x_2) {
+                    5 => {
+                        let x_18: Obj = rt::lean_ctor_get(x_2, 0);
+                        let mut x_20: Obj;
+                        let mut x_21: u8;
+                        'b19: {
+                            let x_25: u8 = (!rt::lean_is_exclusive(x_2)) as u8;
+                            match x_25 {
+                                0 => {
+                                    x_20 = x_2;
+                                    x_21 = x_25;
+                                    break 'b19;
+                                }
+                                _ => {
+                                    rt::lean_inc(x_18);
+                                    rt::lean_dec(x_2);
+                                    x_20 = rt::lean_box(0);
+                                    x_21 = x_25;
+                                    break 'b19;
+                                }
+                            }
+                        }
+                        let mut x_23: Obj;
+                        'b22: {
+                            match x_21 {
+                                0 => {
+                                    rt::lean_ctor_set_tag(x_20, 1);
+                                    x_23 = x_20;
+                                    break 'b22;
+                                }
+                                _ => {
+                                    let x_24: Obj = rt::lean_alloc_ctor(1, 1, 0);
+                                    rt::lean_ctor_set(x_24, 0, x_18);
+                                    x_23 = x_24;
+                                    break 'b22;
+                                }
+                            }
+                        }
+                        return x_23;
+                    }
+                    6 => {
+                        let x_26: Obj = rt::lean_box(0);
+                        return x_26;
+                    }
+                    _ => {
+                        rt::lean_dec(x_2);
+                        let x_27: Obj = rt::lean_box(0);
+                        return x_27;
+                    }
+                }
+            }
+            0 => {
+                match rt::lean_obj_tag(x_2) {
+                    5 => {
+                        let x_28: Obj = rt::lean_ctor_get(x_2, 0);
+                        let mut x_30: Obj;
+                        let mut x_31: u8;
+                        'b29: {
+                            let x_35: u8 = (!rt::lean_is_exclusive(x_2)) as u8;
+                            match x_35 {
+                                0 => {
+                                    x_30 = x_2;
+                                    x_31 = x_35;
+                                    break 'b29;
+                                }
+                                _ => {
+                                    rt::lean_inc(x_28);
+                                    rt::lean_dec(x_2);
+                                    x_30 = rt::lean_box(0);
+                                    x_31 = x_35;
+                                    break 'b29;
+                                }
+                            }
+                        }
+                        let mut x_33: Obj;
+                        'b32: {
+                            match x_31 {
+                                0 => {
+                                    rt::lean_ctor_set_tag(x_30, 1);
+                                    x_33 = x_30;
+                                    break 'b32;
+                                }
+                                _ => {
+                                    let x_34: Obj = rt::lean_alloc_ctor(1, 1, 0);
+                                    rt::lean_ctor_set(x_34, 0, x_28);
+                                    x_33 = x_34;
+                                    break 'b32;
+                                }
+                            }
+                        }
+                        return x_33;
+                    }
+                    6 => {
+                        let x_36: Obj = rt::lean_box(0);
+                        return x_36;
+                    }
+                    0 => {
+                        let x_37: Obj = rt::lean_box(0);
+                        return x_37;
+                    }
+                    1 => {
+                        let x_38: Obj = rt::lean_box(0);
+                        return x_38;
+                    }
+                    2 => {
+                        rt::lean_dec_ref(x_2);
+                        let x_39: Obj = rt::lean_box(0);
+                        return x_39;
+                    }
+                    _ => {
+                        x_4 = x_1;
+                        x_5 = x_2;
+                        break 'b3;
+                    }
+                }
+            }
+            1 => {
+                match rt::lean_obj_tag(x_2) {
+                    5 => {
+                        let x_40: Obj = rt::lean_ctor_get(x_2, 0);
+                        let mut x_42: Obj;
+                        let mut x_43: u8;
+                        'b41: {
+                            let x_47: u8 = (!rt::lean_is_exclusive(x_2)) as u8;
+                            match x_47 {
+                                0 => {
+                                    x_42 = x_2;
+                                    x_43 = x_47;
+                                    break 'b41;
+                                }
+                                _ => {
+                                    rt::lean_inc(x_40);
+                                    rt::lean_dec(x_2);
+                                    x_42 = rt::lean_box(0);
+                                    x_43 = x_47;
+                                    break 'b41;
+                                }
+                            }
+                        }
+                        let mut x_45: Obj;
+                        'b44: {
+                            match x_43 {
+                                0 => {
+                                    rt::lean_ctor_set_tag(x_42, 1);
+                                    x_45 = x_42;
+                                    break 'b44;
+                                }
+                                _ => {
+                                    let x_46: Obj = rt::lean_alloc_ctor(1, 1, 0);
+                                    rt::lean_ctor_set(x_46, 0, x_40);
+                                    x_45 = x_46;
+                                    break 'b44;
+                                }
+                            }
+                        }
+                        return x_45;
+                    }
+                    6 => {
+                        let x_48: Obj = rt::lean_box(0);
+                        return x_48;
+                    }
+                    0 => {
+                        let x_49: Obj = rt::lean_box(0);
+                        return x_49;
+                    }
+                    1 => {
+                        let x_50: Obj = rt::lean_box(0);
+                        return x_50;
+                    }
+                    2 => {
+                        rt::lean_dec_ref(x_2);
+                        let x_51: Obj = rt::lean_box(0);
+                        return x_51;
+                    }
+                    _ => {
+                        x_4 = x_1;
+                        x_5 = x_2;
+                        break 'b3;
+                    }
+                }
+            }
+            2 => {
+                match rt::lean_obj_tag(x_2) {
+                    5 => {
+                        rt::lean_dec_ref(x_1);
+                        let x_52: Obj = rt::lean_ctor_get(x_2, 0);
+                        let mut x_54: Obj;
+                        let mut x_55: u8;
+                        'b53: {
+                            let x_59: u8 = (!rt::lean_is_exclusive(x_2)) as u8;
+                            match x_59 {
+                                0 => {
+                                    x_54 = x_2;
+                                    x_55 = x_59;
+                                    break 'b53;
+                                }
+                                _ => {
+                                    rt::lean_inc(x_52);
+                                    rt::lean_dec(x_2);
+                                    x_54 = rt::lean_box(0);
+                                    x_55 = x_59;
+                                    break 'b53;
+                                }
+                            }
+                        }
+                        let mut x_57: Obj;
+                        'b56: {
+                            match x_55 {
+                                0 => {
+                                    rt::lean_ctor_set_tag(x_54, 1);
+                                    x_57 = x_54;
+                                    break 'b56;
+                                }
+                                _ => {
+                                    let x_58: Obj = rt::lean_alloc_ctor(1, 1, 0);
+                                    rt::lean_ctor_set(x_58, 0, x_52);
+                                    x_57 = x_58;
+                                    break 'b56;
+                                }
+                            }
+                        }
+                        return x_57;
+                    }
+                    6 => {
+                        rt::lean_dec_ref(x_1);
+                        let x_60: Obj = rt::lean_box(0);
+                        return x_60;
+                    }
+                    0 => {
+                        rt::lean_dec_ref(x_1);
+                        let x_61: Obj = rt::lean_box(0);
+                        return x_61;
+                    }
+                    1 => {
+                        rt::lean_dec_ref(x_1);
+                        let x_62: Obj = rt::lean_box(0);
+                        return x_62;
+                    }
+                    2 => {
+                        rt::lean_dec_ref(x_2);
+                        rt::lean_dec_ref(x_1);
+                        let x_63: Obj = rt::lean_box(0);
+                        return x_63;
+                    }
+                    _ => {
+                        x_4 = x_1;
+                        x_5 = x_2;
+                        break 'b3;
+                    }
+                }
+            }
+            _ => {
+                match rt::lean_obj_tag(x_2) {
+                    5 => {
+                        rt::lean_dec(x_1);
+                        let x_64: Obj = rt::lean_ctor_get(x_2, 0);
+                        let mut x_66: Obj;
+                        let mut x_67: u8;
+                        'b65: {
+                            let x_71: u8 = (!rt::lean_is_exclusive(x_2)) as u8;
+                            match x_71 {
+                                0 => {
+                                    x_66 = x_2;
+                                    x_67 = x_71;
+                                    break 'b65;
+                                }
+                                _ => {
+                                    rt::lean_inc(x_64);
+                                    rt::lean_dec(x_2);
+                                    x_66 = rt::lean_box(0);
+                                    x_67 = x_71;
+                                    break 'b65;
+                                }
+                            }
+                        }
+                        let mut x_69: Obj;
+                        'b68: {
+                            match x_67 {
+                                0 => {
+                                    rt::lean_ctor_set_tag(x_66, 1);
+                                    x_69 = x_66;
+                                    break 'b68;
+                                }
+                                _ => {
+                                    let x_70: Obj = rt::lean_alloc_ctor(1, 1, 0);
+                                    rt::lean_ctor_set(x_70, 0, x_64);
+                                    x_69 = x_70;
+                                    break 'b68;
+                                }
+                            }
+                        }
+                        return x_69;
+                    }
+                    6 => {
+                        rt::lean_dec(x_1);
+                        let x_72: Obj = rt::lean_box(0);
+                        return x_72;
+                    }
+                    _ => {
+                        x_4 = x_1;
+                        x_5 = x_2;
+                        break 'b3;
+                    }
+                }
+            }
+        }
+    }
+    let x_6: Obj = l_TaggedUrn_dConstraint_dval(x_4);
+    rt::lean_dec(x_4);
+    let x_7: Obj = l_TaggedUrn_dConstraint_dval(x_5);
+    rt::lean_dec(x_5);
+    let x_8: Obj = l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dfresh(x_6, x_7);
+    rt::lean_dec_ref(x_7);
+    let x_9: Obj = rt::lean_alloc_ctor(1, 1, 0);
+    rt::lean_ctor_set(x_9, 0, x_8);
+    return x_9;
+}
+
 // Lean: TaggedUrn.tagMatch
 // Source: formal/TaggedUrn/Constraint.lean:44:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatch(x_1: Obj, x_2: Obj) -> u8 {
@@ -1651,6 +2159,195 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatch(x_1: Obj, x_2: Obj) -> u8 
 // Source: formal/TaggedUrn/Constraint.lean:44:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatch_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dtagMatch(x_1, x_2);
+    rt::lean_dec(x_2);
+    rt::lean_dec(x_1);
+    let x_4: Obj = rt::lean_box(x_3 as usize);
+    return x_4;
+}
+
+// Lean: TaggedUrn.tagMeets
+// Source: formal/TaggedUrn/Constraint.lean:156:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMeets(x_1: Obj, x_2: Obj) -> u8 {
+    let mut x_4: Obj;
+    let mut x_5: Obj;
+    'b3: {
+        match rt::lean_obj_tag(x_1) {
+            0 => {
+                let x_9: u8 = 1u8;
+                return x_9;
+            }
+            1 => {
+                let x_10: u8 = 1u8;
+                return x_10;
+            }
+            6 => {
+                match rt::lean_obj_tag(x_2) {
+                    0 => {
+                        let x_11: u8 = 1u8;
+                        return x_11;
+                    }
+                    1 => {
+                        let x_12: u8 = 1u8;
+                        return x_12;
+                    }
+                    6 => {
+                        let x_13: u8 = 1u8;
+                        return x_13;
+                    }
+                    2 => {
+                        let x_14: u8 = 1u8;
+                        return x_14;
+                    }
+                    _ => {
+                        let x_15: u8 = 0u8;
+                        return x_15;
+                    }
+                }
+            }
+            2 => {
+                match rt::lean_obj_tag(x_2) {
+                    0 => {
+                        let x_16: u8 = 1u8;
+                        return x_16;
+                    }
+                    1 => {
+                        let x_17: u8 = 1u8;
+                        return x_17;
+                    }
+                    6 => {
+                        let x_18: u8 = 1u8;
+                        return x_18;
+                    }
+                    5 => {
+                        let x_19: Obj = rt::lean_ctor_get(x_1, 0);
+                        let x_20: Obj = rt::lean_ctor_get(x_2, 0);
+                        x_4 = x_19;
+                        x_5 = x_20;
+                        break 'b3;
+                    }
+                    _ => {
+                        let x_21: u8 = 1u8;
+                        return x_21;
+                    }
+                }
+            }
+            5 => {
+                let x_22: Obj = rt::lean_ctor_get(x_1, 0);
+                let mut x_24: Obj;
+                'b23: {
+                    match rt::lean_obj_tag(x_2) {
+                        0 => {
+                            let x_28: u8 = 1u8;
+                            return x_28;
+                        }
+                        1 => {
+                            let x_29: u8 = 1u8;
+                            return x_29;
+                        }
+                        6 => {
+                            let x_30: u8 = 0u8;
+                            return x_30;
+                        }
+                        5 => {
+                            let x_31: Obj = rt::lean_ctor_get(x_2, 0);
+                            let x_32: u8 = l_String_ddecEq(x_22, x_31);
+                            return x_32;
+                        }
+                        4 => {
+                            let x_33: Obj = rt::lean_ctor_get(x_2, 0);
+                            x_24 = x_33;
+                            break 'b23;
+                        }
+                        2 => {
+                            let x_34: Obj = rt::lean_ctor_get(x_2, 0);
+                            x_24 = x_34;
+                            break 'b23;
+                        }
+                        _ => {
+                            let x_35: u8 = 1u8;
+                            return x_35;
+                        }
+                    }
+                }
+                let x_25: u8 = l_String_ddecEq(x_22, x_24);
+                match x_25 {
+                    0 => {
+                        let x_26: u8 = 1u8;
+                        return x_26;
+                    }
+                    _ => {
+                        let x_27: u8 = 0u8;
+                        return x_27;
+                    }
+                }
+            }
+            4 => {
+                match rt::lean_obj_tag(x_2) {
+                    0 => {
+                        let x_36: u8 = 1u8;
+                        return x_36;
+                    }
+                    1 => {
+                        let x_37: u8 = 1u8;
+                        return x_37;
+                    }
+                    6 => {
+                        let x_38: u8 = 0u8;
+                        return x_38;
+                    }
+                    5 => {
+                        let x_39: Obj = rt::lean_ctor_get(x_1, 0);
+                        let x_40: Obj = rt::lean_ctor_get(x_2, 0);
+                        x_4 = x_39;
+                        x_5 = x_40;
+                        break 'b3;
+                    }
+                    _ => {
+                        let x_41: u8 = 1u8;
+                        return x_41;
+                    }
+                }
+            }
+            _ => {
+                match rt::lean_obj_tag(x_2) {
+                    0 => {
+                        let x_42: u8 = 1u8;
+                        return x_42;
+                    }
+                    1 => {
+                        let x_43: u8 = 1u8;
+                        return x_43;
+                    }
+                    6 => {
+                        let x_44: u8 = 0u8;
+                        return x_44;
+                    }
+                    _ => {
+                        let x_45: u8 = 1u8;
+                        return x_45;
+                    }
+                }
+            }
+        }
+    }
+    let x_6: u8 = l_String_ddecEq(x_5, x_4);
+    match x_6 {
+        0 => {
+            let x_7: u8 = 1u8;
+            return x_7;
+        }
+        _ => {
+            let x_8: u8 = 0u8;
+            return x_8;
+        }
+    }
+}
+
+// Lean: TaggedUrn.tagMeets._boxed
+// Compiled from: TaggedUrn.tagMeets
+// Source: formal/TaggedUrn/Constraint.lean:156:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMeets_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
+    let x_3: u8 = l_TaggedUrn_dtagMeets(x_1, x_2);
     rt::lean_dec(x_2);
     rt::lean_dec(x_1);
     let x_4: Obj = rt::lean_box(x_3 as usize);
@@ -1830,6 +2527,43 @@ pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn
     }
 }
 
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.closed.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dConstraint_dclosed_dmatch__1_dsplitter(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj) -> Obj {
+    match rt::lean_obj_tag(x_2) {
+        0 => {
+            rt::lean_dec(x_4);
+            let x_5: Obj = rt::lean_box(0);
+            let x_6: Obj = rt::lean_apply_1(x_3, x_5);
+            return x_6;
+        }
+        _ => {
+            rt::lean_dec(x_3);
+            let x_7: Obj = rt::lean_apply_2(x_4, x_2, rt::lean_box(0));
+            return x_7;
+        }
+    }
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.closed.match_1.splitter._redArg
+// Compiled from: _private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.closed.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dConstraint_dclosed_dmatch__1_dsplitter_d__redArg(x_1: Obj, x_2: Obj, x_3: Obj) -> Obj {
+    match rt::lean_obj_tag(x_1) {
+        0 => {
+            rt::lean_dec(x_3);
+            let x_4: Obj = rt::lean_box(0);
+            let x_5: Obj = rt::lean_apply_1(x_2, x_4);
+            return x_5;
+        }
+        _ => {
+            rt::lean_dec(x_2);
+            let x_6: Obj = rt::lean_apply_2(x_3, x_1, rt::lean_box(0));
+            return x_6;
+        }
+    }
+}
+
 // Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.norm.match_1.splitter
 // Source: formal/TaggedUrn/Constraint.lean
 pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dConstraint_dnorm_dmatch__1_dsplitter(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj) -> Obj {
@@ -1956,6 +2690,187 @@ pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn
     }
 }
 
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.witness.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dConstraint_dwitness_dmatch__1_dsplitter(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj, x_6: Obj, x_7: Obj, x_8: Obj, x_9: Obj) -> Obj {
+    match rt::lean_obj_tag(x_2) {
+        0 => {
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            let x_10: Obj = rt::lean_box(0);
+            let x_11: Obj = rt::lean_apply_1(x_3, x_10);
+            return x_11;
+        }
+        1 => {
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_3);
+            let x_12: Obj = rt::lean_box(0);
+            let x_13: Obj = rt::lean_apply_1(x_4, x_12);
+            return x_13;
+        }
+        2 => {
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            let x_14: Obj = rt::lean_ctor_get(x_2, 0);
+            rt::lean_inc_ref(x_14);
+            rt::lean_dec_ref(x_2);
+            let x_15: Obj = rt::lean_apply_1(x_5, x_14);
+            return x_15;
+        }
+        3 => {
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            let x_16: Obj = rt::lean_box(0);
+            let x_17: Obj = rt::lean_apply_1(x_7, x_16);
+            return x_17;
+        }
+        4 => {
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            let x_18: Obj = rt::lean_ctor_get(x_2, 0);
+            rt::lean_inc_ref(x_18);
+            rt::lean_dec_ref(x_2);
+            let x_19: Obj = rt::lean_apply_1(x_8, x_18);
+            return x_19;
+        }
+        5 => {
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            let x_20: Obj = rt::lean_ctor_get(x_2, 0);
+            rt::lean_inc_ref(x_20);
+            rt::lean_dec_ref(x_2);
+            let x_21: Obj = rt::lean_apply_1(x_9, x_20);
+            return x_21;
+        }
+        _ => {
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            let x_22: Obj = rt::lean_box(0);
+            let x_23: Obj = rt::lean_apply_1(x_6, x_22);
+            return x_23;
+        }
+    }
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.witness.match_1.splitter._redArg
+// Compiled from: _private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.witness.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dConstraint_dwitness_dmatch__1_dsplitter_d__redArg(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj, x_6: Obj, x_7: Obj, x_8: Obj) -> Obj {
+    match rt::lean_obj_tag(x_1) {
+        0 => {
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            let x_9: Obj = rt::lean_box(0);
+            let x_10: Obj = rt::lean_apply_1(x_2, x_9);
+            return x_10;
+        }
+        1 => {
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_2);
+            let x_11: Obj = rt::lean_box(0);
+            let x_12: Obj = rt::lean_apply_1(x_3, x_11);
+            return x_12;
+        }
+        2 => {
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_3);
+            rt::lean_dec(x_2);
+            let x_13: Obj = rt::lean_ctor_get(x_1, 0);
+            rt::lean_inc_ref(x_13);
+            rt::lean_dec_ref(x_1);
+            let x_14: Obj = rt::lean_apply_1(x_4, x_13);
+            return x_14;
+        }
+        3 => {
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            rt::lean_dec(x_2);
+            let x_15: Obj = rt::lean_box(0);
+            let x_16: Obj = rt::lean_apply_1(x_6, x_15);
+            return x_16;
+        }
+        4 => {
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            rt::lean_dec(x_2);
+            let x_17: Obj = rt::lean_ctor_get(x_1, 0);
+            rt::lean_inc_ref(x_17);
+            rt::lean_dec_ref(x_1);
+            let x_18: Obj = rt::lean_apply_1(x_7, x_17);
+            return x_18;
+        }
+        5 => {
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            rt::lean_dec(x_2);
+            let x_19: Obj = rt::lean_ctor_get(x_1, 0);
+            rt::lean_inc_ref(x_19);
+            rt::lean_dec_ref(x_1);
+            let x_20: Obj = rt::lean_apply_1(x_8, x_19);
+            return x_20;
+        }
+        _ => {
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            rt::lean_dec(x_2);
+            let x_21: Obj = rt::lean_box(0);
+            let x_22: Obj = rt::lean_apply_1(x_5, x_21);
+            return x_22;
+        }
+    }
+}
+
 // Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.fresh
 // Source: formal/TaggedUrn/Constraint.lean:65:1
 pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dfresh(x_1: Obj, x_2: Obj) -> Obj {
@@ -1985,6 +2900,684 @@ unsafe fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dfresh_d__closed__0__
 #[inline]
 pub(crate) unsafe fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dfresh_d__closed__0() -> Obj {
     C_l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dfresh_d__closed__0.get(l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dfresh_d__closed__0__init)
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.meetState.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dmeetState_dmatch__1_dsplitter(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj, x_6: Obj, x_7: Obj, x_8: Obj, x_9: Obj, x_10: Obj, x_11: Obj, x_12: Obj, x_13: Obj, x_14: Obj, x_15: Obj, x_16: Obj, x_17: Obj) -> Obj {
+    match rt::lean_obj_tag(x_2) {
+        5 => {
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            let x_18: Obj = rt::lean_ctor_get(x_2, 0);
+            rt::lean_inc_ref(x_18);
+            rt::lean_dec_ref(x_2);
+            let x_19: Obj = rt::lean_apply_2(x_4, x_18, x_3);
+            return x_19;
+        }
+        6 => {
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                5 => {
+                    rt::lean_dec(x_6);
+                    let x_20: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_20);
+                    rt::lean_dec_ref(x_3);
+                    let x_21: Obj = rt::lean_apply_3(x_5, x_2, x_20, rt::lean_box(0));
+                    return x_21;
+                }
+                6 => {
+                    rt::lean_dec(x_5);
+                    let x_22: Obj = rt::lean_apply_2(x_6, x_3, rt::lean_box(0));
+                    return x_22;
+                }
+                _ => {
+                    rt::lean_dec(x_5);
+                    let x_23: Obj = rt::lean_apply_2(x_6, x_3, rt::lean_box(0));
+                    return x_23;
+                }
+            }
+        }
+        0 => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                5 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    let x_24: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_24);
+                    rt::lean_dec_ref(x_3);
+                    let x_25: Obj = rt::lean_apply_3(x_5, x_2, x_24, rt::lean_box(0));
+                    return x_25;
+                }
+                6 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_5);
+                    let x_26: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_26;
+                }
+                0 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_27: Obj = rt::lean_box(0);
+                    let x_28: Obj = rt::lean_apply_1(x_8, x_27);
+                    return x_28;
+                }
+                1 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_29: Obj = rt::lean_box(0);
+                    let x_30: Obj = rt::lean_apply_1(x_9, x_29);
+                    return x_30;
+                }
+                2 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_31: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_31);
+                    rt::lean_dec_ref(x_3);
+                    let x_32: Obj = rt::lean_apply_1(x_10, x_31);
+                    return x_32;
+                }
+                _ => {
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_33: Obj = rt::lean_apply_15(x_17, x_2, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_33;
+                }
+            }
+        }
+        1 => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                5 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_7);
+                    let x_34: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_34);
+                    rt::lean_dec_ref(x_3);
+                    let x_35: Obj = rt::lean_apply_3(x_5, x_2, x_34, rt::lean_box(0));
+                    return x_35;
+                }
+                6 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_5);
+                    let x_36: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_36;
+                }
+                0 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_37: Obj = rt::lean_box(0);
+                    let x_38: Obj = rt::lean_apply_1(x_11, x_37);
+                    return x_38;
+                }
+                1 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_39: Obj = rt::lean_box(0);
+                    let x_40: Obj = rt::lean_apply_1(x_12, x_39);
+                    return x_40;
+                }
+                2 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_41: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_41);
+                    rt::lean_dec_ref(x_3);
+                    let x_42: Obj = rt::lean_apply_1(x_13, x_41);
+                    return x_42;
+                }
+                _ => {
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_43: Obj = rt::lean_apply_15(x_17, x_2, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_43;
+                }
+            }
+        }
+        2 => {
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                5 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_7);
+                    let x_44: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_44);
+                    rt::lean_dec_ref(x_3);
+                    let x_45: Obj = rt::lean_apply_3(x_5, x_2, x_44, rt::lean_box(0));
+                    return x_45;
+                }
+                6 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_5);
+                    let x_46: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_46;
+                }
+                0 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_47: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_47);
+                    rt::lean_dec_ref(x_2);
+                    let x_48: Obj = rt::lean_apply_1(x_14, x_47);
+                    return x_48;
+                }
+                1 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_49: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_49);
+                    rt::lean_dec_ref(x_2);
+                    let x_50: Obj = rt::lean_apply_1(x_15, x_49);
+                    return x_50;
+                }
+                2 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_51: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_51);
+                    rt::lean_dec_ref(x_2);
+                    let x_52: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_52);
+                    rt::lean_dec_ref(x_3);
+                    let x_53: Obj = rt::lean_apply_2(x_16, x_51, x_52);
+                    return x_53;
+                }
+                _ => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_54: Obj = rt::lean_apply_15(x_17, x_2, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_54;
+                }
+            }
+        }
+        _ => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                5 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_7);
+                    let x_55: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_55);
+                    rt::lean_dec_ref(x_3);
+                    let x_56: Obj = rt::lean_apply_3(x_5, x_2, x_55, rt::lean_box(0));
+                    return x_56;
+                }
+                6 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_5);
+                    let x_57: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_57;
+                }
+                _ => {
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_58: Obj = rt::lean_apply_15(x_17, x_2, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_58;
+                }
+            }
+        }
+    }
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.meetState.match_1.splitter._boxed
+// Compiled from: _private.TaggedUrn.Constraint.0.TaggedUrn.meetState.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dmeetState_dmatch__1_dsplitter_d__boxed(args: *mut Obj) -> Obj {
+    let x_1: Obj = *args.add(0);
+    let x_2: Obj = *args.add(1);
+    let x_3: Obj = *args.add(2);
+    let x_4: Obj = *args.add(3);
+    let x_5: Obj = *args.add(4);
+    let x_6: Obj = *args.add(5);
+    let x_7: Obj = *args.add(6);
+    let x_8: Obj = *args.add(7);
+    let x_9: Obj = *args.add(8);
+    let x_10: Obj = *args.add(9);
+    let x_11: Obj = *args.add(10);
+    let x_12: Obj = *args.add(11);
+    let x_13: Obj = *args.add(12);
+    let x_14: Obj = *args.add(13);
+    let x_15: Obj = *args.add(14);
+    let x_16: Obj = *args.add(15);
+    let x_17: Obj = *args.add(16);
+    let x_18: Obj = l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dmeetState_dmatch__1_dsplitter(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, x_9, x_10, x_11, x_12, x_13, x_14, x_15, x_16, x_17);
+    return x_18;
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.meetState.match_1.splitter._redArg
+// Compiled from: _private.TaggedUrn.Constraint.0.TaggedUrn.meetState.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dmeetState_dmatch__1_dsplitter_d__redArg(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj, x_6: Obj, x_7: Obj, x_8: Obj, x_9: Obj, x_10: Obj, x_11: Obj, x_12: Obj, x_13: Obj, x_14: Obj, x_15: Obj, x_16: Obj) -> Obj {
+    match rt::lean_obj_tag(x_1) {
+        5 => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            let x_17: Obj = rt::lean_ctor_get(x_1, 0);
+            rt::lean_inc_ref(x_17);
+            rt::lean_dec_ref(x_1);
+            let x_18: Obj = rt::lean_apply_2(x_3, x_17, x_2);
+            return x_18;
+        }
+        6 => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                5 => {
+                    rt::lean_dec(x_5);
+                    let x_19: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_19);
+                    rt::lean_dec_ref(x_2);
+                    let x_20: Obj = rt::lean_apply_3(x_4, x_1, x_19, rt::lean_box(0));
+                    return x_20;
+                }
+                6 => {
+                    rt::lean_dec(x_4);
+                    let x_21: Obj = rt::lean_apply_2(x_5, x_2, rt::lean_box(0));
+                    return x_21;
+                }
+                _ => {
+                    rt::lean_dec(x_4);
+                    let x_22: Obj = rt::lean_apply_2(x_5, x_2, rt::lean_box(0));
+                    return x_22;
+                }
+            }
+        }
+        0 => {
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                5 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_23: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_23);
+                    rt::lean_dec_ref(x_2);
+                    let x_24: Obj = rt::lean_apply_3(x_4, x_1, x_23, rt::lean_box(0));
+                    return x_24;
+                }
+                6 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_4);
+                    let x_25: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_25;
+                }
+                0 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_26: Obj = rt::lean_box(0);
+                    let x_27: Obj = rt::lean_apply_1(x_7, x_26);
+                    return x_27;
+                }
+                1 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_28: Obj = rt::lean_box(0);
+                    let x_29: Obj = rt::lean_apply_1(x_8, x_28);
+                    return x_29;
+                }
+                2 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_30: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_30);
+                    rt::lean_dec_ref(x_2);
+                    let x_31: Obj = rt::lean_apply_1(x_9, x_30);
+                    return x_31;
+                }
+                _ => {
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_32: Obj = rt::lean_apply_15(x_16, x_1, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_32;
+                }
+            }
+        }
+        1 => {
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                5 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_6);
+                    let x_33: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_33);
+                    rt::lean_dec_ref(x_2);
+                    let x_34: Obj = rt::lean_apply_3(x_4, x_1, x_33, rt::lean_box(0));
+                    return x_34;
+                }
+                6 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_4);
+                    let x_35: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_35;
+                }
+                0 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_36: Obj = rt::lean_box(0);
+                    let x_37: Obj = rt::lean_apply_1(x_10, x_36);
+                    return x_37;
+                }
+                1 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_38: Obj = rt::lean_box(0);
+                    let x_39: Obj = rt::lean_apply_1(x_11, x_38);
+                    return x_39;
+                }
+                2 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_40: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_40);
+                    rt::lean_dec_ref(x_2);
+                    let x_41: Obj = rt::lean_apply_1(x_12, x_40);
+                    return x_41;
+                }
+                _ => {
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_42: Obj = rt::lean_apply_15(x_16, x_1, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_42;
+                }
+            }
+        }
+        2 => {
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                5 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_6);
+                    let x_43: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_43);
+                    rt::lean_dec_ref(x_2);
+                    let x_44: Obj = rt::lean_apply_3(x_4, x_1, x_43, rt::lean_box(0));
+                    return x_44;
+                }
+                6 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_4);
+                    let x_45: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_45;
+                }
+                0 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_46: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_46);
+                    rt::lean_dec_ref(x_1);
+                    let x_47: Obj = rt::lean_apply_1(x_13, x_46);
+                    return x_47;
+                }
+                1 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_48: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_48);
+                    rt::lean_dec_ref(x_1);
+                    let x_49: Obj = rt::lean_apply_1(x_14, x_48);
+                    return x_49;
+                }
+                2 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_50: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_50);
+                    rt::lean_dec_ref(x_1);
+                    let x_51: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_51);
+                    rt::lean_dec_ref(x_2);
+                    let x_52: Obj = rt::lean_apply_2(x_15, x_50, x_51);
+                    return x_52;
+                }
+                _ => {
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_53: Obj = rt::lean_apply_15(x_16, x_1, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_53;
+                }
+            }
+        }
+        _ => {
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                5 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_6);
+                    let x_54: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_54);
+                    rt::lean_dec_ref(x_2);
+                    let x_55: Obj = rt::lean_apply_3(x_4, x_1, x_54, rt::lean_box(0));
+                    return x_55;
+                }
+                6 => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_4);
+                    let x_56: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_56;
+                }
+                _ => {
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_4);
+                    let x_57: Obj = rt::lean_apply_15(x_16, x_1, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_57;
+                }
+            }
+        }
+    }
 }
 
 // Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.tagMatch.match_1.splitter
@@ -3159,5 +4752,791 @@ pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn
     let x_22: Obj = *args.add(21);
     let x_23: Obj = l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dtagMatch_dmatch__1_dsplitter_d__redArg(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, x_9, x_10, x_11, x_12, x_13, x_14, x_15, x_16, x_17, x_18, x_19, x_20, x_21, x_22);
     return x_23;
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.tagMeets.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dtagMeets_dmatch__1_dsplitter(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj, x_6: Obj, x_7: Obj, x_8: Obj, x_9: Obj, x_10: Obj, x_11: Obj, x_12: Obj, x_13: Obj, x_14: Obj, x_15: Obj, x_16: Obj, x_17: Obj, x_18: Obj) -> Obj {
+    match rt::lean_obj_tag(x_2) {
+        0 => {
+            rt::lean_dec(x_18);
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            let x_19: Obj = rt::lean_apply_1(x_4, x_3);
+            return x_19;
+        }
+        1 => {
+            rt::lean_dec(x_18);
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_4);
+            let x_20: Obj = rt::lean_apply_1(x_5, x_3);
+            return x_20;
+        }
+        6 => {
+            rt::lean_dec(x_18);
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                0 => {
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    let x_21: Obj = rt::lean_apply_3(x_6, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_21;
+                }
+                1 => {
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_6);
+                    let x_22: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_22;
+                }
+                6 => {
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_23: Obj = rt::lean_box(0);
+                    let x_24: Obj = rt::lean_apply_1(x_8, x_23);
+                    return x_24;
+                }
+                2 => {
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_25: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_25);
+                    rt::lean_dec_ref(x_3);
+                    let x_26: Obj = rt::lean_apply_1(x_9, x_25);
+                    return x_26;
+                }
+                _ => {
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_27: Obj = rt::lean_apply_5(x_11, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_27;
+                }
+            }
+        }
+        2 => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                0 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_7);
+                    let x_28: Obj = rt::lean_apply_3(x_6, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_28;
+                }
+                1 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_6);
+                    let x_29: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_29;
+                }
+                6 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_30: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_30);
+                    rt::lean_dec_ref(x_2);
+                    let x_31: Obj = rt::lean_apply_1(x_10, x_30);
+                    return x_31;
+                }
+                5 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_32: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_32);
+                    rt::lean_dec_ref(x_2);
+                    let x_33: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_33);
+                    rt::lean_dec_ref(x_3);
+                    let x_34: Obj = rt::lean_apply_2(x_17, x_32, x_33);
+                    return x_34;
+                }
+                _ => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_35: Obj = rt::lean_apply_16(x_18, x_2, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_35;
+                }
+            }
+        }
+        5 => {
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                0 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    let x_36: Obj = rt::lean_apply_3(x_6, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_36;
+                }
+                1 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_6);
+                    let x_37: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_37;
+                }
+                6 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_38: Obj = rt::lean_apply_5(x_12, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_38;
+                }
+                5 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_39: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_39);
+                    rt::lean_dec_ref(x_2);
+                    let x_40: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_40);
+                    rt::lean_dec_ref(x_3);
+                    let x_41: Obj = rt::lean_apply_2(x_13, x_39, x_40);
+                    return x_41;
+                }
+                4 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_42: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_42);
+                    rt::lean_dec_ref(x_2);
+                    let x_43: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_43);
+                    rt::lean_dec_ref(x_3);
+                    let x_44: Obj = rt::lean_apply_2(x_14, x_42, x_43);
+                    return x_44;
+                }
+                2 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_45: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_45);
+                    rt::lean_dec_ref(x_2);
+                    let x_46: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_46);
+                    rt::lean_dec_ref(x_3);
+                    let x_47: Obj = rt::lean_apply_2(x_15, x_45, x_46);
+                    return x_47;
+                }
+                _ => {
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_48: Obj = rt::lean_apply_16(x_18, x_2, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_48;
+                }
+            }
+        }
+        4 => {
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                0 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    let x_49: Obj = rt::lean_apply_3(x_6, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_49;
+                }
+                1 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_6);
+                    let x_50: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_50;
+                }
+                6 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_51: Obj = rt::lean_apply_5(x_12, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_51;
+                }
+                5 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_52: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_52);
+                    rt::lean_dec_ref(x_2);
+                    let x_53: Obj = rt::lean_ctor_get(x_3, 0);
+                    rt::lean_inc_ref(x_53);
+                    rt::lean_dec_ref(x_3);
+                    let x_54: Obj = rt::lean_apply_2(x_16, x_52, x_53);
+                    return x_54;
+                }
+                _ => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_55: Obj = rt::lean_apply_16(x_18, x_2, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_55;
+                }
+            }
+        }
+        _ => {
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            match rt::lean_obj_tag(x_3) {
+                0 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    let x_56: Obj = rt::lean_apply_3(x_6, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_56;
+                }
+                1 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_6);
+                    let x_57: Obj = rt::lean_apply_3(x_7, x_2, rt::lean_box(0), rt::lean_box(0));
+                    return x_57;
+                }
+                6 => {
+                    rt::lean_dec(x_18);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_58: Obj = rt::lean_apply_5(x_12, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_58;
+                }
+                _ => {
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_59: Obj = rt::lean_apply_16(x_18, x_2, x_3, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_59;
+                }
+            }
+        }
+    }
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.tagMeets.match_1.splitter._boxed
+// Compiled from: _private.TaggedUrn.Constraint.0.TaggedUrn.tagMeets.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dtagMeets_dmatch__1_dsplitter_d__boxed(args: *mut Obj) -> Obj {
+    let x_1: Obj = *args.add(0);
+    let x_2: Obj = *args.add(1);
+    let x_3: Obj = *args.add(2);
+    let x_4: Obj = *args.add(3);
+    let x_5: Obj = *args.add(4);
+    let x_6: Obj = *args.add(5);
+    let x_7: Obj = *args.add(6);
+    let x_8: Obj = *args.add(7);
+    let x_9: Obj = *args.add(8);
+    let x_10: Obj = *args.add(9);
+    let x_11: Obj = *args.add(10);
+    let x_12: Obj = *args.add(11);
+    let x_13: Obj = *args.add(12);
+    let x_14: Obj = *args.add(13);
+    let x_15: Obj = *args.add(14);
+    let x_16: Obj = *args.add(15);
+    let x_17: Obj = *args.add(16);
+    let x_18: Obj = *args.add(17);
+    let x_19: Obj = l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dtagMeets_dmatch__1_dsplitter(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, x_9, x_10, x_11, x_12, x_13, x_14, x_15, x_16, x_17, x_18);
+    return x_19;
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.tagMeets.match_1.splitter._redArg
+// Compiled from: _private.TaggedUrn.Constraint.0.TaggedUrn.tagMeets.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dtagMeets_dmatch__1_dsplitter_d__redArg(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj, x_6: Obj, x_7: Obj, x_8: Obj, x_9: Obj, x_10: Obj, x_11: Obj, x_12: Obj, x_13: Obj, x_14: Obj, x_15: Obj, x_16: Obj, x_17: Obj) -> Obj {
+    match rt::lean_obj_tag(x_1) {
+        0 => {
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_4);
+            let x_18: Obj = rt::lean_apply_1(x_3, x_2);
+            return x_18;
+        }
+        1 => {
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_5);
+            rt::lean_dec(x_3);
+            let x_19: Obj = rt::lean_apply_1(x_4, x_2);
+            return x_19;
+        }
+        6 => {
+            rt::lean_dec(x_17);
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                0 => {
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    let x_20: Obj = rt::lean_apply_3(x_5, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_20;
+                }
+                1 => {
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_5);
+                    let x_21: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_21;
+                }
+                6 => {
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_22: Obj = rt::lean_box(0);
+                    let x_23: Obj = rt::lean_apply_1(x_7, x_22);
+                    return x_23;
+                }
+                2 => {
+                    rt::lean_dec(x_10);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_24: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_24);
+                    rt::lean_dec_ref(x_2);
+                    let x_25: Obj = rt::lean_apply_1(x_8, x_24);
+                    return x_25;
+                }
+                _ => {
+                    rt::lean_dec(x_8);
+                    rt::lean_dec(x_7);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_26: Obj = rt::lean_apply_5(x_10, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_26;
+                }
+            }
+        }
+        2 => {
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_11);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                0 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_6);
+                    let x_27: Obj = rt::lean_apply_3(x_5, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_27;
+                }
+                1 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_5);
+                    let x_28: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_28;
+                }
+                6 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_29: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_29);
+                    rt::lean_dec_ref(x_1);
+                    let x_30: Obj = rt::lean_apply_1(x_9, x_29);
+                    return x_30;
+                }
+                5 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_31: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_31);
+                    rt::lean_dec_ref(x_1);
+                    let x_32: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_32);
+                    rt::lean_dec_ref(x_2);
+                    let x_33: Obj = rt::lean_apply_2(x_16, x_31, x_32);
+                    return x_33;
+                }
+                _ => {
+                    rt::lean_dec(x_16);
+                    rt::lean_dec(x_9);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_34: Obj = rt::lean_apply_16(x_17, x_1, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_34;
+                }
+            }
+        }
+        5 => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                0 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    let x_35: Obj = rt::lean_apply_3(x_5, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_35;
+                }
+                1 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_5);
+                    let x_36: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_36;
+                }
+                6 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_37: Obj = rt::lean_apply_5(x_11, x_1, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_37;
+                }
+                5 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_38: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_38);
+                    rt::lean_dec_ref(x_1);
+                    let x_39: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_39);
+                    rt::lean_dec_ref(x_2);
+                    let x_40: Obj = rt::lean_apply_2(x_12, x_38, x_39);
+                    return x_40;
+                }
+                4 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_41: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_41);
+                    rt::lean_dec_ref(x_1);
+                    let x_42: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_42);
+                    rt::lean_dec_ref(x_2);
+                    let x_43: Obj = rt::lean_apply_2(x_13, x_41, x_42);
+                    return x_43;
+                }
+                2 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_44: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_44);
+                    rt::lean_dec_ref(x_1);
+                    let x_45: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_45);
+                    rt::lean_dec_ref(x_2);
+                    let x_46: Obj = rt::lean_apply_2(x_14, x_44, x_45);
+                    return x_46;
+                }
+                _ => {
+                    rt::lean_dec(x_14);
+                    rt::lean_dec(x_13);
+                    rt::lean_dec(x_12);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_47: Obj = rt::lean_apply_16(x_17, x_1, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_47;
+                }
+            }
+        }
+        4 => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                0 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    let x_48: Obj = rt::lean_apply_3(x_5, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_48;
+                }
+                1 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_5);
+                    let x_49: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_49;
+                }
+                6 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_50: Obj = rt::lean_apply_5(x_11, x_1, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_50;
+                }
+                5 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_51: Obj = rt::lean_ctor_get(x_1, 0);
+                    rt::lean_inc_ref(x_51);
+                    rt::lean_dec_ref(x_1);
+                    let x_52: Obj = rt::lean_ctor_get(x_2, 0);
+                    rt::lean_inc_ref(x_52);
+                    rt::lean_dec_ref(x_2);
+                    let x_53: Obj = rt::lean_apply_2(x_15, x_51, x_52);
+                    return x_53;
+                }
+                _ => {
+                    rt::lean_dec(x_15);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_54: Obj = rt::lean_apply_16(x_17, x_1, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_54;
+                }
+            }
+        }
+        _ => {
+            rt::lean_dec(x_16);
+            rt::lean_dec(x_15);
+            rt::lean_dec(x_14);
+            rt::lean_dec(x_13);
+            rt::lean_dec(x_12);
+            rt::lean_dec(x_10);
+            rt::lean_dec(x_9);
+            rt::lean_dec(x_8);
+            rt::lean_dec(x_7);
+            rt::lean_dec(x_4);
+            rt::lean_dec(x_3);
+            match rt::lean_obj_tag(x_2) {
+                0 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    let x_55: Obj = rt::lean_apply_3(x_5, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_55;
+                }
+                1 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_5);
+                    let x_56: Obj = rt::lean_apply_3(x_6, x_1, rt::lean_box(0), rt::lean_box(0));
+                    return x_56;
+                }
+                6 => {
+                    rt::lean_dec(x_17);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_57: Obj = rt::lean_apply_5(x_11, x_1, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_57;
+                }
+                _ => {
+                    rt::lean_dec(x_11);
+                    rt::lean_dec(x_6);
+                    rt::lean_dec(x_5);
+                    let x_58: Obj = rt::lean_apply_16(x_17, x_1, x_2, rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0), rt::lean_box(0));
+                    return x_58;
+                }
+            }
+        }
+    }
+}
+
+// Lean: _private.TaggedUrn.Constraint.0.TaggedUrn.tagMeets.match_1.splitter._redArg._boxed
+// Compiled from: _private.TaggedUrn.Constraint.0.TaggedUrn.tagMeets.match_1.splitter
+// Source: formal/TaggedUrn/Constraint.lean
+pub(crate) unsafe extern "C" fn l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dtagMeets_dmatch__1_dsplitter_d__redArg_d__boxed(args: *mut Obj) -> Obj {
+    let x_1: Obj = *args.add(0);
+    let x_2: Obj = *args.add(1);
+    let x_3: Obj = *args.add(2);
+    let x_4: Obj = *args.add(3);
+    let x_5: Obj = *args.add(4);
+    let x_6: Obj = *args.add(5);
+    let x_7: Obj = *args.add(6);
+    let x_8: Obj = *args.add(7);
+    let x_9: Obj = *args.add(8);
+    let x_10: Obj = *args.add(9);
+    let x_11: Obj = *args.add(10);
+    let x_12: Obj = *args.add(11);
+    let x_13: Obj = *args.add(12);
+    let x_14: Obj = *args.add(13);
+    let x_15: Obj = *args.add(14);
+    let x_16: Obj = *args.add(15);
+    let x_17: Obj = *args.add(16);
+    let x_18: Obj = l___private_dTaggedUrn_dConstraint_d0_dTaggedUrn_dtagMeets_dmatch__1_dsplitter_d__redArg(x_1, x_2, x_3, x_4, x_5, x_6, x_7, x_8, x_9, x_10, x_11, x_12, x_13, x_14, x_15, x_16, x_17);
+    return x_18;
 }
 

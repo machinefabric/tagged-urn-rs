@@ -856,6 +856,48 @@ impl TaggedUrn {
         instance.conforms_to(self)
     }
 
+    /// Whether this URN and `other` COULD be about the same thing: some thing
+    /// is described by both. Symmetric — neither is the instance.
+    ///
+    /// `conforms_to` is a guarantee: everything this URN describes, the
+    /// pattern describes. This is the other question the same meanings
+    /// answer, and the one a search asks: `media:ext` (some ext) does not
+    /// conform to `media:ext=pdf`, and it is not excluded by it either — it
+    /// meets it, and only the value that turns up says which. Whatever
+    /// conforms meets; what meets need not conform, and meeting is not
+    /// transitive (a pdf meets "some ext", which meets a png).
+    ///
+    /// Decided by the proved model (`TaggedUrn.Exec.meets`).
+    pub fn meets(&self, other: &TaggedUrn) -> Result<bool, TaggedUrnError> {
+        Self::same_prefix(self, other)?;
+        Ok(crate::formal::exec::meets(self.formal.clone(), other.formal.clone()))
+    }
+
+    /// Whether this URN, read as a COMPLETE thing, satisfies `pattern`.
+    ///
+    /// A description that omits a key says nothing about it, and that is how
+    /// `conforms_to` reads both sides. A thing that exists — a value with
+    /// these tags, a cap's own list of tags — omits a key because it does not
+    /// have it. Read so, a thing that does not mention `x` satisfies `!x`,
+    /// which no description that merely omits `x` does.
+    ///
+    /// Use this where the left side is what something IS; use `conforms_to`
+    /// where it is what something is declared to take or give. Decided by the
+    /// proved model (`TaggedUrn.Exec.refinesClosed`).
+    pub fn satisfies(&self, pattern: &TaggedUrn) -> Result<bool, TaggedUrnError> {
+        Self::same_prefix(self, pattern)?;
+        Ok(crate::formal::exec::refines_closed(self.formal.clone(), pattern.formal.clone()))
+    }
+
+    /// Whether this URN, read as a complete thing, COULD satisfy `pattern`:
+    /// `satisfies` is to this as `conforms_to` is to `meets`. A thing tagged
+    /// `ext` (some ext) may satisfy `ext=pdf`; one that does not mention `ext`
+    /// may not.
+    pub fn may_satisfy(&self, pattern: &TaggedUrn) -> Result<bool, TaggedUrnError> {
+        Self::same_prefix(self, pattern)?;
+        Ok(crate::formal::exec::meets_closed(self.formal.clone(), pattern.formal.clone()))
+    }
+
     fn same_prefix(instance: &TaggedUrn, pattern: &TaggedUrn) -> Result<(), TaggedUrnError> {
         if instance.prefix != pattern.prefix {
             return Err(TaggedUrnError::PrefixMismatch {
@@ -886,6 +928,18 @@ impl TaggedUrn {
     /// cap-tag matcher that walk tag sets themselves.
     pub fn values_match(inst: Option<&str>, patt: Option<&str>) -> bool {
         crate::formal::exec::values_match(constraint_of(inst), constraint_of(patt))
+    }
+
+    /// One key: do the two stored values allow a common state?
+    /// (`TaggedUrn.Exec.valuesMeet`.)
+    pub fn values_meet(a: Option<&str>, b: Option<&str>) -> bool {
+        crate::formal::exec::values_meet(constraint_of(a), constraint_of(b))
+    }
+
+    /// One key of a complete thing against a pattern: an omitted key is absent.
+    /// (`TaggedUrn.Exec.valuesMatchClosed`.)
+    pub fn values_match_closed(inst: Option<&str>, patt: Option<&str>) -> bool {
+        crate::formal::exec::values_match_closed(constraint_of(inst), constraint_of(patt))
     }
 
     pub fn conforms_to_str(&self, pattern_str: &str) -> Result<bool, TaggedUrnError> {
@@ -2233,6 +2287,10 @@ mod tests {
         let request = TaggedUrn::from_string("cap:ext=pdf;generate;in=media:;out=media:").unwrap();
         assert!(!urn.conforms_to(&request).unwrap(), "some ext does not satisfy ext=pdf");
         assert!(request.conforms_to(&urn).unwrap(), "ext=pdf satisfies some ext");
+        // Not a guarantee, and not excluded: some ext COULD be a pdf. That is
+        // `meets`, which is where "decided later" belongs.
+        assert!(urn.meets(&request).unwrap(), "some ext could be ext=pdf");
+        assert!(request.meets(&urn).unwrap(), "meeting has no direction");
     }
 
     // TEST0548: Reject match when tag values conflict between instance and pattern
@@ -2435,6 +2493,10 @@ mod tests {
         assert!(!urn.conforms_to(&request_any).unwrap(), "nor of any particular value");
         assert!(request_pdf.conforms_to(&urn).unwrap(), "a pdf is some ext");
         assert!(!urn.is_equivalent(&request_pdf).unwrap(), "ext and ext=pdf are different tag sets");
+        // It could be any of them, and that is all it is: pdf and docx each
+        // meet "some ext" and do not meet each other.
+        assert!(urn.meets(&request_pdf).unwrap() && urn.meets(&request_docx).unwrap());
+        assert!(!request_pdf.meets(&request_docx).unwrap(), "meeting is not transitive");
     }
 
     // TEST0559: Require value-less tag in pattern to be present in instance
@@ -2650,6 +2712,10 @@ mod tests {
         assert!(!instance.conforms_to(&pattern_pdf).unwrap(), "ext=? promises no pdf");
         assert!(!instance.conforms_to(&pattern_wildcard).unwrap(), "ext=? promises no presence");
         assert!(!instance.conforms_to(&pattern_must_not).unwrap(), "ext=? promises no absence");
+        // It excludes nothing either: it could be any of them.
+        assert!(instance.meets(&pattern_pdf).unwrap());
+        assert!(instance.meets(&pattern_wildcard).unwrap());
+        assert!(instance.meets(&pattern_must_not).unwrap());
         assert!(
             instance.conforms_to(&pattern_question).unwrap(),
             "ext=? should match ext=?"
@@ -2680,6 +2746,14 @@ mod tests {
             !instance_missing.conforms_to(&pattern).unwrap(),
             "(no ext) does not promise ext is absent"
         );
+        // A THING that does not mention ext does not have it: read as complete
+        // — which is what a value, or a cap's own tag list, is — it satisfies
+        // the pattern. A description that omits ext could go either way.
+        assert!(
+            instance_missing.satisfies(&pattern).unwrap(),
+            "a complete thing with no ext satisfies ext=!"
+        );
+        assert!(instance_missing.meets(&pattern).unwrap());
         assert!(
             !instance_pdf.conforms_to(&pattern).unwrap(),
             "ext=pdf should NOT match ext=!"

@@ -24,10 +24,28 @@
     "renamed": false
   },
   {
+    "lean_name": "TaggedUrn.Exec.meets",
+    "kind": "function",
+    "rust_path": "exec::meets",
+    "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.meetsClosed",
+    "kind": "function",
+    "rust_path": "exec::meets_closed",
+    "renamed": true
+  },
+  {
     "lean_name": "TaggedUrn.Exec.refines",
     "kind": "function",
     "rust_path": "exec::refines",
     "renamed": false
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.refinesClosed",
+    "kind": "function",
+    "rust_path": "exec::refines_closed",
+    "renamed": true
   },
   {
     "lean_name": "TaggedUrn.Exec.specificity",
@@ -39,6 +57,18 @@
     "lean_name": "TaggedUrn.Exec.valuesMatch",
     "kind": "function",
     "rust_path": "exec::values_match",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.valuesMatchClosed",
+    "kind": "function",
+    "rust_path": "exec::values_match_closed",
+    "renamed": true
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.valuesMeet",
+    "kind": "function",
+    "rust_path": "exec::values_meet",
     "renamed": true
   },
   {
