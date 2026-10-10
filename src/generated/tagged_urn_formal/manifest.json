@@ -2,8 +2,8 @@
   "lean_version": "4.34.1",
   "lean_githash": "5045d0056413266e57c625dcd7c365b10e377c52",
   "bir_version": 3,
-  "generator_version": "1.88.0",
-  "runtime_abi": 1,
+  "generator_version": "1.105.524",
+  "runtime_abi": 2,
   "modules": [
     "Init.Prelude",
     "Init.Coe",
@@ -654,230 +654,100 @@
     "Init.MethodSpecsSimp",
     "Init.LetFun",
     "Init",
+    "Lungo.Registry",
+    "Lungo.Spec.Contract",
+    "Lungo.Spec.Model",
+    "Lungo.Spec.State",
+    "Lungo.Trace",
+    "Lungo.Monitor",
+    "Lungo.Async",
+    "Lungo.Core",
+    "Lungo",
     "TaggedUrn.Constraint",
     "TaggedUrn.Urn",
     "TaggedUrn.Sorted",
-    "TaggedUrn.Exec"
+    "TaggedUrn.Exec",
+    "Lean.Data.Iterators.Producers.PersistentHashMap",
+    "Lean.Elab.Structure"
   ],
-  "declarations": 427,
+  "declarations": 425,
   "exports": [
     {
       "lean_name": "TaggedUrn.Exec.comparable",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::comparable",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:51:1",
-      "trust": {
-        "axioms": [
-          "Classical.choice",
-          "Quot.sound",
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq",
-          "lean_string_dec_lt"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:61:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.equivalent",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::equivalent",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:45:1",
-      "trust": {
-        "axioms": [
-          "Classical.choice",
-          "Quot.sound",
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq",
-          "lean_string_dec_lt"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:54:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.make",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::make",
       "lean_type": "String → List (String × TaggedUrn.Constraint) → Option TaggedUrn.Exec.Wf",
-      "source": "formal/TaggedUrn/Exec.lean:26:1",
-      "trust": {
-        "axioms": [
-          "Classical.choice",
-          "Quot.sound",
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_lt"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:26:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.meets",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::meets",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:66:1",
-      "trust": {
-        "axioms": [
-          "Classical.choice",
-          "Quot.sound",
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq",
-          "lean_string_dec_lt"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:81:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.meetsClosed",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::meets_closed",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:89:1",
-      "trust": {
-        "axioms": [
-          "Classical.choice",
-          "Quot.sound",
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq",
-          "lean_string_dec_lt"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:107:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.refines",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::refines",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:38:1",
-      "trust": {
-        "axioms": [
-          "Classical.choice",
-          "Quot.sound",
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq",
-          "lean_string_dec_lt"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:46:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.refinesClosed",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::refines_closed",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:79:1",
-      "trust": {
-        "axioms": [
-          "Classical.choice",
-          "Quot.sound",
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq",
-          "lean_string_dec_lt"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:96:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.specificity",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::specificity",
       "lean_type": "TaggedUrn.Exec.Wf → Nat",
-      "source": "formal/TaggedUrn/Exec.lean:57:1",
-      "trust": {
-        "axioms": [
-          "Classical.choice",
-          "Quot.sound",
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_nat_add"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:68:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.valuesMatch",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::values_match",
       "lean_type": "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:60:1",
-      "trust": {
-        "axioms": [],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:74:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.valuesMatchClosed",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::values_match_closed",
       "lean_type": "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:98:1",
-      "trust": {
-        "axioms": [
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:117:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.valuesMeet",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::values_meet",
       "lean_type": "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
-      "source": "formal/TaggedUrn/Exec.lean:73:1",
-      "trust": {
-        "axioms": [
-          "propext"
-        ],
-        "depends_on_sorry": false,
-        "unsafe_dependencies": [],
-        "partial_dependencies": [],
-        "extern_dependencies": [
-          "lean_string_dec_eq"
-        ]
-      }
+      "source": "formal/TaggedUrn/Exec.lean:89:1"
     }
   ]
 }

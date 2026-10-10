@@ -1,0 +1,995 @@
+{
+  "schema_version": 1,
+  "program": "tagged_urn_formal",
+  "provenance": {
+    "lean_version": "4.34.1",
+    "lean_githash": "5045d0056413266e57c625dcd7c365b10e377c52",
+    "lungo_version": "1.105.524",
+    "bir_version": 3,
+    "runtime_abi": 2
+  },
+  "library": {
+    "package": "lungo",
+    "schema_version": 1
+  },
+  "specifications": [
+    {
+      "name": "TaggedUrn.Constraint.allows",
+      "kind": "lungo.relation",
+      "statement": "TaggedUrn.Constraint → TaggedUrn.KeyState → Prop",
+      "definition": "fun x x_1 =>\n  match x, x_1 with\n  | TaggedUrn.Constraint.missing, x => True\n  | TaggedUrn.Constraint.unconstrained, x => True\n  | TaggedUrn.Constraint.optionalNot p, s => s ≠ TaggedUrn.KeyState.set p\n  | TaggedUrn.Constraint.present, s => s ≠ TaggedUrn.KeyState.unset\n  | TaggedUrn.Constraint.presentNot p, s => s ≠ TaggedUrn.KeyState.unset ∧ s ≠ TaggedUrn.KeyState.set p\n  | TaggedUrn.Constraint.exact p, s => s = TaggedUrn.KeyState.set p\n  | TaggedUrn.Constraint.absent, s => s = TaggedUrn.KeyState.unset",
+      "package": "tagged_urn_formal",
+      "fingerprint": "aee80a946434e6281e1210e8eb0085e8ec8f9e2a0fbdb2103966191d5637ecb1",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Constraint.lean",
+        "start": {
+          "line": 36,
+          "column": 1
+        },
+        "end": {
+          "line": 44,
+          "column": 27
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.comparable",
+      "kind": "lungo.relation",
+      "statement": "TaggedUrn.Urn → TaggedUrn.Urn → Prop",
+      "definition": "fun a b => TaggedUrn.refines a b ∨ TaggedUrn.refines b a",
+      "package": "tagged_urn_formal",
+      "fingerprint": "a383cafc8c675c9125a90a66a5d9c1d5e0183f54485365327b5b702b952fe396",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Urn.lean",
+        "start": {
+          "line": 72,
+          "column": 1
+        },
+        "end": {
+          "line": 73,
+          "column": 63
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.equivalent",
+      "kind": "lungo.relation",
+      "statement": "TaggedUrn.Urn → TaggedUrn.Urn → Prop",
+      "definition": "fun a b => TaggedUrn.refines a b ∧ TaggedUrn.refines b a",
+      "package": "tagged_urn_formal",
+      "fingerprint": "62a798359c0f814cc5a5394753eac1851acacdc70d11ed2b7d2ce62b8f87d09e",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Urn.lean",
+        "start": {
+          "line": 74,
+          "column": 1
+        },
+        "end": {
+          "line": 75,
+          "column": 63
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.meets",
+      "kind": "lungo.relation",
+      "statement": "TaggedUrn.Urn → TaggedUrn.Urn → Prop",
+      "definition": "fun a b =>\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key) (b.tag key) = true",
+      "package": "tagged_urn_formal",
+      "fingerprint": "97f190a845fd77fd75c747f99f5d5712b0d48e64d18d4b48d5aad541d77594a1",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Urn.lean",
+        "start": {
+          "line": 140,
+          "column": 1
+        },
+        "end": {
+          "line": 145,
+          "column": 70
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.meetsClosed",
+      "kind": "lungo.relation",
+      "statement": "TaggedUrn.Urn → TaggedUrn.Urn → Prop",
+      "definition": "fun a b =>\n  a.scheme = b.scheme ∧\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key).closed (b.tag key) = true",
+      "package": "tagged_urn_formal",
+      "fingerprint": "ea159e28955c8c84fb3f58e391783b9414880e49ed323718c41e539e02a9a43d",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Urn.lean",
+        "start": {
+          "line": 257,
+          "column": 1
+        },
+        "end": {
+          "line": 263,
+          "column": 77
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.refines",
+      "kind": "lungo.relation",
+      "statement": "TaggedUrn.Urn → TaggedUrn.Urn → Prop",
+      "definition": "fun a b =>\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key) (b.tag key) = true",
+      "package": "tagged_urn_formal",
+      "fingerprint": "6942509bbefdfaf5c81174a0da7421e8743d07ddcb0c63a386b768195f3b3c11",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Urn.lean",
+        "start": {
+          "line": 27,
+          "column": 1
+        },
+        "end": {
+          "line": 31,
+          "column": 70
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.refinesClosed",
+      "kind": "lungo.relation",
+      "statement": "TaggedUrn.Urn → TaggedUrn.Urn → Prop",
+      "definition": "fun a b =>\n  a.scheme = b.scheme ∧\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key) = true",
+      "package": "tagged_urn_formal",
+      "fingerprint": "9b564936877f0ec34c42054ba630d51450ae609899c55e3b9ae2568d66c76998",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Urn.lean",
+        "start": {
+          "line": 200,
+          "column": 1
+        },
+        "end": {
+          "line": 203,
+          "column": 77
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.urnScore",
+      "kind": "lungo.model",
+      "statement": "TaggedUrn.Urn → Nat",
+      "definition": "fun u => (List.map (fun pair => TaggedUrn.tagScore pair.snd) u.tags).sum",
+      "package": "tagged_urn_formal",
+      "fingerprint": "7776afd6ad1380896e6b0b3fa9877251656ee579aa9a52fe97fec91efc508edf",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Urn.lean",
+        "start": {
+          "line": 308,
+          "column": 1
+        },
+        "end": {
+          "line": 311,
+          "column": 49
+        }
+      }
+    }
+  ],
+  "facilities": [],
+  "assumptions": [],
+  "claims": [
+    {
+      "name": "TaggedUrn.Exec.comparable_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.comparable"
+      ],
+      "specifications": [
+        "TaggedUrn.comparable"
+      ],
+      "statement": "∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.comparable a b = true ↔ TaggedUrn.comparable a.urn b.urn",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "ca6a514570a3773c7c219fcbab650705b8ec3209cdf2747bc5d1a247d549f441",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 63,
+          "column": 1
+        },
+        "end": {
+          "line": 66,
+          "column": 74
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.equivalent_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.equivalent"
+      ],
+      "specifications": [
+        "TaggedUrn.equivalent"
+      ],
+      "statement": "∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.equivalent a b = true ↔ TaggedUrn.equivalent a.urn b.urn",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "df5c2ec9f21e6e2e994d7f754d0682b6552c34ec0b91eb3340675177fb51add2",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 56,
+          "column": 1
+        },
+        "end": {
+          "line": 59,
+          "column": 75
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.make_isSome_iff",
+      "relation": "lungo.law",
+      "subjects": [
+        "TaggedUrn.Exec.make"
+      ],
+      "specifications": [],
+      "statement": "∀ {scheme : String} {tags : List (String × TaggedUrn.Constraint)},\n  (TaggedUrn.Exec.make scheme tags).isSome = true ↔ TaggedUrn.Sorted tags",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "3d6be601f0230b53d77e6b9268e6039a279c909d4847b67a80349a369c651102",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 39,
+          "column": 1
+        },
+        "end": {
+          "line": 44,
+          "column": 21
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.make_urn",
+      "relation": "lungo.law",
+      "subjects": [
+        "TaggedUrn.Exec.make"
+      ],
+      "specifications": [],
+      "statement": "∀ {scheme : String} {tags : List (String × TaggedUrn.Constraint)} {w : TaggedUrn.Exec.Wf},\n  TaggedUrn.Exec.make scheme tags = some w → w.urn = { scheme := scheme, tags := tags }",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "eb8b8b268fa3e023d48a4ca7e20eae3f0a2811c946a39c7a89d9c3f3a93c5a96",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 31,
+          "column": 1
+        },
+        "end": {
+          "line": 37,
+          "column": 12
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.meetsClosed_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.meetsClosed"
+      ],
+      "specifications": [
+        "TaggedUrn.meetsClosed"
+      ],
+      "statement": "∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.meetsClosed a b = true ↔ TaggedUrn.meetsClosed a.urn b.urn",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "89f769c0a0097cc699aa52a956b77849bc84ff675ee51fdc366ece46b0559b3e",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 111,
+          "column": 1
+        },
+        "end": {
+          "line": 115,
+          "column": 16
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.meets_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.meets"
+      ],
+      "specifications": [
+        "TaggedUrn.meets"
+      ],
+      "statement": "∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.meets a b = true ↔ TaggedUrn.meets a.urn b.urn",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "796d3d22175ecf4a6767ede9143e1900ff445cd1c826b51c6745c1744a176379",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 85,
+          "column": 1
+        },
+        "end": {
+          "line": 87,
+          "column": 90
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.refinesClosed_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.refinesClosed"
+      ],
+      "specifications": [
+        "TaggedUrn.refinesClosed"
+      ],
+      "statement": "∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.refinesClosed a b = true ↔ TaggedUrn.refinesClosed a.urn b.urn",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "7bc6b885dcedfad9aab7ed91489bad62a953e5ee4cfac5fe04bb5926ab393cc8",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 101,
+          "column": 1
+        },
+        "end": {
+          "line": 105,
+          "column": 16
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.refines_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.refines"
+      ],
+      "specifications": [
+        "TaggedUrn.refines"
+      ],
+      "statement": "∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.refines a b = true ↔ TaggedUrn.refines a.urn b.urn",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "51e6d6fa43ae51d3dbd9e94fe8c45377e8e90b7a1c87f42ce22bee72cb9948a8",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 50,
+          "column": 1
+        },
+        "end": {
+          "line": 52,
+          "column": 94
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.specificity_eq",
+      "relation": "lungo.equals",
+      "subjects": [
+        "TaggedUrn.Exec.specificity"
+      ],
+      "specifications": [
+        "TaggedUrn.urnScore"
+      ],
+      "statement": "∀ (a : TaggedUrn.Exec.Wf), TaggedUrn.Exec.specificity a = TaggedUrn.urnScore a.urn",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "5de9289b98772acc1a3bdeb6f5490dc17554f3b80e70cc1134bbad4a7de782d4",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 71,
+          "column": 1
+        },
+        "end": {
+          "line": 72,
+          "column": 72
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.valuesMatchClosed_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.valuesMatchClosed"
+      ],
+      "specifications": [
+        "TaggedUrn.Constraint.allows"
+      ],
+      "statement": "∀ (i p : TaggedUrn.Constraint),\n  TaggedUrn.Exec.valuesMatchClosed i p = true ↔ ∀ (s : TaggedUrn.KeyState), i.closed.allows s → p.allows s",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "70fe94fa81c48ecfc901f59fedb0eac182494901a83ae15e2dbf767985c1c468",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 120,
+          "column": 1
+        },
+        "end": {
+          "line": 123,
+          "column": 33
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.valuesMatch_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.valuesMatch"
+      ],
+      "specifications": [
+        "TaggedUrn.Constraint.allows"
+      ],
+      "statement": "∀ (i p : TaggedUrn.Constraint),\n  TaggedUrn.Exec.valuesMatch i p = true ↔ ∀ (s : TaggedUrn.KeyState), i.allows s → p.allows s",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "f203615e0a8f0df1a8bf18fef1af72a3154cc1bf1760848c11b1502b5d89b1bb",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 77,
+          "column": 1
+        },
+        "end": {
+          "line": 79,
+          "column": 85
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.valuesMeet_decides",
+      "relation": "lungo.decides",
+      "subjects": [
+        "TaggedUrn.Exec.valuesMeet"
+      ],
+      "specifications": [
+        "TaggedUrn.Constraint.allows"
+      ],
+      "statement": "∀ (a b : TaggedUrn.Constraint), TaggedUrn.Exec.valuesMeet a b = true ↔ ∃ s, a.allows s ∧ b.allows s",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "fe9f085b676ca28a62abc13fe46fa03a2761f604a851ffb2698ea9b17bf259ac",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 92,
+          "column": 1
+        },
+        "end": {
+          "line": 94,
+          "column": 84
+        }
+      }
+    }
+  ],
+  "roles": [],
+  "exports": [
+    {
+      "name": "TaggedUrn.Exec.comparable",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq",
+          "lean_string_dec_lt"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.comparable_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 61,
+          "column": 1
+        },
+        "end": {
+          "line": 61,
+          "column": 63
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.equivalent",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq",
+          "lean_string_dec_lt"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.equivalent_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 54,
+          "column": 1
+        },
+        "end": {
+          "line": 54,
+          "column": 63
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.make",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_lt"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.make_isSome_iff",
+        "TaggedUrn.Exec.make_urn"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 26,
+          "column": 1
+        },
+        "end": {
+          "line": 29,
+          "column": 61
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.meets",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq",
+          "lean_string_dec_lt"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.meets_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 81,
+          "column": 1
+        },
+        "end": {
+          "line": 83,
+          "column": 75
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.meetsClosed",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq",
+          "lean_string_dec_lt"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.meetsClosed_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 107,
+          "column": 1
+        },
+        "end": {
+          "line": 109,
+          "column": 81
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.refines",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq",
+          "lean_string_dec_lt"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.refines_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 46,
+          "column": 1
+        },
+        "end": {
+          "line": 48,
+          "column": 66
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.refinesClosed",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq",
+          "lean_string_dec_lt"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.refinesClosed_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 96,
+          "column": 1
+        },
+        "end": {
+          "line": 99,
+          "column": 81
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.specificity",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_nat_add"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.specificity_eq"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 68,
+          "column": 1
+        },
+        "end": {
+          "line": 69,
+          "column": 49
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.valuesMatch",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.valuesMatch_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 74,
+          "column": 1
+        },
+        "end": {
+          "line": 75,
+          "column": 70
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.valuesMatchClosed",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.valuesMatchClosed_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 117,
+          "column": 1
+        },
+        "end": {
+          "line": 118,
+          "column": 82
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.valuesMeet",
+      "module": "TaggedUrn.Exec",
+      "async": false,
+      "trust": {
+        "axioms": [
+          "propext"
+        ],
+        "depends_on_sorry": false,
+        "unsafe_dependencies": [],
+        "partial_dependencies": [],
+        "extern_dependencies": [
+          "lean_string_dec_eq"
+        ]
+      },
+      "claims": [
+        "TaggedUrn.Exec.valuesMeet_decides"
+      ],
+      "assumptions": [],
+      "facilities": [],
+      "roles": [],
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 89,
+          "column": 1
+        },
+        "end": {
+          "line": 90,
+          "column": 57
+        }
+      }
+    }
+  ]
+}
