@@ -95,7 +95,7 @@ describes. Two more questions are asked of the same meanings:
 
 ```rust
 let some_ext = TaggedUrn::from_string("media:ext")?;
-let pdf = TaggedUrn::from_string("media:ext=pdf")?;
+let pdf = TaggedUrn::from_string("media:document;ext=pdf")?;
 
 // "Some ext" is not guaranteed to be a pdf, and it could be one.
 assert!(!some_ext.conforms_to(&pdf)?);
@@ -103,8 +103,8 @@ assert!(some_ext.meets(&pdf)?);
 
 // A description that omits a key says nothing about it; a complete thing —
 // a value's media, a cap's own tags — does not have it.
-let plain = TaggedUrn::from_string("media:ext=pdf")?;
-let uncompressed = TaggedUrn::from_string("media:ext=pdf;!compressed")?;
+let plain = TaggedUrn::from_string("media:document;ext=pdf")?;
+let uncompressed = TaggedUrn::from_string("media:document;ext=pdf;!compressed")?;
 assert!(!plain.conforms_to(&uncompressed)?);
 assert!(plain.satisfies(&uncompressed)?);
 ```
