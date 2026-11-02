@@ -2,7 +2,7 @@
 
 Generated from the test catalogue. Edit the tests, not this file.
 
-97 tests: 97 numbered, 0 unnumbered.
+98 tests: 98 numbered, 0 unnumbered.
 
 ## Numbered
 
@@ -105,4 +105,5 @@ Generated from the test catalogue. Edit the tests, not this file.
 | TEST594 | tagged-urn/tagged-urn-rs | rust | `test594_builder_custom_prefix` | src/tagged_urn.rs:3248 | TEST594: Builder with custom prefix |
 | TEST595 | tagged-urn/tagged-urn-rs | rust | `test595_builder_matching_with_built_urn` | src/tagged_urn.rs:3261 | TEST595: Builder matching with built URN |
 | TEST599 | tagged-urn/tagged-urn-rs | rust | `test599_every_row_of_the_model_s_table` | tests/formal_conformance.rs:15 |  |
+| TEST600 | tagged-urn/tagged-urn-rs | rust | `test600_every_model_function_carries_a_proved_claim` | tests/formal_assurance.rs:11 |  |
 
