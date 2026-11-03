@@ -16,11 +16,35 @@ pub(crate) unsafe extern "C" fn l_Array_dmk(x_1: Obj, x_2: Obj) -> Obj {
     r
 }
 
+// Lean: Array.mkEmpty
+// Source: <lean>/Init/Prelude.lean:3235:1
+#[inline(always)]
+pub(crate) unsafe extern "C" fn l_Array_dmkEmpty(x_1: Obj, x_2: Obj) -> Obj {
+    let r: Obj = rt::intrinsics::lean_mk_empty_array_with_capacity(x_2);
+    r
+}
+
+// Lean: Array.push
+// Source: <lean>/Init/Prelude.lean:3327:1
+#[inline(always)]
+pub(crate) unsafe extern "C" fn l_Array_dpush(x_1: Obj, x_2: Obj, x_3: Obj) -> Obj {
+    let r: Obj = rt::intrinsics::lean_array_push(x_2, x_3);
+    r
+}
+
 // Lean: Array.size
 // Source: <lean>/Init/Prelude.lean:3259:1
 #[inline(always)]
 pub(crate) unsafe extern "C" fn l_Array_dsize(x_1: Obj, x_2: Obj) -> Obj {
     let r: Obj = rt::intrinsics::lean_array_get_size(x_2);
+    r
+}
+
+// Lean: Array.toList
+// Source: <lean>/Init/Prelude.lean:3217:3
+#[inline(always)]
+pub(crate) unsafe extern "C" fn l_Array_dtoList(x_1: Obj, x_2: Obj) -> Obj {
+    let r: Obj = rt::intrinsics::lean_array_to_list(x_2);
     r
 }
 
@@ -248,6 +272,24 @@ pub(crate) unsafe extern "C" fn l_UInt32_dtoNat(x_1: u32) -> Obj {
 pub(crate) unsafe extern "C" fn l_USize_dofNatLT(x_1: Obj, x_2: Obj) -> usize {
     let r: usize = rt::intrinsics::lean_usize_of_nat(x_1);
     r
+}
+
+// Lean: instBEqOfDecidableEq._redArg._lam_0
+// Compiled from: instBEqOfDecidableEq
+// Source: <lean>/Init/Prelude.lean:1069:1
+pub(crate) unsafe extern "C" fn l_instBEqOfDecidableEq_d__redArg_d__lam__0(x_1: Obj, x_2: Obj, x_3: Obj) -> u8 {
+    let x_4: Obj = rt::lean_apply_2(x_1, x_2, x_3);
+    let x_5: u8 = rt::lean_unbox(x_4) as u8;
+    return x_5;
+}
+
+// Lean: instBEqOfDecidableEq._redArg._lam_0._boxed
+// Compiled from: instBEqOfDecidableEq
+// Source: <lean>/Init/Prelude.lean:1069:1
+pub(crate) unsafe extern "C" fn l_instBEqOfDecidableEq_d__redArg_d__lam__0_d__boxed(x_1: Obj, x_2: Obj, x_3: Obj) -> Obj {
+    let x_4: u8 = l_instBEqOfDecidableEq_d__redArg_d__lam__0(x_1, x_2, x_3);
+    let x_5: Obj = rt::lean_box(x_4 as usize);
+    return x_5;
 }
 
 // Lean: instDecidableEqList._redArg

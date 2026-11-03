@@ -24,6 +24,30 @@
     ]
   },
   {
+    "lean_name": "Array.mkEmpty",
+    "file": "<lean>/Init/Prelude.lean",
+    "start": [
+      3235,
+      1
+    ],
+    "end": [
+      3242,
+      21
+    ]
+  },
+  {
+    "lean_name": "Array.push",
+    "file": "<lean>/Init/Prelude.lean",
+    "start": [
+      3327,
+      1
+    ],
+    "end": [
+      3339,
+      35
+    ]
+  },
+  {
     "lean_name": "Array.size",
     "file": "<lean>/Init/Prelude.lean",
     "start": [
@@ -33,6 +57,30 @@
     "end": [
       3270,
       17
+    ]
+  },
+  {
+    "lean_name": "Array.toList",
+    "file": "<lean>/Init/Prelude.lean",
+    "start": [
+      3217,
+      3
+    ],
+    "end": [
+      3217,
+      9
+    ]
+  },
+  {
+    "lean_name": "Bool.repr",
+    "file": "<lean>/Init/Data/Repr.lean",
+    "start": [
+      76,
+      1
+    ],
+    "end": [
+      78,
+      24
     ]
   },
   {
@@ -648,6 +696,30 @@
     ]
   },
   {
+    "lean_name": "List.elem",
+    "file": "<lean>/Init/Data/List/Basic.lean",
+    "start": [
+      783,
+      1
+    ],
+    "end": [
+      799,
+      25
+    ]
+  },
+  {
+    "lean_name": "List.filterMapTR.go",
+    "file": "<lean>/Init/Data/List/Impl.lean",
+    "start": [
+      107,
+      17
+    ],
+    "end": [
+      111,
+      35
+    ]
+  },
+  {
     "lean_name": "List.find?",
     "file": "<lean>/Init/Data/List/Basic.lean",
     "start": [
@@ -753,6 +825,18 @@
     "end": [
       435,
       77
+    ]
+  },
+  {
+    "lean_name": "List.repr'",
+    "file": "<lean>/Init/Data/Repr.lean",
+    "start": [
+      440,
+      1
+    ],
+    "end": [
+      444,
+      81
     ]
   },
   {
@@ -948,6 +1032,30 @@
     ]
   },
   {
+    "lean_name": "Option.instDecidableEq",
+    "file": "<lean>/Init/Data/Option/Basic.lean",
+    "start": [
+      18,
+      1
+    ],
+    "end": [
+      30,
+      115
+    ]
+  },
+  {
+    "lean_name": "Option.repr",
+    "file": "<lean>/Init/Data/Repr.lean",
+    "start": [
+      113,
+      1
+    ],
+    "end": [
+      121,
+      65
+    ]
+  },
+  {
     "lean_name": "Prod.repr",
     "file": "<lean>/Init/Data/Repr.lean",
     "start": [
@@ -981,6 +1089,18 @@
     "end": [
       187,
       123
+    ]
+  },
+  {
+    "lean_name": "Std.Format.fill",
+    "file": "<lean>/Init/Data/Format/Basic.lean",
+    "start": [
+      122,
+      1
+    ],
+    "end": [
+      128,
+      45
     ]
   },
   {
@@ -1224,6 +1344,42 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.Allowed.bound",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      152,
+      1
+    ],
+    "end": [
+      159,
+      95
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Allowed.nothing",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      131,
+      1
+    ],
+    "end": [
+      132,
+      50
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Allowed.union",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      120,
+      1
+    ],
+    "end": [
+      121,
+      54
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.Constraint.absent.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
@@ -1233,6 +1389,18 @@
     "end": [
       25,
       76
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.allowed",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      53,
+      1
+    ],
+    "end": [
+      60,
+      30
     ]
   },
   {
@@ -1290,6 +1458,18 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.Constraint.named",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      256,
+      1
+    ],
+    "end": [
+      259,
+      14
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.Constraint.norm",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
@@ -1338,6 +1518,18 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.Constraint.stored",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      498,
+      1
+    ],
+    "end": [
+      506,
+      23
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.Constraint.unconstrained.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
@@ -1377,11 +1569,11 @@
     "lean_name": "TaggedUrn.Exec.comparable",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      61,
+      62,
       1
     ],
     "end": [
-      61,
+      62,
       63
     ]
   },
@@ -1389,23 +1581,35 @@
     "lean_name": "TaggedUrn.Exec.equivalent",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      54,
+      55,
       1
     ],
     "end": [
-      54,
+      55,
       63
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.leastUpperBound",
+    "file": "TaggedUrn/Exec.lean",
+    "start": [
+      126,
+      1
+    ],
+    "end": [
+      132,
+      12
     ]
   },
   {
     "lean_name": "TaggedUrn.Exec.make",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      26,
+      27,
       1
     ],
     "end": [
-      29,
+      30,
       61
     ]
   },
@@ -1413,11 +1617,11 @@
     "lean_name": "TaggedUrn.Exec.meets",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      81,
+      82,
       1
     ],
     "end": [
-      83,
+      84,
       75
     ]
   },
@@ -1425,11 +1629,11 @@
     "lean_name": "TaggedUrn.Exec.meetsClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      107,
+      108,
       1
     ],
     "end": [
-      109,
+      110,
       81
     ]
   },
@@ -1437,11 +1641,11 @@
     "lean_name": "TaggedUrn.Exec.refines",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      46,
+      47,
       1
     ],
     "end": [
-      48,
+      49,
       66
     ]
   },
@@ -1449,11 +1653,11 @@
     "lean_name": "TaggedUrn.Exec.refinesClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      96,
+      97,
       1
     ],
     "end": [
-      99,
+      100,
       81
     ]
   },
@@ -1461,11 +1665,11 @@
     "lean_name": "TaggedUrn.Exec.specificity",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      68,
+      69,
       1
     ],
     "end": [
-      69,
+      70,
       49
     ]
   },
@@ -1473,11 +1677,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMatch",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      74,
+      75,
       1
     ],
     "end": [
-      75,
+      76,
       70
     ]
   },
@@ -1485,11 +1689,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMatchClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      117,
+      118,
       1
     ],
     "end": [
-      118,
+      119,
       82
     ]
   },
@@ -1497,11 +1701,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMeet",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      89,
+      90,
       1
     ],
     "end": [
-      90,
+      91,
       57
     ]
   },
@@ -1569,6 +1773,156 @@
     "end": [
       23,
       73
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.cof.elim",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      34,
+      3
+    ],
+    "end": [
+      34,
+      35
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.ctorElim",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      31,
+      1
+    ],
+    "end": [
+      35,
+      29
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.ctorIdx",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "TaggedUrn.Values.fin.elim",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      33,
+      3
+    ],
+    "end": [
+      33,
+      31
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.keep",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      67,
+      1
+    ],
+    "end": [
+      70,
+      20
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.union",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      72,
+      1
+    ],
+    "end": [
+      77,
+      29
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.boundAt",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      410,
+      1
+    ],
+    "end": [
+      411,
+      84
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.boundTags",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      413,
+      1
+    ],
+    "end": [
+      415,
+      97
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.boundUrn",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      452,
+      1
+    ],
+    "end": [
+      453,
+      79
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.insertKey",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      323,
+      1
+    ],
+    "end": [
+      326,
+      94
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.insertKeys",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      369,
+      1
+    ],
+    "end": [
+      372,
+      54
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.instDecidableEqAllowed",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      47,
+      12
+    ],
+    "end": [
+      47,
+      23
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.instDecidableEqAllowed.decEq",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      47,
+      12
+    ],
+    "end": [
+      47,
+      23
     ]
   },
   {
@@ -1644,6 +1998,30 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.instDecidableEqValues",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      35,
+      12
+    ],
+    "end": [
+      35,
+      23
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.instDecidableEqValues.decEq",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      35,
+      12
+    ],
+    "end": [
+      35,
+      23
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.instDecidableEquivalent",
     "file": "TaggedUrn/Urn.lean",
     "start": [
@@ -1713,6 +2091,30 @@
     "end": [
       29,
       84
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.instReprAllowed",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      47,
+      25
+    ],
+    "end": [
+      47,
+      29
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.instReprAllowed.repr",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      47,
+      25
+    ],
+    "end": [
+      47,
+      29
     ]
   },
   {
@@ -1788,6 +2190,54 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.instReprValues",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      35,
+      25
+    ],
+    "end": [
+      35,
+      29
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.instReprValues.repr",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      35,
+      25
+    ],
+    "end": [
+      35,
+      29
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.joinKey",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      261,
+      1
+    ],
+    "end": [
+      262,
+      70
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.keysOf",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      389,
+      1
+    ],
+    "end": [
+      392,
+      45
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.lookup",
     "file": "TaggedUrn/Sorted.lean",
     "start": [
@@ -1833,6 +2283,18 @@
     "end": [
       216,
       46
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.storedTags",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      508,
+      1
+    ],
+    "end": [
+      510,
+      48
     ]
   },
   {
@@ -1893,6 +2355,18 @@
     "end": [
       306,
       16
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.unionOf",
+    "file": "TaggedUrn/Join.lean",
+    "start": [
+      134,
+      1
+    ],
+    "end": [
+      137,
+      44
     ]
   },
   {
@@ -2172,6 +2646,72 @@
     "end": null
   },
   {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Allowed.allows.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Allowed.bound.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Constraint.allowed.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Constraint.allows.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Constraint.named.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Values.allows.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Values.keep.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Values.union.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.insertKey.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.insertKeys.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.unionOf.match_1.splitter",
+    "file": "TaggedUrn/Join.lean",
+    "start": null,
+    "end": null
+  },
+  {
     "lean_name": "_private.TaggedUrn.Sorted.0.TaggedUrn.mergeTags.match_1.splitter",
     "file": "TaggedUrn/Sorted.lean",
     "start": null,
@@ -2199,6 +2739,18 @@
     "end": [
       358,
       38
+    ]
+  },
+  {
+    "lean_name": "instBEqOfDecidableEq",
+    "file": "<lean>/Init/Prelude.lean",
+    "start": [
+      1069,
+      1
+    ],
+    "end": [
+      1070,
+      29
     ]
   },
   {

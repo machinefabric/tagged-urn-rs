@@ -18,6 +18,12 @@
     "renamed": false
   },
   {
+    "lean_name": "TaggedUrn.Exec.leastUpperBound",
+    "kind": "function",
+    "rust_path": "exec::least_upper_bound",
+    "renamed": true
+  },
+  {
     "lean_name": "TaggedUrn.Exec.make",
     "kind": "function",
     "rust_path": "exec::make",

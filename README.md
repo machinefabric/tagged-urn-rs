@@ -112,6 +112,21 @@ assert!(plain.satisfies(&uncompressed)?);
 The rules are proved in `../formal` (Lean), and this crate runs code generated
 from them.
 
+### The bound of several URNs
+
+```rust
+let png = TaggedUrn::from_string("media:ext=png;image")?;
+let jpeg = TaggedUrn::from_string("media:ext=jpeg;image")?;
+
+// The most specific URN both conform to: an ext, some value, and an image.
+let bound = TaggedUrn::least_upper_bound("media", &[png, jpeg])?;
+assert_eq!(bound, TaggedUrn::from_string("media:ext;image")?);
+```
+
+Where no single form allows exactly what the inputs allow together, the bound
+is the least one that excludes only values the inputs name. It is made by the
+proved model too.
+
 ### Specificity Comparison
 
 ```rust

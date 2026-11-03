@@ -898,6 +898,38 @@ impl TaggedUrn {
         Ok(crate::formal::exec::meets_closed(self.formal.clone(), pattern.formal.clone()))
     }
 
+    /// The most specific URN every one of `urns` conforms to: their common
+    /// denominator.
+    ///
+    /// Key by key, the bound allows every state some input allows. Where no
+    /// single form says exactly that, there is no least bound at all —
+    /// `ext=png` and `ext=jpeg` are both `ext`, both `ext!=pdf` and both
+    /// `ext!=gif` — so the bound is the least among those that exclude only
+    /// values the inputs name: here `ext`. When one input holds all the others,
+    /// the bound is that input. The bound of no URNs is the URN with no tags.
+    ///
+    /// Made by the proved model (`TaggedUrn.Exec.leastUpperBound`), whose
+    /// theorems say every input conforms to the bound and the bound conforms
+    /// to every such bound of them. Every URN must have the prefix `prefix`;
+    /// another is reported as `PrefixMismatch`.
+    pub fn least_upper_bound(prefix: &str, urns: &[TaggedUrn]) -> Result<TaggedUrn, TaggedUrnError> {
+        let prefix = prefix.to_lowercase();
+        let handles: lungo::List<FormalUrn> = urns.iter().map(|u| u.formal.clone()).collect();
+        match crate::formal::exec::least_upper_bound(prefix.clone(), handles) {
+            Some(tags) => Ok(Self::assemble(prefix, tags.into_iter().collect())),
+            None => {
+                let other = urns
+                    .iter()
+                    .find(|u| u.prefix != prefix)
+                    .expect("the model makes no bound only when a URN has another prefix");
+                Err(TaggedUrnError::PrefixMismatch {
+                    expected: prefix,
+                    actual: other.prefix.clone(),
+                })
+            }
+        }
+    }
+
     fn same_prefix(instance: &TaggedUrn, pattern: &TaggedUrn) -> Result<(), TaggedUrnError> {
         if instance.prefix != pattern.prefix {
             return Err(TaggedUrnError::PrefixMismatch {
@@ -3304,6 +3336,26 @@ mod tests {
         assert_eq!(specific_instance.specificity(), 12); // 3 exact × 4 = 12
         assert_eq!(general_pattern.specificity(), 4); // 1 exact × 4 = 4
         assert_eq!(wildcard_pattern.specificity(), 10); // 2 exact × 4 + 1 * × 2 = 8 + 2 = 10
+    }
+
+    // TEST392: the bound of several URNs: the values they share, a key every one sets to differing values as "some value", the coarser of two comparable URNs, nothing for none, and another prefix refused
+    #[test]
+    fn test392_least_upper_bound() {
+        let p = |s: &str| TaggedUrn::from_string(s).unwrap();
+        let bound = |urns: &[TaggedUrn]| TaggedUrn::least_upper_bound("media", urns).unwrap();
+
+        assert_eq!(bound(&[p("media:ext=png;image"), p("media:ext=jpeg;image")]), p("media:ext;image"));
+        // One input already holds the other: the bound is that input, not the wider `ext`.
+        assert_eq!(bound(&[p("media:ext=png"), p("media:ext!=pdf")]), p("media:ext!=pdf"));
+        // A key one input omits says nothing there, so the bound says nothing either.
+        assert_eq!(bound(&[p("media:ext=png;image"), p("media:image")]), p("media:image"));
+        assert_eq!(bound(&[]), p("media:"));
+
+        let err = TaggedUrn::least_upper_bound("media", &[p("media:image"), p("cap:image")]).unwrap_err();
+        assert_eq!(
+            err,
+            TaggedUrnError::PrefixMismatch { expected: "media".to_string(), actual: "cap".to_string() }
+        );
     }
 }
 

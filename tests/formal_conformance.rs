@@ -7,7 +7,8 @@
 //! `lake exe conformance`) is parsed by this crate's parser and must get the
 //! model's verdict — for the guarantee (`conforms_to`), the possibility
 //! (`meets`), and the complete reading of the instance (`satisfies`,
-//! `may_satisfy`). The same table runs in every mirror.
+//! `may_satisfy`) — and every set of URNs in it must get the model's bound
+//! (`least_upper_bound`). The same table runs in every mirror.
 
 use tagged_urn::TaggedUrn;
 
@@ -48,7 +49,20 @@ fn test599_every_row_of_the_model_s_table() {
             wrong.push(format!("specificity {u}: model {}", r["score"]));
         }
     }
-    assert!(rows.len() > 4000 && scores.len() > 60, "the table is the full one");
+    let bounds = table["bounds"].as_array().unwrap();
+    for r in bounds {
+        let urns: Vec<TaggedUrn> = r["urns"].as_array().unwrap().iter().map(parse).collect();
+        let expected = parse(&r["bound"]);
+        let bound = TaggedUrn::least_upper_bound("media", &urns).unwrap();
+        if bound != expected {
+            let names: Vec<String> = urns.iter().map(|u| u.to_string()).collect();
+            wrong.push(format!("bound of [{}]: {bound}, model {expected}", names.join(", ")));
+        }
+    }
+    assert!(
+        rows.len() > 4000 && scores.len() > 60 && bounds.len() > 5000,
+        "the table is the full one"
+    );
     assert!(
         wrong.is_empty(),
         "{} answer(s) differ from the model, e.g.\n  {}",
