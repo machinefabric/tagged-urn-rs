@@ -4,21 +4,23 @@ A tagged URN system with flat tag-based naming, pattern matching, and specificit
 
 ## Overview
 
-Tagged URN provides a formal system for tag-based identifiers with matching and comparison capabilities. It uses a flat key-value tag format that supports special pattern values, graded specificity ranking, and symmetric matching.
+Tagged URN provides a formal system for tag-based identifiers with matching and comparison capabilities. It uses a flat tag format in which each tag writes a constraint on its key, graded specificity ranking, and refinement decided by a proved model.
 
 ## Features
 
-- **Flat Tag Format** - Simple `key=value` pairs separated by semicolons
-- **Special Pattern Values** - `*` (must-have-any), `?` (unspecified), `!` (must-not-have)
-- **Value-less Tags** - Tags without values (`tag`) are must-have-any (`tag=*`)
-- **Case Insensitive** - All input normalized to lowercase (except quoted values)
+- **Flat Tag Format** - Tags separated by semicolons after a prefix: `prefix:key=value;marker`
+- **Six Tag Forms** - exact `k=v`, present `k`, absent `!k`, unconstrained `?k`, `k?=v` (absent or not v), `k!=v` (present and not v)
+- **Typed Tags** - Each tag is stored as the constraint it writes (`tagged_urn::Constraint`)
+- **Identifiers** - The prefix and every key are an ASCII letter followed by ASCII letters, digits and `-`
+- **Case Insensitive** - The prefix, keys and unquoted values are lowered; quoted values keep their case
+- **Literal Quoting** - A quoted value is always the literal value: `x="*"` is the exact value `*`
 - **Tag Order Independent** - Canonical alphabetical sorting
-- **Graded Specificity** - Exact values score higher than wildcards
-- **Smart Quoting** - Automatic quoting for special characters and case preservation
+- **Graded Specificity** - `?k` 0, `k?=v` 1, `k` 2, `k!=v` 3, `k=v` 4, `!k` 5
+- **Round Trip** - Every URN prints so that it reads back as itself
 
 ## Format
 
-Tagged URNs use a flat tag-based format: `cap:tag1=value1;tag2=value2;tag3=value3`
+Tagged URNs use a flat tag-based format: `cap:tag1=value1;tag2=value2;tag3`
 
 **Examples:**
 ```
@@ -27,36 +29,37 @@ cap:image;format=png;quality=high
 cap:generate;target=thumbnail;output=binary
 ```
 
-**Special Values:**
-| Value | Meaning | Example |
-|-------|---------|---------|
-| `K=v` | Must have key K with exact value v | `format=pdf` |
-| `K=*` | Must have key K with any value | `format=*` |
-| `K=!` | Must NOT have key K | `debug=!` |
-| `K=?` | No constraint on key K | `format=?` |
-| (missing) | No constraint (same as `?`) | |
+**Tag forms:**
+| Written | Aliases | Constraint | Meaning |
+|---------|---------|------------|---------|
+| `k=v` | | `Exact { value: v }` | Must have key k with exact value v |
+| `k` | `k=*` | `Present` | Must have key k with any value |
+| `!k` | `k!`, `k=!` | `Absent` | Must NOT have key k |
+| `?k` | `k?`, `k=?` | `Unconstrained` | No constraint on key k |
+| `k?=v` | `?k=v`, `k=?v` | `OptionalNot { value: v }` | Absent, or present and not v |
+| `k!=v` | `!k=v`, `k=!v` | `PresentNot { value: v }` | Present and not v |
+| (missing) | | | No constraint |
 
-**Value-less Tags:**
-- Tags without values mean must-have-any: `cap:extract;optimize` equals `cap:extract;optimize=*`
-- Useful for asserting tag presence: `cap:premium;feature=export`
+**Values:** an unquoted value takes any character but `;`, `=`, `"`, `\` and whitespace, and is lowered. A value that holds one of those, an uppercase letter to keep, or begins with `*`, `?` or `!` is written quoted, and a quoted value is literal.
 
 **Specificity:**
-- Graded scoring: exact value (3) > must-have-any (2) > must-not-have (1) > unspecified (0)
-- `cap:extract;ext=pdf` (specificity 6) is more specific than `cap:extract;ext=*` (specificity 5)
+- The sum of the per-tag scores: `cap:extract;ext=pdf` scores 6 (marker 2 + exact 4); `cap:extract;ext` scores 4.
 
 ## Usage
 
 ```rust
-use tagged_urn::{TaggedUrn, TaggedUrnBuilder};
+use tagged_urn::{Constraint, TaggedUrn, TaggedUrnBuilder};
 
 // Create from string
 let urn = TaggedUrn::from_string("cap:extract;target=metadata")?;
+assert_eq!(urn.get_tag("target"), Some(&Constraint::Exact { value: "metadata".into() }));
+assert!(urn.has_marker_tag("extract"));
 
 // Build with builder pattern
-let urn = TaggedUrnBuilder::new()
-    .tag("op", "extract")
-    .tag("target", "metadata")
-    .tag("ext", "pdf")
+let urn = TaggedUrnBuilder::new("cap")?
+    .marker("extract")?
+    .tag("target", "metadata")?
+    .tag("ext", "pdf")?
     .build()?;
 
 // Check matching - does instance conform to pattern's constraints?
@@ -66,7 +69,7 @@ if urn.conforms_to(&pattern)? {
 }
 
 // Compare specificity
-if urn.is_more_specific_than(&request) {
+if urn.is_more_specific_than(&pattern)? {
     println!("URN is more specific");
 }
 ```
@@ -133,7 +136,7 @@ proved model too.
 let general = TaggedUrn::from_string("cap:extract")?;
 let specific = TaggedUrn::from_string("cap:extract;ext=pdf")?;
 
-if specific.is_more_specific_than(&general) {
+if specific.is_more_specific_than(&general)? {
     println!("Specific URN preferred");
 }
 ```
@@ -141,11 +144,13 @@ if specific.is_more_specific_than(&general) {
 ### Builder Pattern
 
 ```rust
-let urn = TaggedUrnBuilder::new()
-    .tag("inference")
-    .tag("op", "conversation")
-    .tag("language", "en")
+let urn = TaggedUrnBuilder::new("cap")?
+    .marker("inference")?
+    .tag("op", "conversation")?
+    .tag("language", "en")?
+    .constraint("debug", Constraint::Absent)?
     .build()?;
+assert_eq!(urn.to_string(), "cap:!debug;inference;language=en;op=conversation");
 ```
 
 ## Cross-Language Compatibility
@@ -171,7 +176,7 @@ See [RULES.md](docs/RULES.md) for the definitive specification of Tagged URN for
 
 - `serde` - Serialization/deserialization
 - `serde_json` - JSON support
-- `regex` - Pattern validation
+- `lungo` - The runtime the code generated from the proved model runs on
 
 ## License
 

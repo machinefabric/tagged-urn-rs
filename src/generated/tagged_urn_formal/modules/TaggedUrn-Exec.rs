@@ -169,10 +169,9 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dleastUpperBound(x_1: Obj, x_2
             let x_5: Obj = rt::lean_box(0);
             let x_6: Obj = l_List_dmapTR_dloop_d__at___dTaggedUrn_dExec_dleastUpperBound_dspec__1(x_2, x_5);
             let x_7: Obj = l_TaggedUrn_dboundTags(x_6);
-            let x_8: Obj = l_TaggedUrn_dstoredTags(x_7);
-            let x_9: Obj = rt::lean_alloc_ctor(1, 1, 0);
-            rt::lean_ctor_set(x_9, 0, x_8);
-            return x_9;
+            let x_8: Obj = rt::lean_alloc_ctor(1, 1, 0);
+            rt::lean_ctor_set(x_8, 0, x_7);
+            return x_8;
         }
     }
 }

@@ -2,7 +2,7 @@
   "lean_version": "4.34.1",
   "lean_githash": "5045d0056413266e57c625dcd7c365b10e377c52",
   "bir_version": 3,
-  "generator_version": "1.127.0",
+  "generator_version": "1.126.0",
   "runtime_abi": 3,
   "modules": [
     "Init.Prelude",
@@ -672,7 +672,7 @@
     "Std.Http.Data.URI.Basic",
     "Lean.Elab.Structure"
   ],
-  "declarations": 580,
+  "declarations": 568,
   "exports": [
     {
       "lean_name": "TaggedUrn.Exec.comparable",
@@ -692,7 +692,7 @@
       "lean_name": "TaggedUrn.Exec.leastUpperBound",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::least_upper_bound",
-      "lean_type": "String → List TaggedUrn.Exec.Wf → Option (List (String × String))",
+      "lean_type": "String → List TaggedUrn.Exec.Wf → Option (List (String × TaggedUrn.Constraint))",
       "source": "TaggedUrn/Exec.lean:126:1"
     },
     {
