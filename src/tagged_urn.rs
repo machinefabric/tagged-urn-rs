@@ -729,8 +729,8 @@ impl TaggedUrn {
             || value.starts_with(['*', '?', '!'])
     }
 
-    /// Quote a value for serialization
-    fn quote_value(value: &str) -> String {
+    /// A value quoted: `"`, the value with `"` and `\` escaped, and `"`.
+    pub fn quote_value(value: &str) -> String {
         let mut result = String::with_capacity(value.len() + 2);
         result.push('"');
         for c in value.chars() {
@@ -743,8 +743,9 @@ impl TaggedUrn {
         result
     }
 
-    /// A value as it is written: bare, or quoted when it must be.
-    fn write_value(value: &str) -> String {
+    /// A value as a tag writes it: bare, or quoted when it must be to read
+    /// back as itself.
+    pub fn write_value(value: &str) -> String {
         if Self::needs_quoting(value) {
             Self::quote_value(value)
         } else {
