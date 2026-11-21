@@ -4,7 +4,7 @@
   "provenance": {
     "lean_version": "4.34.1",
     "lean_githash": "5045d0056413266e57c625dcd7c365b10e377c52",
-    "lungo_version": "1.127.0",
+    "lungo_version": "1.126.0",
     "bir_version": 3,
     "runtime_abi": 3
   },
@@ -254,7 +254,7 @@
         "TaggedUrn.Exec.leastUpperBound"
       ],
       "specifications": [],
-      "statement": "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × String)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    out = TaggedUrn.storedTags (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)).tags ∧\n      TaggedUrn.Sorted (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)).tags",
+      "statement": "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    out = (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)).tags ∧\n      TaggedUrn.Sorted (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)).tags",
       "status": "proved",
       "evidence_trust": {
         "axioms": [
@@ -266,7 +266,7 @@
       },
       "assumptions": [],
       "package": "tagged_urn_formal",
-      "fingerprint": "5b9672051c7acceda18316f9b1b9767fe351580fac69f82e20dea84f1491bade",
+      "fingerprint": "115a733718825f3e1f4a36a3caee9fe8d6454f336652eabd03d7191248d203ca",
       "source": {
         "package": "tagged_urn_formal",
         "file": "TaggedUrn/Exec.lean",
@@ -299,7 +299,7 @@
       },
       "assumptions": [],
       "package": "tagged_urn_formal",
-      "fingerprint": "15beaa3918c1ab8f4af928b1e0a09606a0a4d3742f1fe2875ae5044bb8bf7b47",
+      "fingerprint": "fd4f0e45e28d285cb8361305402dc37cd11658a47f365dc0e2b75f62ea97f66c",
       "source": {
         "package": "tagged_urn_formal",
         "file": "TaggedUrn/Exec.lean",
@@ -320,7 +320,7 @@
         "TaggedUrn.Exec.leastUpperBound"
       ],
       "specifications": [],
-      "statement": "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × String)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    us ≠ [] →\n      ∀ (b : TaggedUrn.Urn),\n        (∀ (u : TaggedUrn.Exec.Wf), u ∈ us → TaggedUrn.refines u.urn b) →\n          (∀ (k r : String),\n              b.tag k = TaggedUrn.Constraint.presentNot r ∨ b.tag k = TaggedUrn.Constraint.optionalNot r →\n                ∃ u, u ∈ us ∧ (u.urn.tag k).named = some r) →\n            TaggedUrn.refines (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)) b",
+      "statement": "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    us ≠ [] →\n      ∀ (b : TaggedUrn.Urn),\n        (∀ (u : TaggedUrn.Exec.Wf), u ∈ us → TaggedUrn.refines u.urn b) →\n          (∀ (k r : String),\n              b.tag k = TaggedUrn.Constraint.presentNot r ∨ b.tag k = TaggedUrn.Constraint.optionalNot r →\n                ∃ u, u ∈ us ∧ (u.urn.tag k).named = some r) →\n            TaggedUrn.refines (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)) b",
       "status": "proved",
       "evidence_trust": {
         "axioms": [
@@ -332,17 +332,50 @@
       },
       "assumptions": [],
       "package": "tagged_urn_formal",
-      "fingerprint": "587f041c9dadaae4c3b8b12add3f7b5c33dc5e9412fc64138cc1d9869b5f6f69",
+      "fingerprint": "879df22171190fda9e358ecb2d94cb8808151d59b62c1f9a15bf61fc6e63ea80",
       "source": {
         "package": "tagged_urn_formal",
         "file": "TaggedUrn/Exec.lean",
         "start": {
-          "line": 161,
+          "line": 178,
           "column": 1
         },
         "end": {
-          "line": 180,
+          "line": 197,
           "column": 46
+        }
+      }
+    },
+    {
+      "name": "TaggedUrn.Exec.leastUpperBound_no_missing",
+      "relation": "lungo.law",
+      "subjects": [
+        "TaggedUrn.Exec.leastUpperBound"
+      ],
+      "specifications": [],
+      "statement": "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    ∀ (p : String × TaggedUrn.Constraint), p ∈ out → p.snd ≠ TaggedUrn.Constraint.missing",
+      "status": "proved",
+      "evidence_trust": {
+        "axioms": [
+          "Classical.choice",
+          "Quot.sound",
+          "propext"
+        ],
+        "depends_on_sorry": false
+      },
+      "assumptions": [],
+      "package": "tagged_urn_formal",
+      "fingerprint": "e05372e3884dc9d35d8eb79e6eaa17d32af8294d827042eb1c849742d46b1d9b",
+      "source": {
+        "package": "tagged_urn_formal",
+        "file": "TaggedUrn/Exec.lean",
+        "start": {
+          "line": 152,
+          "column": 1
+        },
+        "end": {
+          "line": 167,
+          "column": 12
         }
       }
     },
@@ -353,7 +386,7 @@
         "TaggedUrn.Exec.leastUpperBound"
       ],
       "specifications": [],
-      "statement": "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × String)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    ∀ (u : TaggedUrn.Exec.Wf),\n      u ∈ us → TaggedUrn.refines u.urn (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us))",
+      "statement": "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    ∀ (u : TaggedUrn.Exec.Wf),\n      u ∈ us → TaggedUrn.refines u.urn (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us))",
       "status": "proved",
       "evidence_trust": {
         "axioms": [
@@ -365,16 +398,16 @@
       },
       "assumptions": [],
       "package": "tagged_urn_formal",
-      "fingerprint": "c94f147fe4f61a0f6fe45e8d9ac6040a8fbb7a3b38b87498d017ae36ba79b22a",
+      "fingerprint": "b39ceb9b5509ab9297e0e400884e70e63fa6396313ab7b2d14ed17185c0b87ac",
       "source": {
         "package": "tagged_urn_formal",
         "file": "TaggedUrn/Exec.lean",
         "start": {
-          "line": 152,
+          "line": 169,
           "column": 1
         },
         "end": {
-          "line": 159,
+          "line": 176,
           "column": 67
         }
       }
@@ -819,7 +852,6 @@
           "lean_array_push",
           "lean_array_to_list",
           "lean_mk_empty_array_with_capacity",
-          "lean_string_append",
           "lean_string_dec_eq",
           "lean_string_dec_lt"
         ]
@@ -828,6 +860,7 @@
         "TaggedUrn.Exec.leastUpperBound_eq",
         "TaggedUrn.Exec.leastUpperBound_isSome_iff",
         "TaggedUrn.Exec.leastUpperBound_least",
+        "TaggedUrn.Exec.leastUpperBound_no_missing",
         "TaggedUrn.Exec.leastUpperBound_sound"
       ],
       "assumptions": [],
