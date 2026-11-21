@@ -71,13 +71,30 @@ impl PartialOrd for TaggedUrn {
 }
 
 impl Ord for TaggedUrn {
-    /// By prefix, then by canonical text: two URNs are equal exactly when
-    /// their canonical texts are, since every URN prints so that it reads
-    /// back as itself.
+    /// By the URN's parts, never its text: the prefix, then the tags in key
+    /// order, each by its key, then by its constraint's form in the truth
+    /// table's order (unconstrained, optionalNot, present, presentNot, exact,
+    /// absent), then by its value; a URN whose tags are the beginning of
+    /// another's stands first. The text would order `file;sample` after
+    /// `file-path`, wherever one key is the beginning of another.
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        self.prefix
-            .cmp(&other.prefix)
-            .then_with(|| self.tags_to_string().cmp(&other.tags_to_string()))
+        fn part(c: &Constraint) -> (u8, &str) {
+            match c {
+                Constraint::Unconstrained => (0, ""),
+                Constraint::OptionalNot { value } => (1, value),
+                Constraint::Present => (2, ""),
+                Constraint::PresentNot { value } => (3, value),
+                Constraint::Exact { value } => (4, value),
+                Constraint::Absent => (5, ""),
+                Constraint::Missing => unreachable!("Missing is never stored"),
+            }
+        }
+        self.prefix.cmp(&other.prefix).then_with(|| {
+            self.tags
+                .iter()
+                .map(|(k, c)| (k, part(c)))
+                .cmp(other.tags.iter().map(|(k, c)| (k, part(c))))
+        })
     }
 }
 
@@ -3667,6 +3684,35 @@ mod tests {
             err("t:a=\"\\n\""),
             TaggedUrnError::InvalidEscapeSequence(_)
         ));
+    }
+
+    // TEST7241: URNs are ordered by their parts, never their text: the prefix, then each tag in key order by key, then by its constraint's form (unconstrained, optionalNot, present, presentNot, exact, absent), then by its value
+    #[test]
+    fn test7241_urns_are_ordered_by_their_parts() {
+        let p = |s: &str| TaggedUrn::from_string(s).unwrap();
+        let before = |a: &str, b: &str| {
+            assert!(p(a) < p(b), "{a} stands before {b}");
+            assert!(p(b) > p(a), "{b} stands after {a}");
+        };
+
+        // The text orders file-path first; the parts order file first.
+        assert!(p("t:file-path").to_string() < p("t:file;sample").to_string());
+        before("t:file;sample", "t:file-path");
+        // The prefix decides first.
+        before("b:z", "c:a");
+        // A URN whose tags are the beginning of another's stands first.
+        before("t:file", "t:file;sample");
+        // One key, each form in the truth table's order.
+        let forms = ["t:?x", "t:x?=v", "t:x", "t:x!=v", "t:x=v", "t:!x"];
+        for pair in forms.windows(2) {
+            before(pair[0], pair[1]);
+        }
+        // One form, values in their own order; a quoted value is a value.
+        before("t:x=ascii", "t:x=utf8");
+        before(r#"t:x="*""#, "t:x=a");
+        before("t:x?=a", "t:x?=b");
+        // Writing order is no part of it.
+        assert_eq!(p("t:b;a").cmp(&p("t:a;b")), std::cmp::Ordering::Equal);
     }
 }
 
