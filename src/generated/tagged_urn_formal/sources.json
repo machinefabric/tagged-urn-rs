@@ -672,6 +672,18 @@
     ]
   },
   {
+    "lean_name": "List.any",
+    "file": "<lean>/Init/Data/List/Basic.lean",
+    "start": [
+      1894,
+      1
+    ],
+    "end": [
+      1908,
+      32
+    ]
+  },
+  {
     "lean_name": "List.appendTR",
     "file": "<lean>/Init/Data/List/Basic.lean",
     "start": [
@@ -1272,6 +1284,18 @@
     ]
   },
   {
+    "lean_name": "String.length",
+    "file": "<lean>/Init/Data/String/Length.lean",
+    "start": [
+      16,
+      1
+    ],
+    "end": [
+      26,
+      18
+    ]
+  },
+  {
     "lean_name": "String.ofList",
     "file": "<lean>/Init/Prelude.lean",
     "start": [
@@ -1581,11 +1605,11 @@
     "lean_name": "TaggedUrn.Exec.leastUpperBound",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      126,
+      136,
       1
     ],
     "end": [
-      132,
+      142,
       12
     ]
   },
@@ -1638,6 +1662,18 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.Exec.refinesBothClosed",
+    "file": "TaggedUrn/Exec.lean",
+    "start": [
+      118,
+      1
+    ],
+    "end": [
+      120,
+      85
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.Exec.refinesClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
@@ -1677,11 +1713,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMatchClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      118,
+      128,
       1
     ],
     "end": [
-      119,
+      129,
       82
     ]
   },
@@ -1740,6 +1776,18 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.Urn.delta",
+    "file": "TaggedUrn/Patch.lean",
+    "start": [
+      124,
+      1
+    ],
+    "end": [
+      125,
+      58
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.Urn.keys",
     "file": "TaggedUrn/Urn.lean",
     "start": [
@@ -1749,6 +1797,18 @@
     "end": [
       25,
       60
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Urn.override",
+    "file": "TaggedUrn/Patch.lean",
+    "start": [
+      184,
+      1
+    ],
+    "end": [
+      185,
+      76
     ]
   },
   {
@@ -1866,6 +1926,30 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.deltaTags",
+    "file": "TaggedUrn/Patch.lean",
+    "start": [
+      118,
+      1
+    ],
+    "end": [
+      122,
+      74
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.freshFor",
+    "file": "TaggedUrn/Patch.lean",
+    "start": [
+      28,
+      1
+    ],
+    "end": [
+      29,
+      88
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.insertKey",
     "file": "TaggedUrn/Join.lean",
     "start": [
@@ -1887,6 +1971,18 @@
     "end": [
       372,
       54
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.instDecidableAllows",
+    "file": "TaggedUrn/Patch.lean",
+    "start": [
+      23,
+      1
+    ],
+    "end": [
+      24,
+      75
     ]
   },
   {
@@ -2055,6 +2151,18 @@
     "end": [
       34,
       38
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.instDecidableRefinesBothClosed",
+    "file": "TaggedUrn/Urn.lean",
+    "start": [
+      308,
+      1
+    ],
+    "end": [
+      309,
+      48
     ]
   },
   {
@@ -2274,6 +2382,30 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.overrideAt",
+    "file": "TaggedUrn/Patch.lean",
+    "start": [
+      174,
+      1
+    ],
+    "end": [
+      176,
+      53
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.overrideTags",
+    "file": "TaggedUrn/Patch.lean",
+    "start": [
+      178,
+      1
+    ],
+    "end": [
+      182,
+      76
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.tagMatch",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
@@ -2283,6 +2415,18 @@
     "end": [
       63,
       29
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.tagMatchBothClosed",
+    "file": "TaggedUrn/Sorted.lean",
+    "start": [
+      338,
+      1
+    ],
+    "end": [
+      339,
+      79
     ]
   },
   {
@@ -2310,6 +2454,18 @@
     ]
   },
   {
+    "lean_name": "TaggedUrn.tagMeets3",
+    "file": "TaggedUrn/Patch.lean",
+    "start": [
+      53,
+      1
+    ],
+    "end": [
+      56,
+      70
+    ]
+  },
+  {
     "lean_name": "TaggedUrn.tagMeetsClosed",
     "file": "TaggedUrn/Sorted.lean",
     "start": [
@@ -2322,14 +2478,26 @@
     ]
   },
   {
-    "lean_name": "TaggedUrn.tagScore",
-    "file": "TaggedUrn/Urn.lean",
+    "lean_name": "TaggedUrn.tagSame",
+    "file": "TaggedUrn/Patch.lean",
     "start": [
-      299,
+      84,
       1
     ],
     "end": [
-      306,
+      85,
+      70
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.tagScore",
+    "file": "TaggedUrn/Urn.lean",
+    "start": [
+      357,
+      1
+    ],
+    "end": [
+      364,
       16
     ]
   },
@@ -2349,11 +2517,11 @@
     "lean_name": "TaggedUrn.urnScore",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      308,
+      366,
       1
     ],
     "end": [
-      311,
+      369,
       49
     ]
   },
@@ -2499,6 +2667,18 @@
     "end": [
       205,
       48
+    ]
+  },
+  {
+    "lean_name": "_private.Init.Data.Nat.Basic.0.Nat.repeatTR.loop",
+    "file": "<lean>/Init/Data/Nat/Basic.lean",
+    "start": [
+      78,
+      25
+    ],
+    "end": [
+      80,
+      32
     ]
   },
   {

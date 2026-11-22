@@ -497,6 +497,28 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dmergeWith_d__boxed(x_1: Obj, x_2: O
     return x_5;
 }
 
+// Lean: TaggedUrn.tagMatchBothClosed
+// Source: TaggedUrn/Sorted.lean:338:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatchBothClosed(x_1: Obj, x_2: Obj) -> u8 {
+    let x_3: Obj = l_TaggedUrn_dConstraint_dclosed(x_1);
+    let x_4: Obj = l_TaggedUrn_dConstraint_dclosed(x_2);
+    let x_5: u8 = l_TaggedUrn_dtagMatch(x_3, x_4);
+    rt::lean_dec(x_4);
+    rt::lean_dec(x_3);
+    return x_5;
+}
+
+// Lean: TaggedUrn.tagMatchBothClosed._boxed
+// Compiled from: TaggedUrn.tagMatchBothClosed
+// Source: TaggedUrn/Sorted.lean:338:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatchBothClosed_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
+    let x_3: u8 = l_TaggedUrn_dtagMatchBothClosed(x_1, x_2);
+    rt::lean_dec(x_2);
+    rt::lean_dec(x_1);
+    let x_4: Obj = rt::lean_box(x_3 as usize);
+    return x_4;
+}
+
 // Lean: TaggedUrn.tagMatchClosed
 // Source: TaggedUrn/Sorted.lean:315:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatchClosed(x_1: Obj, x_2: Obj) -> u8 {
