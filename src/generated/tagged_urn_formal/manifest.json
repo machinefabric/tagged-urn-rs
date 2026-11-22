@@ -668,110 +668,118 @@
     "TaggedUrn.Sorted",
     "TaggedUrn.Join",
     "TaggedUrn.Patch",
+    "TaggedUrn.Split",
     "TaggedUrn.Exec",
     "Lean.Data.Iterators.Producers.PersistentHashMap",
-    "Std.Http.Data.URI.Basic",
-    "Lean.Elab.Structure"
+    "Lean.Elab.Structure",
+    "Lungo.Attr.Names"
   ],
-  "declarations": 603,
+  "declarations": 580,
   "exports": [
     {
       "lean_name": "TaggedUrn.Exec.comparable",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::comparable",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "TaggedUrn/Exec.lean:79:1"
+      "source": "TaggedUrn/Exec.lean:80:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.equivalent",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::equivalent",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "TaggedUrn/Exec.lean:72:1"
+      "source": "TaggedUrn/Exec.lean:73:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.leastUpperBound",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::least_upper_bound",
       "lean_type": "String → List TaggedUrn.Exec.Wf → Option (List (String × TaggedUrn.Constraint))",
-      "source": "TaggedUrn/Exec.lean:153:1"
+      "source": "TaggedUrn/Exec.lean:160:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.make",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::make",
       "lean_type": "String → List (String × TaggedUrn.Constraint) → Option TaggedUrn.Exec.Wf",
-      "source": "TaggedUrn/Exec.lean:27:1"
+      "source": "TaggedUrn/Exec.lean:28:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.meets",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::meets",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "TaggedUrn/Exec.lean:99:1"
+      "source": "TaggedUrn/Exec.lean:106:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.meetsClosed",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::meets_closed",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "TaggedUrn/Exec.lean:125:1"
+      "source": "TaggedUrn/Exec.lean:132:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.parts",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::parts",
       "lean_type": "TaggedUrn.Exec.Wf → String × List (String × TaggedUrn.Constraint)",
-      "source": "TaggedUrn/Exec.lean:47:1"
+      "source": "TaggedUrn/Exec.lean:48:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.refines",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::refines",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "TaggedUrn/Exec.lean:64:1"
+      "source": "TaggedUrn/Exec.lean:65:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.refinesBothClosed",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::refines_both_closed",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "TaggedUrn/Exec.lean:135:1"
+      "source": "TaggedUrn/Exec.lean:142:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.refinesClosed",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::refines_closed",
       "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
-      "source": "TaggedUrn/Exec.lean:114:1"
+      "source": "TaggedUrn/Exec.lean:121:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.specificity",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::specificity",
       "lean_type": "TaggedUrn.Exec.Wf → Nat",
-      "source": "TaggedUrn/Exec.lean:86:1"
+      "source": "TaggedUrn/Exec.lean:87:1"
+    },
+    {
+      "lean_name": "TaggedUrn.Exec.tagSpecificity",
+      "module": "TaggedUrn.Exec",
+      "rust_path": "exec::tag_specificity",
+      "lean_type": "TaggedUrn.Constraint → Nat",
+      "source": "TaggedUrn/Exec.lean:93:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.valuesMatch",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::values_match",
       "lean_type": "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
-      "source": "TaggedUrn/Exec.lean:92:1"
+      "source": "TaggedUrn/Exec.lean:99:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.valuesMatchClosed",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::values_match_closed",
       "lean_type": "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
-      "source": "TaggedUrn/Exec.lean:145:1"
+      "source": "TaggedUrn/Exec.lean:152:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.valuesMeet",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::values_meet",
       "lean_type": "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
-      "source": "TaggedUrn/Exec.lean:107:1"
+      "source": "TaggedUrn/Exec.lean:114:1"
     }
   ]
 }

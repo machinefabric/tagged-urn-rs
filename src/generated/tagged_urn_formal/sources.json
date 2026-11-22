@@ -720,6 +720,42 @@
     ]
   },
   {
+    "lean_name": "List.eraseDups",
+    "file": "<lean>/Init/Data/List/Basic.lean",
+    "start": [
+      2287,
+      1
+    ],
+    "end": [
+      2296,
+      76
+    ]
+  },
+  {
+    "lean_name": "List.eraseDupsBy",
+    "file": "<lean>/Init/Data/List/Basic.lean",
+    "start": [
+      2267,
+      1
+    ],
+    "end": [
+      2283,
+      31
+    ]
+  },
+  {
+    "lean_name": "List.eraseDupsBy.loop",
+    "file": "<lean>/Init/Data/List/Basic.lean",
+    "start": [
+      2279,
+      3
+    ],
+    "end": [
+      2283,
+      31
+    ]
+  },
+  {
     "lean_name": "List.filterMapTR.go",
     "file": "<lean>/Init/Data/List/Impl.lean",
     "start": [
@@ -729,6 +765,18 @@
     "end": [
       111,
       35
+    ]
+  },
+  {
+    "lean_name": "List.filterTR.loop",
+    "file": "<lean>/Init/Data/List/Basic.lean",
+    "start": [
+      2472,
+      17
+    ],
+    "end": [
+      2476,
+      28
     ]
   },
   {
@@ -789,6 +837,18 @@
     "end": [
       1398,
       54
+    ]
+  },
+  {
+    "lean_name": "List.isEmpty",
+    "file": "<lean>/Init/Data/List/Basic.lean",
+    "start": [
+      763,
+      1
+    ],
+    "end": [
+      776,
+      20
     ]
   },
   {
@@ -1041,30 +1101,6 @@
     "end": [
       205,
       43
-    ]
-  },
-  {
-    "lean_name": "Option.instDecidableEq",
-    "file": "<lean>/Init/Data/Option/Basic.lean",
-    "start": [
-      18,
-      1
-    ],
-    "end": [
-      30,
-      115
-    ]
-  },
-  {
-    "lean_name": "Option.repr",
-    "file": "<lean>/Init/Data/Repr.lean",
-    "start": [
-      113,
-      1
-    ],
-    "end": [
-      121,
-      65
     ]
   },
   {
@@ -1368,74 +1404,38 @@
     ]
   },
   {
-    "lean_name": "TaggedUrn.Allowed.bound",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      152,
-      1
-    ],
-    "end": [
-      159,
-      95
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Allowed.nothing",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      131,
-      1
-    ],
-    "end": [
-      132,
-      50
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Allowed.union",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      120,
-      1
-    ],
-    "end": [
-      121,
-      54
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Constraint.absent.elim",
+    "lean_name": "TaggedUrn.Constraint.absent",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      25,
-      68
-    ],
-    "end": [
-      25,
-      76
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Constraint.allowed",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      53,
+      219,
       1
     ],
     "end": [
-      60,
-      30
+      220,
+      52
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.admitsAbsence",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      472,
+      1
+    ],
+    "end": [
+      474,
+      70
     ]
   },
   {
     "lean_name": "TaggedUrn.Constraint.closed",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      228,
+      489,
       1
     ],
     "end": [
-      230,
+      491,
       11
     ]
   },
@@ -1443,11 +1443,11 @@
     "lean_name": "TaggedUrn.Constraint.ctorElim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      22,
+      54,
       1
     ],
     "end": [
-      26,
+      59,
       29
     ]
   },
@@ -1458,134 +1458,230 @@
     "end": null
   },
   {
-    "lean_name": "TaggedUrn.Constraint.exact.elim",
+    "lean_name": "TaggedUrn.Constraint.empty",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      25,
-      43
+      319,
+      1
     ],
     "end": [
-      25,
+      320,
+      78
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.exact",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      217,
+      1
+    ],
+    "end": [
+      218,
+      66
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.instDecidableAllows",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      238,
+      1
+    ],
+    "end": [
+      239,
+      52
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.isTop",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      462,
+      1
+    ],
+    "end": [
+      463,
       67
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.join",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      444,
+      1
+    ],
+    "end": [
+      446,
+      64
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.mayBeAbsent",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      222,
+      1
+    ],
+    "end": [
+      225,
+      21
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.meet",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      448,
+      1
+    ],
+    "end": [
+      450,
+      64
     ]
   },
   {
     "lean_name": "TaggedUrn.Constraint.missing.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      24,
+      57,
       3
     ],
     "end": [
-      24,
+      57,
       12
     ]
   },
   {
-    "lean_name": "TaggedUrn.Constraint.named",
+    "lean_name": "TaggedUrn.Constraint.nothing",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      256,
+      25,
       1
     ],
     "end": [
-      259,
-      14
+      26,
+      65
     ]
   },
   {
-    "lean_name": "TaggedUrn.Constraint.norm",
+    "lean_name": "TaggedUrn.Constraint.optionalNot",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      121,
+      211,
       1
     ],
     "end": [
-      125,
-      11
+      212,
+      72
     ]
   },
   {
-    "lean_name": "TaggedUrn.Constraint.optionalNot.elim",
-    "file": "TaggedUrn/Constraint.lean",
+    "lean_name": "TaggedUrn.Constraint.parts",
+    "file": "TaggedUrn/Split.lean",
     "start": [
-      24,
-      29
-    ],
-    "end": [
-      24,
-      59
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Constraint.present.elim",
-    "file": "TaggedUrn/Constraint.lean",
-    "start": [
-      25,
-      3
-    ],
-    "end": [
-      25,
-      12
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Constraint.presentNot.elim",
-    "file": "TaggedUrn/Constraint.lean",
-    "start": [
-      25,
-      13
-    ],
-    "end": [
-      25,
-      42
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Constraint.unconstrained.elim",
-    "file": "TaggedUrn/Constraint.lean",
-    "start": [
-      24,
-      13
-    ],
-    "end": [
-      24,
-      28
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Constraint.val",
-    "file": "TaggedUrn/Constraint.lean",
-    "start": [
-      87,
+      22,
       1
     ],
     "end": [
-      90,
-      12
+      30,
+      49
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.present",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      213,
+      1
+    ],
+    "end": [
+      214,
+      55
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.presentNot",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      215,
+      1
+    ],
+    "end": [
+      216,
+      72
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.unconstrained",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      209,
+      1
+    ],
+    "end": [
+      210,
+      60
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.vals",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      227,
+      1
+    ],
+    "end": [
+      230,
+      23
     ]
   },
   {
     "lean_name": "TaggedUrn.Constraint.witness",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      147,
+      350,
       1
     ],
     "end": [
-      152,
-      21
+      352,
+      76
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.witness?",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      304,
+      1
+    ],
+    "end": [
+      306,
+      63
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Constraint.written.elim",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      58,
+      3
+    ],
+    "end": [
+      58,
+      46
     ]
   },
   {
     "lean_name": "TaggedUrn.Exec.comparable",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      79,
+      80,
       1
     ],
     "end": [
-      79,
+      80,
       63
     ]
   },
@@ -1593,11 +1689,11 @@
     "lean_name": "TaggedUrn.Exec.equivalent",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      72,
+      73,
       1
     ],
     "end": [
-      72,
+      73,
       63
     ]
   },
@@ -1605,11 +1701,11 @@
     "lean_name": "TaggedUrn.Exec.leastUpperBound",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      153,
+      160,
       1
     ],
     "end": [
-      159,
+      166,
       12
     ]
   },
@@ -1617,11 +1713,11 @@
     "lean_name": "TaggedUrn.Exec.make",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      27,
+      28,
       1
     ],
     "end": [
-      30,
+      31,
       61
     ]
   },
@@ -1629,11 +1725,11 @@
     "lean_name": "TaggedUrn.Exec.meets",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      99,
+      106,
       1
     ],
     "end": [
-      101,
+      108,
       75
     ]
   },
@@ -1641,11 +1737,11 @@
     "lean_name": "TaggedUrn.Exec.meetsClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      125,
+      132,
       1
     ],
     "end": [
-      127,
+      134,
       81
     ]
   },
@@ -1653,11 +1749,11 @@
     "lean_name": "TaggedUrn.Exec.parts",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      47,
+      48,
       1
     ],
     "end": [
-      50,
+      51,
       87
     ]
   },
@@ -1665,11 +1761,11 @@
     "lean_name": "TaggedUrn.Exec.refines",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      64,
+      65,
       1
     ],
     "end": [
-      66,
+      67,
       66
     ]
   },
@@ -1677,11 +1773,11 @@
     "lean_name": "TaggedUrn.Exec.refinesBothClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      135,
+      142,
       1
     ],
     "end": [
-      137,
+      144,
       85
     ]
   },
@@ -1689,11 +1785,11 @@
     "lean_name": "TaggedUrn.Exec.refinesClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      114,
+      121,
       1
     ],
     "end": [
-      117,
+      124,
       81
     ]
   },
@@ -1701,23 +1797,35 @@
     "lean_name": "TaggedUrn.Exec.specificity",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      86,
+      87,
       1
     ],
     "end": [
-      87,
+      88,
       49
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.tagSpecificity",
+    "file": "TaggedUrn/Exec.lean",
+    "start": [
+      93,
+      1
+    ],
+    "end": [
+      94,
+      56
     ]
   },
   {
     "lean_name": "TaggedUrn.Exec.valuesMatch",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      92,
+      99,
       1
     ],
     "end": [
-      93,
+      100,
       70
     ]
   },
@@ -1725,11 +1833,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMatchClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      145,
+      152,
       1
     ],
     "end": [
-      146,
+      153,
       82
     ]
   },
@@ -1737,11 +1845,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMeet",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      107,
+      114,
       1
     ],
     "end": [
-      108,
+      115,
       57
     ]
   },
@@ -1749,11 +1857,11 @@
     "lean_name": "TaggedUrn.KeyState.ctorElim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      28,
+      40,
       1
     ],
     "end": [
-      32,
+      44,
       29
     ]
   },
@@ -1767,11 +1875,11 @@
     "lean_name": "TaggedUrn.KeyState.set.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      31,
+      43,
       3
     ],
     "end": [
-      31,
+      43,
       25
     ]
   },
@@ -1779,11 +1887,11 @@
     "lean_name": "TaggedUrn.KeyState.unset.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      30,
+      42,
       3
     ],
     "end": [
-      30,
+      42,
       10
     ]
   },
@@ -1791,11 +1899,11 @@
     "lean_name": "TaggedUrn.Urn.delta",
     "file": "TaggedUrn/Patch.lean",
     "start": [
-      124,
+      86,
       1
     ],
     "end": [
-      125,
+      87,
       58
     ]
   },
@@ -1815,12 +1923,24 @@
     "lean_name": "TaggedUrn.Urn.override",
     "file": "TaggedUrn/Patch.lean",
     "start": [
-      184,
+      146,
       1
     ],
     "end": [
-      185,
+      147,
       76
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Urn.splits",
+    "file": "TaggedUrn/Split.lean",
+    "start": [
+      185,
+      1
+    ],
+    "end": [
+      186,
+      91
     ]
   },
   {
@@ -1836,80 +1956,128 @@
     ]
   },
   {
-    "lean_name": "TaggedUrn.Values.cof.elim",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      34,
-      3
-    ],
-    "end": [
-      34,
-      35
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Values.ctorElim",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      31,
-      1
-    ],
-    "end": [
-      35,
-      29
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Values.ctorIdx",
-    "file": "TaggedUrn/Join.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "TaggedUrn.Values.fin.elim",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      33,
-      3
-    ],
-    "end": [
-      33,
-      31
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.Values.keep",
-    "file": "TaggedUrn/Join.lean",
+    "lean_name": "TaggedUrn.Values.allows",
+    "file": "TaggedUrn/Constraint.lean",
     "start": [
       67,
       1
     ],
     "end": [
-      70,
-      20
+      69,
+      36
     ]
   },
   {
-    "lean_name": "TaggedUrn.Values.union",
-    "file": "TaggedUrn/Join.lean",
+    "lean_name": "TaggedUrn.Values.ctorElim",
+    "file": "TaggedUrn/Constraint.lean",
     "start": [
-      72,
+      46,
       1
     ],
     "end": [
-      77,
+      52,
       29
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.ctorIdx",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "TaggedUrn.Values.join",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      84,
+      1
+    ],
+    "end": [
+      88,
+      71
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.meet",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      78,
+      1
+    ],
+    "end": [
+      82,
+      45
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.none",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      90,
+      1
+    ],
+    "end": [
+      93,
+      23
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.noneOf.elim",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      50,
+      3
+    ],
+    "end": [
+      51,
+      30
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.oneOf.elim",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      48,
+      3
+    ],
+    "end": [
+      49,
+      29
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.sub",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      71,
+      1
+    ],
+    "end": [
+      76,
+      58
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Values.witness",
+    "file": "TaggedUrn/Constraint.lean",
+    "start": [
+      174,
+      1
+    ],
+    "end": [
+      178,
+      32
     ]
   },
   {
     "lean_name": "TaggedUrn.boundAt",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      410,
+      182,
       1
     ],
     "end": [
-      411,
+      183,
       84
     ]
   },
@@ -1917,11 +2085,11 @@
     "lean_name": "TaggedUrn.boundTags",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      413,
+      185,
       1
     ],
     "end": [
-      415,
+      187,
       97
     ]
   },
@@ -1929,11 +2097,11 @@
     "lean_name": "TaggedUrn.boundUrn",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      452,
+      224,
       1
     ],
     "end": [
-      453,
+      225,
       79
     ]
   },
@@ -1941,35 +2109,35 @@
     "lean_name": "TaggedUrn.deltaTags",
     "file": "TaggedUrn/Patch.lean",
     "start": [
-      118,
+      80,
       1
     ],
     "end": [
-      122,
+      84,
       74
     ]
   },
   {
-    "lean_name": "TaggedUrn.freshFor",
-    "file": "TaggedUrn/Patch.lean",
+    "lean_name": "TaggedUrn.fresh",
+    "file": "TaggedUrn/Constraint.lean",
     "start": [
-      28,
+      99,
       1
     ],
     "end": [
-      29,
-      88
+      101,
+      47
     ]
   },
   {
     "lean_name": "TaggedUrn.insertKey",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      323,
+      95,
       1
     ],
     "end": [
-      326,
+      98,
       94
     ]
   },
@@ -1977,59 +2145,23 @@
     "lean_name": "TaggedUrn.insertKeys",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      369,
+      141,
       1
     ],
     "end": [
-      372,
+      144,
       54
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.instDecidableAllows",
-    "file": "TaggedUrn/Patch.lean",
-    "start": [
-      23,
-      1
-    ],
-    "end": [
-      24,
-      75
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.instDecidableEqAllowed",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      47,
-      12
-    ],
-    "end": [
-      47,
-      23
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.instDecidableEqAllowed.decEq",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      47,
-      12
-    ],
-    "end": [
-      47,
-      23
     ]
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqConstraint",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      26,
+      59,
       12
     ],
     "end": [
-      26,
+      59,
       23
     ]
   },
@@ -2037,11 +2169,11 @@
     "lean_name": "TaggedUrn.instDecidableEqConstraint.decEq",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      26,
+      59,
       12
     ],
     "end": [
-      26,
+      59,
       23
     ]
   },
@@ -2049,11 +2181,11 @@
     "lean_name": "TaggedUrn.instDecidableEqKeyState",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      32,
+      44,
       12
     ],
     "end": [
-      32,
+      44,
       23
     ]
   },
@@ -2061,11 +2193,11 @@
     "lean_name": "TaggedUrn.instDecidableEqKeyState.decEq",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      32,
+      44,
       12
     ],
     "end": [
-      32,
+      44,
       23
     ]
   },
@@ -2095,25 +2227,25 @@
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqValues",
-    "file": "TaggedUrn/Join.lean",
+    "file": "TaggedUrn/Constraint.lean",
     "start": [
-      35,
+      52,
       12
     ],
     "end": [
-      35,
+      52,
       23
     ]
   },
   {
     "lean_name": "TaggedUrn.instDecidableEqValues.decEq",
-    "file": "TaggedUrn/Join.lean",
+    "file": "TaggedUrn/Constraint.lean",
     "start": [
-      35,
+      52,
       12
     ],
     "end": [
-      35,
+      52,
       23
     ]
   },
@@ -2121,11 +2253,11 @@
     "lean_name": "TaggedUrn.instDecidableEquivalent",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      77,
+      95,
       1
     ],
     "end": [
-      78,
+      96,
       41
     ]
   },
@@ -2133,11 +2265,11 @@
     "lean_name": "TaggedUrn.instDecidableMeets",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      147,
+      165,
       1
     ],
     "end": [
-      148,
+      166,
       36
     ]
   },
@@ -2145,11 +2277,11 @@
     "lean_name": "TaggedUrn.instDecidableMeetsClosed",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      265,
+      284,
       1
     ],
     "end": [
-      266,
+      285,
       42
     ]
   },
@@ -2157,11 +2289,11 @@
     "lean_name": "TaggedUrn.instDecidableRefines",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      33,
+      51,
       1
     ],
     "end": [
-      34,
+      52,
       38
     ]
   },
@@ -2169,11 +2301,11 @@
     "lean_name": "TaggedUrn.instDecidableRefinesBothClosed",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      308,
+      329,
       1
     ],
     "end": [
-      309,
+      330,
       48
     ]
   },
@@ -2181,11 +2313,11 @@
     "lean_name": "TaggedUrn.instDecidableRefinesClosed",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      205,
+      223,
       1
     ],
     "end": [
-      206,
+      224,
       44
     ]
   },
@@ -2202,38 +2334,14 @@
     ]
   },
   {
-    "lean_name": "TaggedUrn.instReprAllowed",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      47,
-      25
-    ],
-    "end": [
-      47,
-      29
-    ]
-  },
-  {
-    "lean_name": "TaggedUrn.instReprAllowed.repr",
-    "file": "TaggedUrn/Join.lean",
-    "start": [
-      47,
-      25
-    ],
-    "end": [
-      47,
-      29
-    ]
-  },
-  {
     "lean_name": "TaggedUrn.instReprConstraint",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      26,
+      59,
       25
     ],
     "end": [
-      26,
+      59,
       29
     ]
   },
@@ -2241,11 +2349,11 @@
     "lean_name": "TaggedUrn.instReprConstraint.repr",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      26,
+      59,
       25
     ],
     "end": [
-      26,
+      59,
       29
     ]
   },
@@ -2253,11 +2361,11 @@
     "lean_name": "TaggedUrn.instReprKeyState",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      32,
+      44,
       25
     ],
     "end": [
-      32,
+      44,
       29
     ]
   },
@@ -2265,11 +2373,11 @@
     "lean_name": "TaggedUrn.instReprKeyState.repr",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      32,
+      44,
       25
     ],
     "end": [
-      32,
+      44,
       29
     ]
   },
@@ -2299,25 +2407,25 @@
   },
   {
     "lean_name": "TaggedUrn.instReprValues",
-    "file": "TaggedUrn/Join.lean",
+    "file": "TaggedUrn/Constraint.lean",
     "start": [
-      35,
+      52,
       25
     ],
     "end": [
-      35,
+      52,
       29
     ]
   },
   {
     "lean_name": "TaggedUrn.instReprValues.repr",
-    "file": "TaggedUrn/Join.lean",
+    "file": "TaggedUrn/Constraint.lean",
     "start": [
-      35,
+      52,
       25
     ],
     "end": [
-      35,
+      52,
       29
     ]
   },
@@ -2325,23 +2433,23 @@
     "lean_name": "TaggedUrn.joinKey",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      261,
+      45,
       1
     ],
     "end": [
-      262,
-      70
+      49,
+      67
     ]
   },
   {
     "lean_name": "TaggedUrn.keysOf",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      389,
+      161,
       1
     ],
     "end": [
-      392,
+      164,
       45
     ]
   },
@@ -2361,23 +2469,23 @@
     "lean_name": "TaggedUrn.meetState",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      169,
+      366,
       1
     ],
     "end": [
-      177,
-      36
+      371,
+      20
     ]
   },
   {
     "lean_name": "TaggedUrn.mergeTags",
     "file": "TaggedUrn/Sorted.lean",
     "start": [
-      81,
+      82,
       1
     ],
     "end": [
-      89,
+      90,
       46
     ]
   },
@@ -2385,11 +2493,11 @@
     "lean_name": "TaggedUrn.mergeWith",
     "file": "TaggedUrn/Sorted.lean",
     "start": [
-      209,
+      210,
       1
     ],
     "end": [
-      216,
+      217,
       46
     ]
   },
@@ -2397,11 +2505,11 @@
     "lean_name": "TaggedUrn.overrideAt",
     "file": "TaggedUrn/Patch.lean",
     "start": [
-      174,
+      136,
       1
     ],
     "end": [
-      176,
+      138,
       53
     ]
   },
@@ -2409,35 +2517,47 @@
     "lean_name": "TaggedUrn.overrideTags",
     "file": "TaggedUrn/Patch.lean",
     "start": [
-      178,
+      140,
       1
     ],
     "end": [
-      182,
+      144,
       76
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.splitTags",
+    "file": "TaggedUrn/Split.lean",
+    "start": [
+      116,
+      1
+    ],
+    "end": [
+      119,
+      89
     ]
   },
   {
     "lean_name": "TaggedUrn.tagMatch",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      46,
+      245,
       1
     ],
     "end": [
-      63,
-      29
+      248,
+      57
     ]
   },
   {
     "lean_name": "TaggedUrn.tagMatchBothClosed",
     "file": "TaggedUrn/Sorted.lean",
     "start": [
-      338,
+      339,
       1
     ],
     "end": [
-      339,
+      340,
       79
     ]
   },
@@ -2445,11 +2565,11 @@
     "lean_name": "TaggedUrn.tagMatchClosed",
     "file": "TaggedUrn/Sorted.lean",
     "start": [
-      315,
+      316,
       1
     ],
     "end": [
-      316,
+      317,
       68
     ]
   },
@@ -2457,35 +2577,35 @@
     "lean_name": "TaggedUrn.tagMeets",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      158,
+      361,
       1
     ],
     "end": [
-      167,
-      17
+      364,
+      65
     ]
   },
   {
     "lean_name": "TaggedUrn.tagMeets3",
     "file": "TaggedUrn/Patch.lean",
     "start": [
-      53,
+      25,
       1
     ],
     "end": [
-      56,
-      70
+      26,
+      72
     ]
   },
   {
     "lean_name": "TaggedUrn.tagMeetsClosed",
     "file": "TaggedUrn/Sorted.lean",
     "start": [
-      318,
+      319,
       1
     ],
     "end": [
-      319,
+      320,
       68
     ]
   },
@@ -2493,11 +2613,11 @@
     "lean_name": "TaggedUrn.tagSame",
     "file": "TaggedUrn/Patch.lean",
     "start": [
-      84,
+      46,
       1
     ],
     "end": [
-      85,
+      47,
       70
     ]
   },
@@ -2505,35 +2625,47 @@
     "lean_name": "TaggedUrn.tagScore",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      357,
+      399,
       1
     ],
     "end": [
-      364,
-      16
+      406,
+      61
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.twoDistinct",
+    "file": "TaggedUrn/Urn.lean",
+    "start": [
+      396,
+      1
+    ],
+    "end": [
+      397,
+      84
     ]
   },
   {
     "lean_name": "TaggedUrn.unionOf",
     "file": "TaggedUrn/Join.lean",
     "start": [
-      134,
+      32,
       1
     ],
     "end": [
-      137,
-      44
+      35,
+      35
     ]
   },
   {
     "lean_name": "TaggedUrn.urnScore",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      366,
+      415,
       1
     ],
     "end": [
-      369,
+      418,
       49
     ]
   },
@@ -2682,6 +2814,18 @@
     ]
   },
   {
+    "lean_name": "_private.Init.Data.List.Impl.0.List.flatMapTR.go",
+    "file": "<lean>/Init/Data/List/Impl.lean",
+    "start": [
+      161,
+      17
+    ],
+    "end": [
+      163,
+      37
+    ]
+  },
+  {
     "lean_name": "_private.Init.Data.Nat.Basic.0.Nat.repeatTR.loop",
     "file": "<lean>/Init/Data/Nat/Basic.lean",
     "start": [
@@ -2754,110 +2898,38 @@
     ]
   },
   {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.allows.match_1.splitter",
+    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Values.allows.match_1.splitter",
     "file": "TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.closed.match_1.splitter",
+    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Values.witness.match_1.splitter",
     "file": "TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.norm.match_1.splitter",
+    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.instDecidableEqValues.decEq.match_1.splitter",
     "file": "TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.val.match_1.splitter",
+    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.instReprConstraint.repr.match_1.splitter",
     "file": "TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.Constraint.witness.match_1.splitter",
+    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.instReprKeyState.repr.match_1.splitter",
     "file": "TaggedUrn/Constraint.lean",
     "start": null,
     "end": null
   },
   {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.fresh",
+    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.instReprValues.repr.match_1.splitter",
     "file": "TaggedUrn/Constraint.lean",
-    "start": [
-      67,
-      1
-    ],
-    "end": [
-      68,
-      59
-    ]
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.meetState.match_1.splitter",
-    "file": "TaggedUrn/Constraint.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.tagMatch.match_1.splitter",
-    "file": "TaggedUrn/Constraint.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Constraint.0.TaggedUrn.tagMeets.match_1.splitter",
-    "file": "TaggedUrn/Constraint.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Allowed.allows.match_1.splitter",
-    "file": "TaggedUrn/Join.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Allowed.bound.match_1.splitter",
-    "file": "TaggedUrn/Join.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Constraint.allowed.match_1.splitter",
-    "file": "TaggedUrn/Join.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Constraint.allows.match_1.splitter",
-    "file": "TaggedUrn/Join.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Constraint.named.match_1.splitter",
-    "file": "TaggedUrn/Join.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Values.allows.match_1.splitter",
-    "file": "TaggedUrn/Join.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Values.keep.match_1.splitter",
-    "file": "TaggedUrn/Join.lean",
-    "start": null,
-    "end": null
-  },
-  {
-    "lean_name": "_private.TaggedUrn.Join.0.TaggedUrn.Values.union.match_1.splitter",
-    "file": "TaggedUrn/Join.lean",
     "start": null,
     "end": null
   },
@@ -2886,8 +2958,26 @@
     "end": null
   },
   {
-    "lean_name": "_private.TaggedUrn.Urn.0.TaggedUrn.Constraint.norm.match_1.splitter",
-    "file": "TaggedUrn/Urn.lean",
+    "lean_name": "_private.TaggedUrn.Split.0.TaggedUrn.Constraint.closed.match_1.splitter",
+    "file": "TaggedUrn/Split.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Split.0.TaggedUrn.Constraint.parts.match_1.splitter",
+    "file": "TaggedUrn/Split.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Split.0.TaggedUrn.Constraint.parts.match_3.splitter",
+    "file": "TaggedUrn/Split.lean",
+    "start": null,
+    "end": null
+  },
+  {
+    "lean_name": "_private.TaggedUrn.Split.0.TaggedUrn.splitTags.match_1.splitter",
+    "file": "TaggedUrn/Split.lean",
     "start": null,
     "end": null
   },
