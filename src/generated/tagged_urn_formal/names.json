@@ -42,6 +42,12 @@
     "renamed": true
   },
   {
+    "lean_name": "TaggedUrn.Exec.parts",
+    "kind": "function",
+    "rust_path": "exec::parts",
+    "renamed": false
+  },
+  {
     "lean_name": "TaggedUrn.Exec.refines",
     "kind": "function",
     "rust_path": "exec::refines",
