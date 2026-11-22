@@ -954,6 +954,18 @@ impl TaggedUrn {
         }
     }
 
+    /// Whether what this URN writes at `key` lets the key be absent: `!key`,
+    /// `?key` and `key?=v` do, and so does a key the URN does not mention, which
+    /// says nothing of it; `key`, `key=v` and `key!=v` do not. Decided by the
+    /// proved model: absence satisfies the constraint
+    /// (`TaggedUrn.Exec.valuesMatch`).
+    pub fn admits_absence(&self, key: &str) -> bool {
+        crate::formal::exec::values_match(
+            crate::formal::Constraint::Absent,
+            constraint_of(self.get_tag(key).map(String::as_str)),
+        )
+    }
+
     /// One key: does the instance's stored value satisfy the pattern's?
     /// (`None` is a key the URN omits.) The proved model's per-key rule
     /// (`TaggedUrn.Exec.valuesMatch`), exposed for callers such as `CapUrn`'s
@@ -3130,6 +3142,22 @@ mod tests {
         assert_eq!(must_not.specificity_tuple(), (3, 0, 0, 0, 0));
         assert_eq!(unspecified.specificity_tuple(), (0, 0, 0, 0, 0));
         assert_eq!(mixed.specificity_tuple(), (1, 1, 0, 1, 0));
+    }
+
+    // TEST7210: A written tag lets its key be absent exactly when it is !k, ?k or k?=v;
+    // a key the URN does not mention says nothing of it, so it allows absence too.
+    #[test]
+    fn test7210_admits_absence_by_form() {
+        let urn = TaggedUrn::from_string("media:!a;?b;c?=v;d;e=v;f!=v").unwrap();
+        assert!(urn.admits_absence("a"));
+        assert!(urn.admits_absence("b"));
+        assert!(urn.admits_absence("c"));
+        assert!(!urn.admits_absence("d"));
+        assert!(!urn.admits_absence("e"));
+        assert!(!urn.admits_absence("f"));
+        assert!(urn.admits_absence("g"));
+        // Keys are read as the URN stores them: lowercase.
+        assert!(urn.admits_absence("A"));
     }
 
     // =========================================================================
