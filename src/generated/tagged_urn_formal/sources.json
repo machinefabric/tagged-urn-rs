@@ -1581,11 +1581,11 @@
     "lean_name": "TaggedUrn.Exec.comparable",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      62,
+      79,
       1
     ],
     "end": [
-      62,
+      79,
       63
     ]
   },
@@ -1593,11 +1593,11 @@
     "lean_name": "TaggedUrn.Exec.equivalent",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      55,
+      72,
       1
     ],
     "end": [
-      55,
+      72,
       63
     ]
   },
@@ -1605,11 +1605,11 @@
     "lean_name": "TaggedUrn.Exec.leastUpperBound",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      136,
+      153,
       1
     ],
     "end": [
-      142,
+      159,
       12
     ]
   },
@@ -1629,11 +1629,11 @@
     "lean_name": "TaggedUrn.Exec.meets",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      82,
+      99,
       1
     ],
     "end": [
-      84,
+      101,
       75
     ]
   },
@@ -1641,23 +1641,35 @@
     "lean_name": "TaggedUrn.Exec.meetsClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      108,
+      125,
       1
     ],
     "end": [
-      110,
+      127,
       81
     ]
   },
   {
-    "lean_name": "TaggedUrn.Exec.refines",
+    "lean_name": "TaggedUrn.Exec.parts",
     "file": "TaggedUrn/Exec.lean",
     "start": [
       47,
       1
     ],
     "end": [
-      49,
+      50,
+      87
+    ]
+  },
+  {
+    "lean_name": "TaggedUrn.Exec.refines",
+    "file": "TaggedUrn/Exec.lean",
+    "start": [
+      64,
+      1
+    ],
+    "end": [
+      66,
       66
     ]
   },
@@ -1665,11 +1677,11 @@
     "lean_name": "TaggedUrn.Exec.refinesBothClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      118,
+      135,
       1
     ],
     "end": [
-      120,
+      137,
       85
     ]
   },
@@ -1677,11 +1689,11 @@
     "lean_name": "TaggedUrn.Exec.refinesClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      97,
+      114,
       1
     ],
     "end": [
-      100,
+      117,
       81
     ]
   },
@@ -1689,11 +1701,11 @@
     "lean_name": "TaggedUrn.Exec.specificity",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      69,
+      86,
       1
     ],
     "end": [
-      70,
+      87,
       49
     ]
   },
@@ -1701,11 +1713,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMatch",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      75,
+      92,
       1
     ],
     "end": [
-      76,
+      93,
       70
     ]
   },
@@ -1713,11 +1725,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMatchClosed",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      128,
+      145,
       1
     ],
     "end": [
-      129,
+      146,
       82
     ]
   },
@@ -1725,11 +1737,11 @@
     "lean_name": "TaggedUrn.Exec.valuesMeet",
     "file": "TaggedUrn/Exec.lean",
     "start": [
-      90,
+      107,
       1
     ],
     "end": [
-      91,
+      108,
       57
     ]
   },

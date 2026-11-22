@@ -267,6 +267,14 @@ impl TaggedUrn {
         &self.formal
     }
 
+    /// The URN a model handle stands for, such as one generated code sharing
+    /// the type made. Its prefix, keys and constraints are checked as
+    /// [`new`](Self::new) checks them. (`TaggedUrn.Exec.parts`.)
+    pub fn from_formal(formal: &FormalUrn) -> Result<Self, TaggedUrnError> {
+        let (prefix, tags) = crate::formal::exec::parts(formal.clone());
+        Self::new(&prefix, tags.into_iter().collect())
+    }
+
     /// The same prefix with other tags: every edit builds a new URN, handle included.
     fn with_tags(&self, tags: BTreeMap<String, Constraint>) -> Self {
         Self::assemble(self.prefix.clone(), tags)
@@ -3215,6 +3223,19 @@ mod tests {
         assert_eq!(must_not.specificity_tuple(), (3, 0, 0, 0, 0));
         assert_eq!(unspecified.specificity_tuple(), (0, 0, 0, 0, 0));
         assert_eq!(mixed.specificity_tuple(), (1, 1, 0, 1, 0));
+    }
+
+    // TEST7223: A URN read back from its model handle is the URN: its prefix and every
+    // tag, each form and a quoted value included.
+    #[test]
+    fn test7223_urn_read_back_from_its_handle() {
+        for text in ["media:!a;?b;c?=v;d;e=v;f!=v;g=\"x y\"", "cap:", "media:pdf"] {
+            let urn = TaggedUrn::from_string(text).unwrap();
+            let back = TaggedUrn::from_formal(urn.formal()).unwrap();
+            assert_eq!(back.prefix(), urn.prefix(), "{}", text);
+            assert_eq!(back.tags(), urn.tags(), "{}", text);
+            assert_eq!(back, urn, "{}", text);
+        }
     }
 
     // TEST7210: A written tag lets its key be absent exactly when it is !k, ?k or k?=v;
