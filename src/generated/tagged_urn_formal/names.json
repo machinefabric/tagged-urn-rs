@@ -48,6 +48,12 @@
     "renamed": false
   },
   {
+    "lean_name": "TaggedUrn.Exec.refinesBothClosed",
+    "kind": "function",
+    "rust_path": "exec::refines_both_closed",
+    "renamed": true
+  },
+  {
     "lean_name": "TaggedUrn.Exec.refinesClosed",
     "kind": "function",
     "rust_path": "exec::refines_closed",

@@ -667,12 +667,13 @@
     "TaggedUrn.Urn",
     "TaggedUrn.Sorted",
     "TaggedUrn.Join",
+    "TaggedUrn.Patch",
     "TaggedUrn.Exec",
     "Lean.Data.Iterators.Producers.PersistentHashMap",
     "Std.Http.Data.URI.Basic",
     "Lean.Elab.Structure"
   ],
-  "declarations": 568,
+  "declarations": 602,
   "exports": [
     {
       "lean_name": "TaggedUrn.Exec.comparable",
@@ -693,7 +694,7 @@
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::least_upper_bound",
       "lean_type": "String → List TaggedUrn.Exec.Wf → Option (List (String × TaggedUrn.Constraint))",
-      "source": "TaggedUrn/Exec.lean:126:1"
+      "source": "TaggedUrn/Exec.lean:136:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.make",
@@ -724,6 +725,13 @@
       "source": "TaggedUrn/Exec.lean:47:1"
     },
     {
+      "lean_name": "TaggedUrn.Exec.refinesBothClosed",
+      "module": "TaggedUrn.Exec",
+      "rust_path": "exec::refines_both_closed",
+      "lean_type": "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
+      "source": "TaggedUrn/Exec.lean:118:1"
+    },
+    {
       "lean_name": "TaggedUrn.Exec.refinesClosed",
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::refines_closed",
@@ -749,7 +757,7 @@
       "module": "TaggedUrn.Exec",
       "rust_path": "exec::values_match_closed",
       "lean_type": "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
-      "source": "TaggedUrn/Exec.lean:118:1"
+      "source": "TaggedUrn/Exec.lean:128:1"
     },
     {
       "lean_name": "TaggedUrn.Exec.valuesMeet",

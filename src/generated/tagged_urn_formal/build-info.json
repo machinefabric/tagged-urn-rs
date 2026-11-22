@@ -1,5 +1,5 @@
 {
-  "build_key": "f3e5c4e5b531d0cc8a7601c35374f9d5de87cc7857be033b554ffb2ec6a70ace",
+  "build_key": "a0acf8780a2c67106d5b843d8b49059976ef6de4cda4a07b6095ca59dd87c1dc",
   "lean_version": "4.34.1",
   "lean_githash": "5045d0056413266e57c625dcd7c365b10e377c52",
   "bir_version": 3,
@@ -24,10 +24,11 @@
     "<package:lungo>/Lungo/Trace.lean": "f6f0735df8f533ef42e71cc5f5be73462fcac902c38f56f3d3411b28816a57bf",
     "<package:lungo>/lakefile.toml": "86a3441c15d147c6bfc13c48f84749bbff47bf1d7f859443d41d21642810964a",
     "TaggedUrn/Constraint.lean": "20d93e3ff2482334a7288262c6fb229675e13696af5712dcec1af2f3fe6e4028",
-    "TaggedUrn/Exec.lean": "1229c14657279e7237d88039a2411e223ffd89c8b86619f8de27f4f2d63a93d7",
+    "TaggedUrn/Exec.lean": "f2cec770c201ad94313bbbf09afcdb4131ec44f03cc90104936cda569bdbef9f",
     "TaggedUrn/Join.lean": "cf28a1fe36ae2ceb7dacab0263243641aa96e0f7ac5cdfdf54fd4fe695409bbb",
-    "TaggedUrn/Sorted.lean": "63673529b50aeb2faa578b8852be2414d2a3df9e03e2685f6a5a67ebf6da2c9d",
-    "TaggedUrn/Urn.lean": "6c1905639773812f839ae25bcf12b4efcc653a342e3419938b25f04b0c0ff342",
+    "TaggedUrn/Patch.lean": "1fc9c172b55dc8504aa49f044804a3eb82bb7f8e7efee9b04eb317789733210d",
+    "TaggedUrn/Sorted.lean": "ab1fbd9b77591a613154f84ca60568b05d5ecabf9c2e8bf497310109c9f2e8c5",
+    "TaggedUrn/Urn.lean": "0db53429f2f4a1820b0073b4c45f0f8bba93eb054d2eaa3fc2d37a19d0ddb118",
     "lake-manifest.json": "6fc7cf00479951a2d966cc057bbf91708c78a4895fe8aedfa4d9cf80bf2c9965",
     "lakefile.toml": "d84612abc4598b3b2ed8436aaa4ffe8f3b5cf85caf44866489a482be4e558501",
     "lean-toolchain": "7fc3c9ca176374a841abdad2bb4fa8c3c57363d50b728a512b513374610ae696"
@@ -35,9 +36,9 @@
   "project": ".",
   "link_directives": [],
   "output_digests": {
-    "assurance.json": "469d420738b3dfb274e32c8224e2d2c177e2e32f3b87a7f8595df62cf79b26f8",
-    "externs.json": "ebc9f128aa54e77ce35dda0bda16d42546047d3f0b00e816b730f4ab24d478bd",
-    "manifest.json": "3f72a67ee1024e06aa311eba91a714f615b5c5adef0a87e50c7630d48604c88f",
+    "assurance.json": "3e8eb1b210964102bf8621f3c983eda4def32b29ca36437a660201fabd5717b9",
+    "externs.json": "f9284a5ccef688197990b89323b097f72b108a14298bdbafcff395321a51d9f9",
+    "manifest.json": "c95c488ff0990b7c75dc4558fb609607e040128db124d5a2ee4460ca99e26811",
     "modules/Init-Core.rs": "aedd8c212ce64038c340c32491a83469ae7d010415d55d4628c37f0efdac5c3f",
     "modules/Init-Data-ByteArray-Basic.rs": "069f7e2a4d36a9b61b5767337e69d9d2c4b0f6d711013b8ad56d065dfc4b29da",
     "modules/Init-Data-ByteArray-Extra.rs": "807f961a62ae3606e1332b588f94813d92e2cbbfc9802fc05d4906b50d881f2a",
@@ -53,6 +54,7 @@
     "modules/Init-Data-String-Bootstrap.rs": "7513f5e551953149c9ecef5564e3693e0ab7bd7266f2d4c32474245aa5b062c4",
     "modules/Init-Data-String-Defs.rs": "04c91868701ea9962c4fbe7aba9d524a41de1f1856c6554c72e75379ca4c8dae",
     "modules/Init-Data-String-Iterate.rs": "44405a09401fe45fda45fe09f2b64ad291d1e636a1bbf0509d23231c85f02961",
+    "modules/Init-Data-String-Length.rs": "d60a04603728d54e29cc06dea45c8fd123e6f79803abe18ecd06a9e9aa52f560",
     "modules/Init-Data-String-Modify.rs": "e12a5d2bfbc3e2ac7f58b60c1eb37f3a6a8a4b8eba530f106b02d187cc60b189",
     "modules/Init-Data-UInt-Basic.rs": "23c260bbdc708cbc7fde5938b6d82eaedc22a8cc9153a2e7e081ad5fc7753c0a",
     "modules/Init-Data-UInt-BasicAux.rs": "a5cd51f8b98add3893cf4170bb311a968b6be81a12a16f0cf9617dd000b137cb",
@@ -66,13 +68,14 @@
     "modules/Lean-Elab-Structure.rs": "d53110fba6cf7210f04ff528c5c5169b6b76e378438f590940884878757dface",
     "modules/Std-Http-Data-URI-Basic.rs": "66b12f685ae281c30d7f8c304190c1d64d1b6e3c7c8322772350ade79d3e6c49",
     "modules/TaggedUrn-Constraint.rs": "26bcb51801cf49d9480740c7162bbab612178f64358abbe03110bef328ae4a8b",
-    "modules/TaggedUrn-Exec.rs": "5655d4d5958c13e095ad32f70af3eefbdf079d3d02ac8206fd1fe799c1ca1bb1",
+    "modules/TaggedUrn-Exec.rs": "95140c0c6856da373e114bf8b2a7bb41f15f0089e2189076cf48d14ca330756e",
     "modules/TaggedUrn-Join.rs": "e483883c7fde54f58810f143174846745bcd4b8804ab1b229bdfa98a5aaa6e38",
-    "modules/TaggedUrn-Sorted.rs": "9cf0464d6b9da9aabbcbe133c7c950c4d3cf6dbdbc6fa13c50af7d3fb674bc27",
-    "modules/TaggedUrn-Urn.rs": "6c831919c1a9225ebebf0cbdc8dce154513999e49ef7fc19b8f08a9ab0b40e7f",
-    "names.json": "fec767eeeaa5bf5739d0f36e40fc9889e56843be5bfb9e3963cb8e19429107d3",
-    "sources.json": "2852464d73ae317b442680fd9d192d1ee8132f3ab7cd6134d10ae3047f03e274",
-    "tagged_urn_formal.rs": "3c1df03b8f197d16fb685473d79b0256bd24b04d087a5fb90452734059d9f070"
+    "modules/TaggedUrn-Patch.rs": "1b3a3c1745e2324649e60ca285dcd0976930e4d8f4a3226c3758b944cf3926a8",
+    "modules/TaggedUrn-Sorted.rs": "684b04b374cdfbd59d8ac095b6ccedb08cab7cf97338fa6ad729677f08589d44",
+    "modules/TaggedUrn-Urn.rs": "68e438ac0a2e332a74debe48201cb0fd842648423b3faf17bcf4ac8b9b481241",
+    "names.json": "4af2eff84b4252b0b29cdcc9b2f0ce2a1ed9fad48a444ec8b186d7c73fb1be39",
+    "sources.json": "8e7015ee562db8bdbcb308c6330ba6d5aea354b11ac4b937dbbf846733f0b62a",
+    "tagged_urn_formal.rs": "902a9bf18ba74ebd4fc18d6c552cc17829bc7773aa70a200a84276e686a36bac"
   },
   "platform_products": []
 }

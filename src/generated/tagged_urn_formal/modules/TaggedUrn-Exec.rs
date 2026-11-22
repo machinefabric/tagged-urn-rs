@@ -156,7 +156,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dequivalent_d__boxed(x_1: Obj,
 }
 
 // Lean: TaggedUrn.Exec.leastUpperBound
-// Source: TaggedUrn/Exec.lean:126:1
+// Source: TaggedUrn/Exec.lean:136:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dleastUpperBound(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_List_dall_d__at___dTaggedUrn_dExec_dleastUpperBound_dspec__0(x_1, x_2);
     match x_3 {
@@ -178,7 +178,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dleastUpperBound(x_1: Obj, x_2
 
 // Lean: TaggedUrn.Exec.leastUpperBound._boxed
 // Compiled from: TaggedUrn.Exec.leastUpperBound
-// Source: TaggedUrn/Exec.lean:126:1
+// Source: TaggedUrn/Exec.lean:136:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dleastUpperBound_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dExec_dleastUpperBound(x_1, x_2);
     rt::lean_dec_ref(x_1);
@@ -342,6 +342,58 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_drefines_d__boxed(x_1: Obj, x_
     return x_4;
 }
 
+// Lean: TaggedUrn.Exec.refinesBothClosed
+// Source: TaggedUrn/Exec.lean:118:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_drefinesBothClosed(x_1: Obj, x_2: Obj) -> u8 {
+    let x_3: Obj = rt::lean_ctor_get(x_1, 0);
+    rt::lean_inc_ref(x_3);
+    let x_4: Obj = rt::lean_ctor_get(x_1, 1);
+    rt::lean_inc(x_4);
+    rt::lean_dec_ref(x_1);
+    let x_5: Obj = rt::lean_ctor_get(x_2, 0);
+    rt::lean_inc_ref(x_5);
+    let x_6: Obj = rt::lean_ctor_get(x_2, 1);
+    rt::lean_inc(x_6);
+    rt::lean_dec_ref(x_2);
+    let x_7: u8 = l_String_ddecEq(x_3, x_5);
+    rt::lean_dec_ref(x_5);
+    rt::lean_dec_ref(x_3);
+    match x_7 {
+        0 => {
+            rt::lean_dec(x_6);
+            rt::lean_dec(x_4);
+            return x_7;
+        }
+        _ => {
+            let x_8: Obj = l_TaggedUrn_dExec_drefinesBothClosed_d__closed__0();
+            let x_9: u8 = l_TaggedUrn_dmergeWith(x_8, x_4, x_6);
+            return x_9;
+        }
+    }
+}
+
+// Lean: TaggedUrn.Exec.refinesBothClosed._boxed
+// Compiled from: TaggedUrn.Exec.refinesBothClosed
+// Source: TaggedUrn/Exec.lean:118:1
+pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_drefinesBothClosed_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
+    let x_3: u8 = l_TaggedUrn_dExec_drefinesBothClosed(x_1, x_2);
+    let x_4: Obj = rt::lean_box(x_3 as usize);
+    return x_4;
+}
+
+// Lean: TaggedUrn.Exec.refinesBothClosed._closed_0
+// Compiled from: TaggedUrn.Exec.refinesBothClosed
+// Source: TaggedUrn/Exec.lean:118:1
+static C_l_TaggedUrn_dExec_drefinesBothClosed_d__closed__0: rt::LazyObj = rt::LazyObj::new();
+unsafe fn l_TaggedUrn_dExec_drefinesBothClosed_d__closed__0__init() -> Obj {
+    let x_1: Obj = rt::lean_alloc_closure(l_TaggedUrn_dtagMatchBothClosed_d__boxed as *const (), 2, 0);
+    return x_1;
+}
+#[inline]
+pub(crate) unsafe fn l_TaggedUrn_dExec_drefinesBothClosed_d__closed__0() -> Obj {
+    C_l_TaggedUrn_dExec_drefinesBothClosed_d__closed__0.get(l_TaggedUrn_dExec_drefinesBothClosed_d__closed__0__init)
+}
+
 // Lean: TaggedUrn.Exec.refinesClosed
 // Source: TaggedUrn/Exec.lean:97:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_drefinesClosed(x_1: Obj, x_2: Obj) -> u8 {
@@ -420,7 +472,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dvaluesMatch_d__boxed(x_1: Obj
 }
 
 // Lean: TaggedUrn.Exec.valuesMatchClosed
-// Source: TaggedUrn/Exec.lean:118:1
+// Source: TaggedUrn/Exec.lean:128:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dvaluesMatchClosed(x_1: Obj, x_2: Obj) -> u8 {
     let x_3: u8 = l_TaggedUrn_dtagMatchClosed(x_1, x_2);
     return x_3;
@@ -428,7 +480,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dvaluesMatchClosed(x_1: Obj, x
 
 // Lean: TaggedUrn.Exec.valuesMatchClosed._boxed
 // Compiled from: TaggedUrn.Exec.valuesMatchClosed
-// Source: TaggedUrn/Exec.lean:118:1
+// Source: TaggedUrn/Exec.lean:128:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dExec_dvaluesMatchClosed_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dExec_dvaluesMatchClosed(x_1, x_2);
     rt::lean_dec(x_2);
