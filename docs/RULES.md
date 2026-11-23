@@ -25,7 +25,7 @@ Presence or absence of the final trailing semicolon does not matter. Both `cap:k
 
 **Keys and the prefix:** an ASCII letter, then ASCII letters, digits and `-`; lowered.
 
-**Unquoted values:** any characters except `;`, `=`, `"`, `\` and whitespace; lowered.
+**Unquoted values:** any characters except `;`, `=`, `|`, `"`, `\` and whitespace; lowered.
 
 **Quoted values:**
 - Values may be enclosed in double quotes: `key="value"`
@@ -39,6 +39,7 @@ Presence or absence of the final trailing semicolon does not matter. Both `cap:k
 ### 7. Tag Structure
 - Tag separator within a tag: `=` separates tag key from tag value
 - Tag separator between tags: `;` separates key-value pairs
+- Value separator within a tag: `|` separates the values of a set (`ext=jpeg|png`)
 - After the prefix, colons (`:`) are treated as normal characters, not separators
 
 ### 8. No Special Tags
@@ -48,14 +49,16 @@ No reserved tag names; a key is any identifier.
 - Tags are sorted alphabetically by key
 - No final trailing semicolon
 - Tag keys are always lowercase
-- Each form prints as:
-  - `*` (must-have-any) → `k`
-  - `?` (no constraint) → `?k`
-  - `!` (must-not-have) → `!k`
-  - `?=v` → `k?=v`
-  - `!=v` → `k!=v`
-  - exact `v` → `k=v`
-- **Smart quoting on serialization:** a value is quoted when it holds a character a bare value cannot (`;`, `=`, `"`, `\`, whitespace), an uppercase letter, or when it begins with `*`, `?` or `!`; any other value is written bare
+- Each constraint prints as:
+  - present, any value (must-have-any) → `k`
+  - absent or any value (no constraint) → `?k`
+  - absent only (must-not-have) → `!k`
+  - absent, or any value but `a`, `b` → `k?=a|b` (one value: `k?=v`)
+  - absent, or one of `a`, `b` → `k=a|b|!`
+  - present, any value but `a`, `b` → `k!=a|b` (one value: `k!=v`)
+  - present, one of `a`, `b` → `k=a|b` (one value: `k=v`)
+- The values of a set print sorted, each once
+- **Smart quoting on serialization:** a value is quoted when it holds a character a bare value cannot (`;`, `=`, `|`, `"`, `\`, whitespace), an uppercase letter, or when it begins with `*`, `?` or `!`; any other value is written bare
 - Examples:
   - the exact value `simple` serializes to `cap:key=simple`
   - the exact value `Has Upper` serializes to `cap:key="Has Upper"`
@@ -78,6 +81,14 @@ The following forms control matching behavior:
 - Special values `*`, `?`, and `!` are accepted only in tag values, not keys
 - A form means the same set of states on the instance side and on the pattern side
 
+**Sets of values.** `|` lists several values: `x=a|b` (present, one of them),
+`x!=a|b` (present, none of them), `x?=a|b` (absent, or none of them). In a set
+written without a qualifier, a bare `!` member adds absence: `x=a|b|!`. Inside
+a set, an unquoted `*`, `?`, or a member beginning with `?` or `!`, is an
+`InvalidCharacter` (quote it to mean the value); an empty member is an
+`EmptyTagComponent`; a value (or `!`) given twice is a `DuplicateValue`. A
+constraint allowing no state is never written.
+
 ### 11. Value-less Tags (Must-Have-Any)
 - Tags may be specified without a value: `cap:key1=value1;optimize;key2=value2`
 - A value-less tag like `optimize` is equivalent to `optimize=*` (must-have-any)
@@ -92,9 +103,9 @@ This section defines how Tagged URN matching works when comparing URNs. This is 
 
 ### 12. Per-Tag Value Matching
 
-Each form means the set of states its key may be in; an instance conforms to a pattern at a key when every state the instance allows, the pattern allows.
+Each form means the set of states its key may be in; an instance conforms to a pattern at a key when every state the instance allows, the pattern allows: the pattern allows absence wherever the instance does, and every value the instance allows.
 
-**Truth Table** (instance row against pattern column):
+**Truth Table** for the forms of one value (instance row against pattern column):
 
 | Inst ↓ \ Pat → | missing | `?x` | `x?=p`  | `x` | `x!=p`  | `x=p`   | `!x` |
 |----------------|:-------:|:----:|:-------:|:---:|:-------:|:-------:|:----:|
@@ -180,16 +191,18 @@ Result:   MATCH (instance has ext with value)
 ```
 
 ### 15. Graded Specificity
-When multiple URNs match a request, select the one with highest specificity using graded scoring:
+When multiple URNs match a request, select the one with highest specificity using graded scoring, by what a tag allows:
 
-| Form | Score | Example |
+| What it allows | Score | Example |
 |------|-------|---------|
-| No constraint (`?x`) or missing | 0 | `?ext` |
-| `x?=v` | 1 | `ext?=pdf` |
-| Must-have-any (`x`) | 2 | `ext=*` or `ext` |
-| `x!=v` | 3 | `ext!=pdf` |
-| Exact value (`x=v`) | 4 | `ext=pdf` |
-| Must-not-have (`!x`) | 5 | `!debug` |
+| Absence and every value (`?x`) or missing | 0 | `?ext` |
+| Absence and some values, not every one | 1 | `ext?=pdf`, `ext=pdf\|!` |
+| Every value, must-have-any (`x`) | 2 | `ext=*` or `ext` |
+| Two or more values, not every value | 3 | `ext!=pdf`, `ext=jpeg\|png` |
+| Exactly one value (`x=v`) | 4 | `ext=pdf` |
+| Only absence, must-not-have (`!x`) | 5 | `!debug` |
+
+Narrowing a tag never lowers its score; two different sets can score the same (`ext=a|b` and `ext=a|b|c`), so a score never says which of two types is inside the other.
 
 **Total specificity** = sum of all tag scores
 
@@ -273,3 +286,4 @@ Forward slashes (`/`) and colons (`:`) are valid in values and treated as normal
 | 10 | EmptyPrefix | Empty prefix (`:` at the start) |
 | 11 | PrefixMismatch | Two URNs compared across different prefixes |
 | 12 | WhitespaceInInput | Leading or trailing whitespace |
+| 13 | DuplicateValue | A value given twice in one set of values |

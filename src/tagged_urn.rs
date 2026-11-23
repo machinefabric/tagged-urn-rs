@@ -9,6 +9,84 @@ use std::fmt;
 use std::str::FromStr;
 
 pub use crate::formal::Constraint;
+pub use crate::formal::Values;
+
+/// What a tag writes of its key, built as the text writes it. A set of values is
+/// kept canonical — each value once, in increasing order — so two constraints
+/// that say the same thing are equal.
+impl Constraint {
+    /// `?k`: any state, absent or any value.
+    pub fn unconstrained() -> Self {
+        Self::none_of(Vec::<String>::new(), true)
+    }
+    /// `k?=v`: absent, or there and not `v`.
+    pub fn optional_not(value: impl Into<String>) -> Self {
+        Self::none_of([value.into()], true)
+    }
+    /// `k`: there, with any value.
+    pub fn present() -> Self {
+        Self::none_of(Vec::<String>::new(), false)
+    }
+    /// `k!=v`: there, and not `v`.
+    pub fn present_not(value: impl Into<String>) -> Self {
+        Self::none_of([value.into()], false)
+    }
+    /// `k=v`: there, and exactly `v`.
+    pub fn exact(value: impl Into<String>) -> Self {
+        Self::one_of([value.into()], false)
+    }
+    /// `!k`: not there.
+    pub fn absent() -> Self {
+        Self::one_of(Vec::<String>::new(), true)
+    }
+    /// `k=a|b`: there, with one of the values; `k=a|b|!` when `or_absent`.
+    pub fn one_of<I: IntoIterator<Item = String>>(values: I, or_absent: bool) -> Self {
+        Constraint::Written {
+            absent: or_absent,
+            values: Values::OneOf { vs: canonical_values(values) },
+        }
+    }
+    /// `k!=a|b`: there, with none of the values; `k?=a|b` when `or_absent`.
+    pub fn none_of<I: IntoIterator<Item = String>>(values: I, or_absent: bool) -> Self {
+        Constraint::Written {
+            absent: or_absent,
+            values: Values::NoneOf { vs: canonical_values(values) },
+        }
+    }
+    /// The same constraint with its values canonical.
+    pub fn canonical(self) -> Self {
+        match self {
+            Constraint::Missing => Constraint::Missing,
+            Constraint::Written { absent, values: Values::OneOf { vs } } => Self::one_of(vs, absent),
+            Constraint::Written { absent, values: Values::NoneOf { vs } } => Self::none_of(vs, absent),
+        }
+    }
+    /// The value of `k=v`, when the constraint is that form.
+    pub fn exact_value(&self) -> Option<&str> {
+        match self {
+            Constraint::Written { absent: false, values: Values::OneOf { vs } } if vs.len() == 1 => {
+                Some(vs[0].as_str())
+            }
+            _ => None,
+        }
+    }
+    /// Whether the constraint allows no state at all. No text writes it.
+    pub fn is_empty_form(&self) -> bool {
+        matches!(
+            self,
+            Constraint::Written { absent: false, values: Values::OneOf { vs } } if vs.is_empty()
+        )
+    }
+}
+
+/// Values each once, in increasing order: the order Lean's `String <` uses
+/// (UTF-8 byte order is code-point order).
+fn canonical_values<I: IntoIterator<Item = String>>(values: I) -> lungo::List<String> {
+    let mut vs: Vec<String> = values.into_iter().collect();
+    vs.sort();
+    vs.dedup();
+    vs.into()
+}
 
 /// A tagged URN using flat, ordered tags with a configurable prefix
 ///
@@ -73,19 +151,20 @@ impl PartialOrd for TaggedUrn {
 impl Ord for TaggedUrn {
     /// By the URN's parts, never its text: the prefix, then the tags in key
     /// order, each by its key, then by its constraint's form in the truth
-    /// table's order (unconstrained, optionalNot, present, presentNot, exact,
-    /// absent), then by its value; a URN whose tags are the beginning of
+    /// table's order (`?k`, `k?=…`, `k=…|!`, `k`, `k!=…`, `k=…`, `!k`), then
+    /// by its values in order; a URN whose tags are the beginning of
     /// another's stands first. The text would order `file;sample` after
     /// `file-path`, wherever one key is the beginning of another.
     fn cmp(&self, other: &Self) -> std::cmp::Ordering {
-        fn part(c: &Constraint) -> (u8, &str) {
+        fn part(c: &Constraint) -> (u8, &[String]) {
             match c {
-                Constraint::Unconstrained => (0, ""),
-                Constraint::OptionalNot { value } => (1, value),
-                Constraint::Present => (2, ""),
-                Constraint::PresentNot { value } => (3, value),
-                Constraint::Exact { value } => (4, value),
-                Constraint::Absent => (5, ""),
+                Constraint::Written { absent: true, values: Values::NoneOf { vs } } if vs.is_empty() => (0, vs),
+                Constraint::Written { absent: true, values: Values::NoneOf { vs } } => (1, vs),
+                Constraint::Written { absent: true, values: Values::OneOf { vs } } if !vs.is_empty() => (2, vs),
+                Constraint::Written { absent: false, values: Values::NoneOf { vs } } if vs.is_empty() => (3, vs),
+                Constraint::Written { absent: false, values: Values::NoneOf { vs } } => (4, vs),
+                Constraint::Written { absent: false, values: Values::OneOf { vs } } => (5, vs),
+                Constraint::Written { absent: true, values: Values::OneOf { vs } } => (6, vs),
                 Constraint::Missing => unreachable!("Missing is never stored"),
             }
         }
@@ -100,17 +179,24 @@ impl Ord for TaggedUrn {
 
 /// Parser states for the state machine.
 ///
-/// The parser reads the six tag forms — the canonical alphabet of the
-/// constraint truth table — into the constraint each writes:
+/// The parser reads each tag into the constraint it writes. The forms of
+/// one value:
 ///
-/// | Authored                     | Canonical | Constraint       | Score | Reading                        |
-/// |------------------------------|-----------|------------------|------:|--------------------------------|
-/// | `?x` ≡ `x?` ≡ `x=?`          | `?x`      | `Unconstrained`  |     0 | no constraint                  |
-/// | `?x=v` ≡ `x?=v` ≡ `x=?v`     | `x?=v`    | `OptionalNot(v)` |     1 | absent OR (present and not v)  |
-/// | `x` ≡ `x=*`                  | `x`       | `Present`        |     2 | present with any value         |
-/// | `!x=v` ≡ `x!=v` ≡ `x=!v`     | `x!=v`    | `PresentNot(v)`  |     3 | present and not v              |
-/// | `x=v`                        | `x=v`     | `Exact(v)`       |     4 | present and exactly v          |
-/// | `!x` ≡ `x!` ≡ `x=!`          | `!x`      | `Absent`         |     5 | absent (must-not-have)         |
+/// | Authored                     | Canonical | Constraint                    | Reading                        |
+/// |------------------------------|-----------|-------------------------------|--------------------------------|
+/// | `?x` ≡ `x?` ≡ `x=?`          | `?x`      | `Constraint::unconstrained()` | no constraint                  |
+/// | `?x=v` ≡ `x?=v` ≡ `x=?v`     | `x?=v`    | `Constraint::optional_not(v)` | absent OR (present and not v)  |
+/// | `x` ≡ `x=*`                  | `x`       | `Constraint::present()`       | present with any value         |
+/// | `!x=v` ≡ `x!=v` ≡ `x=!v`     | `x!=v`    | `Constraint::present_not(v)`  | present and not v              |
+/// | `x=v`                        | `x=v`     | `Constraint::exact(v)`        | present and exactly v          |
+/// | `!x` ≡ `x!` ≡ `x=!`          | `!x`      | `Constraint::absent()`        | absent (must-not-have)         |
+///
+/// `|` separates the values of a set: `x=a|b` is `one_of([a, b], false)`,
+/// `x!=a|b` `none_of([a, b], false)`, `x?=a|b` `none_of([a, b], true)`, and
+/// in a set without a qualifier a bare `!` member adds absence: `x=a|b|!` is
+/// `one_of([a, b], true)`. A member that is `*` or `?`, or begins with `?` or
+/// `!`, is refused unquoted; an empty member, and a member given twice
+/// (`DuplicateValue`), are refused.
 ///
 /// The qualifier `?` or `!` may appear as a key prefix (`?x`, `!x`,
 /// `?x=v`, `!x=v`), as an infix immediately before `=` (`x?`, `x!`,
@@ -151,6 +237,8 @@ enum ParseState {
     InQuotedValue,
     InQuotedValueEscape,
     ExpectingSemiOrEnd,
+    /// After `|` in a value: the next member of a set of values.
+    ExpectingValueMember,
 }
 
 /// Order-theoretic classification of the relation between two tagged URNs.
@@ -205,6 +293,8 @@ impl TaggedUrn {
     /// handle, together, from the same tags. Every caller has already
     /// refused `Missing` and checked prefix and keys.
     fn assemble(prefix: String, tags: BTreeMap<String, Constraint>) -> Self {
+        let tags: BTreeMap<String, Constraint> =
+            tags.into_iter().map(|(k, c)| (k, c.canonical())).collect();
         let model_tags: lungo::List<(String, Constraint)> = tags
             .iter()
             .map(|(k, c)| {
@@ -327,6 +417,9 @@ impl TaggedUrn {
         //   Some('!') — `!` qualifier (prefix `!x` or infix `x!=`)
         // Reset to None on each finish_tag.
         let mut qualifier: Option<char> = None;
+        // The members of a set of values read so far (`k=a|b`), each with
+        // whether it was quoted; empty while the value is a single one.
+        let mut members: Vec<(String, bool)> = Vec::new();
         let chars: Vec<char> = tags_part.chars().collect();
         let mut pos = 0;
 
@@ -436,7 +529,7 @@ impl TaggedUrn {
                     }
                 }
 
-                ParseState::ExpectingValue => {
+                ParseState::ExpectingValue | ParseState::ExpectingValueMember => {
                     if c == '"' {
                         state = ParseState::InQuotedValue;
                     } else if c == ';' {
@@ -457,15 +550,18 @@ impl TaggedUrn {
 
                 ParseState::InUnquotedValue => {
                     if c == ';' {
-                        let constraint = Self::canonicalize_value(
+                        let constraint = Self::finish_value(
                             qualifier,
-                            false,
                             &current_key,
-                            std::mem::take(&mut current_value),
+                            std::mem::take(&mut members),
+                            (std::mem::take(&mut current_value), false),
                         )?;
                         Self::finish_tag(&mut tags, &mut current_key, constraint)?;
                         qualifier = None;
                         state = ParseState::ExpectingKey;
+                    } else if c == '|' {
+                        members.push((std::mem::take(&mut current_value), false));
+                        state = ParseState::ExpectingValueMember;
                     } else if Self::is_valid_unquoted_value_char(c) {
                         current_value.push(c.to_ascii_lowercase());
                     } else {
@@ -498,18 +594,21 @@ impl TaggedUrn {
 
                 ParseState::ExpectingSemiOrEnd => {
                     if c == ';' {
-                        let constraint = Self::canonicalize_value(
+                        let constraint = Self::finish_value(
                             qualifier,
-                            true,
                             &current_key,
-                            std::mem::take(&mut current_value),
+                            std::mem::take(&mut members),
+                            (std::mem::take(&mut current_value), true),
                         )?;
                         Self::finish_tag(&mut tags, &mut current_key, constraint)?;
                         qualifier = None;
                         state = ParseState::ExpectingKey;
+                    } else if c == '|' {
+                        members.push((std::mem::take(&mut current_value), true));
+                        state = ParseState::ExpectingValueMember;
                     } else {
                         return Err(TaggedUrnError::InvalidCharacter(format!(
-                            "expected ';' or end after quoted value, got '{}' at position {}",
+                            "expected ';', '|' or end after quoted value, got '{}' at position {}",
                             c, pos
                         )));
                     }
@@ -523,12 +622,12 @@ impl TaggedUrn {
         match state {
             ParseState::InUnquotedValue => {
                 let constraint =
-                    Self::canonicalize_value(qualifier, false, &current_key, current_value)?;
+                    Self::finish_value(qualifier, &current_key, members, (current_value, false))?;
                 Self::finish_tag(&mut tags, &mut current_key, constraint)?;
             }
             ParseState::ExpectingSemiOrEnd => {
                 let constraint =
-                    Self::canonicalize_value(qualifier, true, &current_key, current_value)?;
+                    Self::finish_value(qualifier, &current_key, members, (current_value, true))?;
                 Self::finish_tag(&mut tags, &mut current_key, constraint)?;
             }
             ParseState::ExpectingKey => {
@@ -549,7 +648,7 @@ impl TaggedUrn {
                 let constraint = Self::canonical_no_value(qualifier);
                 Self::finish_tag(&mut tags, &mut current_key, constraint)?;
             }
-            ParseState::ExpectingValue => {
+            ParseState::ExpectingValue | ParseState::ExpectingValueMember => {
                 return Err(TaggedUrnError::EmptyTagComponent(format!(
                     "empty value for key '{}'",
                     current_key
@@ -573,6 +672,87 @@ impl TaggedUrn {
         Ok(())
     }
 
+    /// The constraint a parsed value writes: a single value as
+    /// [`canonicalize_value`](Self::canonicalize_value) reads it, or a set of
+    /// values as [`canonicalize_set`](Self::canonicalize_set) does.
+    fn finish_value(
+        qualifier: Option<char>,
+        key: &str,
+        mut members: Vec<(String, bool)>,
+        last: (String, bool),
+    ) -> Result<Constraint, TaggedUrnError> {
+        if members.is_empty() {
+            return Self::canonicalize_value(qualifier, last.1, key, last.0);
+        }
+        members.push(last);
+        Self::canonicalize_set(qualifier, key, members)
+    }
+
+    /// The constraint a set of values writes:
+    ///
+    ///   (None,      a|b)    -> one of a, b          (`k=a|b`)
+    ///   (None,      a|b|!)  -> absent, or one of    (`k=a|b|!`)
+    ///   (Some('!'), a|b)    -> there, none of       (`k!=a|b`)
+    ///   (Some('?'), a|b)    -> absent, or none of   (`k?=a|b`)
+    ///
+    /// A bare `!` member says "or absent", and only in `k=`. Every other
+    /// member is a value: a quoted one is literal, and a bare `*`, `?`, `!`
+    /// under a qualifier, or a bare member beginning with `?` or `!`, is
+    /// refused — quote it to mean the value itself. A value given twice is
+    /// refused.
+    fn canonicalize_set(
+        qualifier: Option<char>,
+        key: &str,
+        members: Vec<(String, bool)>,
+    ) -> Result<Constraint, TaggedUrnError> {
+        let mut values: Vec<String> = Vec::with_capacity(members.len());
+        let mut or_absent = false;
+        for (member, quoted) in members {
+            if member.is_empty() {
+                return Err(TaggedUrnError::EmptyTagComponent(format!(
+                    "empty value in the set of values for key '{}'",
+                    key
+                )));
+            }
+            if !quoted && member == "!" && qualifier.is_none() {
+                if or_absent {
+                    return Err(TaggedUrnError::DuplicateValue(format!(
+                        "'!' given twice in the set of values for key '{}'",
+                        key
+                    )));
+                }
+                or_absent = true;
+                continue;
+            }
+            if !quoted && (member == "*" || member == "?" || member.starts_with(['?', '!'])) {
+                return Err(TaggedUrnError::InvalidCharacter(format!(
+                    "'{}' cannot stand in the set of values for key '{}': quote it to mean the \
+                     value itself",
+                    member, key
+                )));
+            }
+            if values.contains(&member) {
+                return Err(TaggedUrnError::DuplicateValue(format!(
+                    "value '{}' given twice in the set of values for key '{}'",
+                    member, key
+                )));
+            }
+            values.push(member);
+        }
+        if values.is_empty() {
+            return Err(TaggedUrnError::EmptyTagComponent(format!(
+                "the set of values for key '{}' names no value",
+                key
+            )));
+        }
+        Ok(match qualifier {
+            None => Constraint::one_of(values, or_absent),
+            Some('?') => Constraint::none_of(values, true),
+            Some('!') => Constraint::none_of(values, false),
+            Some(other) => unreachable!("qualifier may only be '?' or '!'; got '{}'", other),
+        })
+    }
+
     /// The constraint of a value-less tag, given its qualifier (if any):
     ///
     ///   None      -> Present        (bare `x`)
@@ -580,9 +760,9 @@ impl TaggedUrn {
     ///   Some('!') -> Absent         (`!x`, `x!`)
     fn canonical_no_value(qualifier: Option<char>) -> Constraint {
         match qualifier {
-            None => Constraint::Present,
-            Some('?') => Constraint::Unconstrained,
-            Some('!') => Constraint::Absent,
+            None => Constraint::present(),
+            Some('?') => Constraint::unconstrained(),
+            Some('!') => Constraint::absent(),
             Some(other) => unreachable!("qualifier may only be '?' or '!'; got '{}'", other),
         }
     }
@@ -626,9 +806,9 @@ impl TaggedUrn {
         }
         match qualifier {
             None => match value.as_str() {
-                "*" => Ok(Constraint::Present),
-                "?" => Ok(Constraint::Unconstrained),
-                "!" => Ok(Constraint::Absent),
+                "*" => Ok(Constraint::present()),
+                "?" => Ok(Constraint::unconstrained()),
+                "!" => Ok(Constraint::absent()),
                 _ => {
                     let first = value.chars().next().expect("value is not empty");
                     if first == '?' || first == '!' {
@@ -636,7 +816,7 @@ impl TaggedUrn {
                         Self::refuse_sigil_under_qualifier(first, key, &rest)?;
                         Ok(Self::qualified(Some(first), rest))
                     } else {
-                        Ok(Constraint::Exact { value })
+                        Ok(Constraint::exact(value))
                     }
                 }
             },
@@ -673,9 +853,9 @@ impl TaggedUrn {
     /// The constraint a value writes under a qualifier (or none).
     fn qualified(qualifier: Option<char>, value: String) -> Constraint {
         match qualifier {
-            None => Constraint::Exact { value },
-            Some('?') => Constraint::OptionalNot { value },
-            Some('!') => Constraint::PresentNot { value },
+            None => Constraint::exact(value),
+            Some('?') => Constraint::optional_not(value),
+            Some('!') => Constraint::present_not(value),
             Some(other) => unreachable!("qualifier may only be '?' or '!'; got '{}'", other),
         }
     }
@@ -716,31 +896,32 @@ impl TaggedUrn {
     }
 
     /// A constraint a URN can write for `key`: not `Missing` (a key with no
-    /// constraint is omitted) and no empty value.
+    /// constraint is omitted), not the empty form (no state at all, which no
+    /// text writes) and no empty value.
     fn check_constraint(key: &str, constraint: &Constraint) -> Result<(), TaggedUrnError> {
         match constraint {
             Constraint::Missing => Err(TaggedUrnError::InvalidTagFormat(format!(
                 "key '{}' given the constraint Missing: a key with no constraint is omitted",
                 key
             ))),
-            Constraint::Exact { value }
-            | Constraint::OptionalNot { value }
-            | Constraint::PresentNot { value }
-                if value.is_empty() =>
-            {
-                Err(TaggedUrnError::EmptyTagComponent(format!(
-                    "empty value for key '{}'",
-                    key
-                )))
-            }
+            c if c.is_empty_form() => Err(TaggedUrnError::InvalidTagFormat(format!(
+                "key '{}' given a constraint no state satisfies: no text writes it",
+                key
+            ))),
+            Constraint::Written {
+                values: Values::OneOf { vs } | Values::NoneOf { vs },
+                ..
+            } if vs.iter().any(|v| v.is_empty()) => Err(TaggedUrnError::EmptyTagComponent(
+                format!("empty value for key '{}'", key),
+            )),
             _ => Ok(()),
         }
     }
 
     /// Check if character is valid for an unquoted value: anything but the
-    /// separators `;` `=`, the quoting characters `"` `\`, and whitespace.
+    /// separators `;` `=` `|`, the quoting characters `"` `\`, and whitespace.
     fn is_valid_unquoted_value_char(c: char) -> bool {
-        !matches!(c, ';' | '=' | '"' | '\\') && !c.is_whitespace()
+        !matches!(c, ';' | '=' | '|' | '"' | '\\') && !c.is_whitespace()
     }
 
     /// Whether a value must be quoted to read back as itself: it holds a
@@ -784,29 +965,49 @@ impl TaggedUrn {
     ///
     /// Canonical serialization per constraint:
     ///
-    /// | Constraint       | Emitted          |
-    /// |------------------|------------------|
-    /// | `Present`        | `k`              |
-    /// | `Unconstrained`  | `?k`             |
-    /// | `Absent`         | `!k`             |
-    /// | `OptionalNot(v)` | `k?=v`           |
-    /// | `PresentNot(v)`  | `k!=v`           |
-    /// | `Exact(v)`       | `k=v`            |
+    /// | What the key allows            | Emitted      |
+    /// |--------------------------------|--------------|
+    /// | there, any value               | `k`          |
+    /// | any state                      | `?k`         |
+    /// | absent                         | `!k`         |
+    /// | absent, or none of `a`, `b`    | `k?=a|b`     |
+    /// | there, none of `a`, `b`        | `k!=a|b`     |
+    /// | there, one of `a`, `b`         | `k=a|b`      |
+    /// | absent, or one of `a`, `b`     | `k=a|b|!`    |
     ///
-    /// A value is quoted only when it must be to read back as itself
-    /// ([`needs_quoting`](Self::needs_quoting)): `Exact("*")` prints `k="*"`.
+    /// A set's values each once, in increasing order. A value is quoted only
+    /// when it must be to read back as itself
+    /// ([`needs_quoting`](Self::needs_quoting)): `k=*` quoted prints `k="*"`.
     /// The prefix forms (`?k`, `!k`) and infix forms (`k?=v`, `k!=v`) are the
     /// canonical outputs whichever alias the input used.
     pub fn tags_to_string(&self) -> String {
+        fn set(vs: &[String]) -> String {
+            vs.iter().map(|v| TaggedUrn::write_value(v)).collect::<Vec<_>>().join("|")
+        }
         self.tags
             .iter()
             .map(|(k, c)| match c {
-                Constraint::Present => k.clone(),
-                Constraint::Unconstrained => format!("?{}", k),
-                Constraint::Absent => format!("!{}", k),
-                Constraint::OptionalNot { value } => format!("{}?={}", k, Self::write_value(value)),
-                Constraint::PresentNot { value } => format!("{}!={}", k, Self::write_value(value)),
-                Constraint::Exact { value } => format!("{}={}", k, Self::write_value(value)),
+                Constraint::Written { absent: false, values: Values::NoneOf { vs } } if vs.is_empty() => {
+                    k.clone()
+                }
+                Constraint::Written { absent: true, values: Values::NoneOf { vs } } if vs.is_empty() => {
+                    format!("?{}", k)
+                }
+                Constraint::Written { absent: true, values: Values::OneOf { vs } } if vs.is_empty() => {
+                    format!("!{}", k)
+                }
+                Constraint::Written { absent: true, values: Values::NoneOf { vs } } => {
+                    format!("{}?={}", k, set(vs))
+                }
+                Constraint::Written { absent: false, values: Values::NoneOf { vs } } => {
+                    format!("{}!={}", k, set(vs))
+                }
+                Constraint::Written { absent: false, values: Values::OneOf { vs } } => {
+                    format!("{}={}", k, set(vs))
+                }
+                Constraint::Written { absent: true, values: Values::OneOf { vs } } => {
+                    format!("{}={}|!", k, set(vs))
+                }
                 Constraint::Missing => unreachable!("Missing is never stored"),
             })
             .collect::<Vec<_>>()
@@ -832,17 +1033,14 @@ impl TaggedUrn {
     /// Whether this URN writes the exact value `value` for `key` (`key=value`).
     /// Key is normalized to lowercase; value comparison is case-sensitive.
     pub fn has_tag(&self, key: &str, value: &str) -> bool {
-        matches!(
-            self.get_tag(key),
-            Some(Constraint::Exact { value: v }) if v == value
-        )
+        self.get_tag(key).and_then(Constraint::exact_value) == Some(value)
     }
 
-    /// Whether `tag_name` is present as a marker (`Constraint::Present`,
+    /// Whether `tag_name` is present as a marker (there with any value,
     /// written as just the key). Example: `cap:constrained;...` has marker
     /// tag "constrained".
     pub fn has_marker_tag(&self, tag_name: &str) -> bool {
-        self.get_tag(tag_name) == Some(&Constraint::Present)
+        self.get_tag(tag_name) == Some(&Constraint::present())
     }
 
     /// Add or replace a tag. The key must be an identifier and is lowered;
@@ -946,12 +1144,11 @@ impl TaggedUrn {
     /// The most specific URN every one of `urns` conforms to: their common
     /// denominator.
     ///
-    /// Key by key, the bound allows every state some input allows. Where no
-    /// single form says exactly that, there is no least bound at all —
-    /// `ext=png` and `ext=jpeg` are both `ext`, both `ext!=pdf` and both
-    /// `ext!=gif` — so the bound is the least among those that exclude only
-    /// values the inputs name: here `ext`. When one input holds all the others,
-    /// the bound is that input. The bound of no URNs is the URN with no tags.
+    /// Key by key, the bound allows exactly the states some input allows:
+    /// `ext=png` and `ext=jpeg` are bound by `ext=jpeg|png`, `ext=png` and
+    /// `!ext` by `ext=png|!`. A key some input allows every state of is left
+    /// out. When one input holds all the others, the bound is that input. The
+    /// bound of no URNs is the URN with no tags.
     ///
     /// Made by the proved model (`TaggedUrn.Exec.leastUpperBound`), whose
     /// theorems say every input conforms to the bound, the bound conforms
@@ -996,7 +1193,7 @@ impl TaggedUrn {
     /// (`TaggedUrn.Exec.valuesMatch`).
     pub fn admits_absence(&self, key: &str) -> bool {
         crate::formal::exec::values_match(
-            Constraint::Absent,
+            Constraint::absent(),
             constraint_or_missing(self.get_tag(key)),
         )
     }
@@ -1172,48 +1369,38 @@ impl TaggedUrn {
         Ok(self.with_tags(tags))
     }
 
-    /// Specificity: the sum of per-tag truth-table scores, decided by the
-    /// proved model (`TaggedUrn.Exec.specificity`).
+    /// Specificity: the sum of per-tag scores, decided by the proved model
+    /// (`TaggedUrn.Exec.specificity`). Each tag scores by what it allows:
     ///
-    /// | Constraint       | Form           | Score |
-    /// |------------------|----------------|------:|
-    /// | `Unconstrained`  | `?x`           |     0 |
-    /// | `OptionalNot(v)` | `x?=v`         |     1 |
-    /// | `Present`        | `x` (`x=*`)    |     2 |
-    /// | `PresentNot(v)`  | `x!=v`         |     3 |
-    /// | `Exact(v)`       | `x=v`          |     4 |
-    /// | `Absent`         | `!x`           |     5 |
+    /// | What the key allows                          | e.g.            | Score |
+    /// |----------------------------------------------|-----------------|------:|
+    /// | absence and every value                      | `?x`            |     0 |
+    /// | absence and some values, not every value     | `x?=v`, `x=v|!` |     1 |
+    /// | every value                                  | `x`             |     2 |
+    /// | two or more values, not every value          | `x!=v`, `x=a|b` |     3 |
+    /// | exactly one value                            | `x=v`           |     4 |
+    /// | only absence                                 | `!x`            |     5 |
     ///
-    /// Higher scores indicate more constrained (more specific) tags.
-    /// Identity (`prefix:` with no tags) scores 0. The ladder is
-    /// monotone within each "branch": `?x` (0) → `x?=v` (1) → `x` (2)
-    /// → exact `x=v` (4) tightens positively; `?x` (0) → `x?=v` (1)
-    /// → `x!=v` (3) → `!x` (5) tightens negatively.
+    /// Higher scores indicate more constrained (more specific) tags; a tag
+    /// that is narrower never scores lower. Identity (`prefix:` with no tags)
+    /// scores 0.
     pub fn specificity(&self) -> usize {
         let score = crate::formal::exec::specificity(self.formal.clone());
         score.to_u64().expect("a sum of per-tag scores fits in u64") as usize
     }
 
-    /// How many tags fall into each non-zero form, from the highest score to
-    /// the lowest: `(absent, exact, present_not, present, optional_not)`.
+    /// How many tags score 5, 4, 3, 2 and 1 (`TaggedUrn.Exec.tagSpecificity`):
+    /// `(absent, exact, present_not, present, optional_not)`, named by the
+    /// written form of each score.
     pub fn specificity_tuple(&self) -> (usize, usize, usize, usize, usize) {
-        let mut absent = 0;
-        let mut exact = 0;
-        let mut present_not = 0;
-        let mut present = 0;
-        let mut optional_not = 0;
+        let mut counts = [0usize; 6];
         for constraint in self.tags.values() {
-            match constraint {
-                Constraint::Absent => absent += 1,
-                Constraint::Exact { .. } => exact += 1,
-                Constraint::PresentNot { .. } => present_not += 1,
-                Constraint::Present => present += 1,
-                Constraint::OptionalNot { .. } => optional_not += 1,
-                Constraint::Unconstrained => {}
-                Constraint::Missing => unreachable!("Missing is never stored"),
-            }
+            let score = crate::formal::exec::tag_specificity(constraint.clone())
+                .to_u64()
+                .expect("a tag's score is at most 5") as usize;
+            counts[score] += 1;
         }
-        (absent, exact, present_not, present, optional_not)
+        (counts[5], counts[4], counts[3], counts[2], counts[1])
     }
 
     /// Check if this URN is more specific than another
@@ -1236,7 +1423,7 @@ impl TaggedUrn {
         let key = key.to_ascii_lowercase();
         if self.tags.contains_key(&key) {
             let mut tags = self.tags;
-            tags.insert(key, Constraint::Present);
+            tags.insert(key, Constraint::present());
             Self::assemble(self.prefix, tags)
         } else {
             self
@@ -1312,6 +1499,8 @@ pub enum TaggedUrnError {
     PrefixMismatch { expected: String, actual: String },
     /// Error code 12: Input has leading or trailing whitespace
     WhitespaceInInput(String),
+    /// Error code 13: A value given twice in one tag's set of values
+    DuplicateValue(String),
 }
 
 impl fmt::Display for TaggedUrnError {
@@ -1361,6 +1550,9 @@ impl fmt::Display for TaggedUrnError {
                     "Tagged URN has leading or trailing whitespace: '{}'",
                     input
                 )
+            }
+            TaggedUrnError::DuplicateValue(detail) => {
+                write!(f, "Duplicate value: {}", detail)
             }
         }
     }
@@ -1498,17 +1690,12 @@ impl TaggedUrnBuilder {
     /// Add the exact value `value` for `key` (`key=value`), taken literally:
     /// `tag("x", "*")` is the exact value `*`, not the marker.
     pub fn tag(self, key: &str, value: &str) -> Result<Self, TaggedUrnError> {
-        self.constraint(
-            key,
-            Constraint::Exact {
-                value: value.to_string(),
-            },
-        )
+        self.constraint(key, Constraint::exact(value))
     }
 
-    /// Add `key` as a marker (`Present`, written as just the key).
+    /// Add `key` as a marker (there with any value, written as just the key).
     pub fn marker(self, key: &str) -> Result<Self, TaggedUrnError> {
-        self.constraint(key, Constraint::Present)
+        self.constraint(key, Constraint::present())
     }
 
     pub fn build(self) -> Result<TaggedUrn, TaggedUrnError> {
@@ -1529,9 +1716,7 @@ mod tests {
     use super::*;
 
     fn exact(value: &str) -> Constraint {
-        Constraint::Exact {
-            value: value.to_string(),
-        }
+        Constraint::exact(value)
     }
 
     // TEST0501: Create tagged URN from string and verify prefix and tag values
@@ -2179,7 +2364,7 @@ mod tests {
 
         // Wildcard should be accepted in values
         let urn = TaggedUrn::from_string("cap:key=*").unwrap();
-        assert_eq!(urn.get_tag("key"), Some(&Constraint::Present));
+        assert_eq!(urn.get_tag("key"), Some(&Constraint::present()));
     }
 
     // TEST0535: Reject duplicate keys in URN string
@@ -2504,7 +2689,7 @@ mod tests {
     fn test0553_valueless_tag_parsing_single() {
         // Single value-less tag
         let urn = TaggedUrn::from_string("cap:optimize").unwrap();
-        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::Present));
+        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::present()));
         // Serializes as value-less (no =*)
         assert_eq!(urn.to_string(), "cap:optimize");
     }
@@ -2514,9 +2699,9 @@ mod tests {
     fn test0554_valueless_tag_parsing_multiple() {
         // Multiple value-less tags
         let urn = TaggedUrn::from_string("cap:fast;optimize;secure").unwrap();
-        assert_eq!(urn.get_tag("fast"), Some(&Constraint::Present));
-        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::Present));
-        assert_eq!(urn.get_tag("secure"), Some(&Constraint::Present));
+        assert_eq!(urn.get_tag("fast"), Some(&Constraint::present()));
+        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::present()));
+        assert_eq!(urn.get_tag("secure"), Some(&Constraint::present()));
         // Serializes alphabetically as value-less
         assert_eq!(urn.to_string(), "cap:fast;optimize;secure");
     }
@@ -2529,9 +2714,9 @@ mod tests {
             TaggedUrn::from_string("cap:ext=pdf;generate;in=media:;optimize;out=media:;secure")
                 .unwrap();
         assert!(urn.has_marker_tag("generate"));
-        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::Present));
+        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::present()));
         assert_eq!(urn.get_tag("ext"), Some(&exact("pdf")));
-        assert_eq!(urn.get_tag("secure"), Some(&Constraint::Present));
+        assert_eq!(urn.get_tag("secure"), Some(&Constraint::present()));
         // Serializes alphabetically
         assert_eq!(
             urn.to_string(),
@@ -2545,7 +2730,7 @@ mod tests {
         // Value-less tag at the end (no trailing semicolon)
         let urn = TaggedUrn::from_string("cap:generate;in=media:;optimize;out=media:").unwrap();
         assert!(urn.has_marker_tag("generate"));
-        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::Present));
+        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::present()));
         assert_eq!(
             urn.to_string(),
             "cap:generate;in=media:;optimize;out=media:"
@@ -2659,9 +2844,9 @@ mod tests {
     fn test0562_valueless_tag_case_normalization() {
         // Value-less tags are normalized to lowercase like other keys
         let urn = TaggedUrn::from_string("cap:OPTIMIZE;Fast;SECURE").unwrap();
-        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::Present));
-        assert_eq!(urn.get_tag("fast"), Some(&Constraint::Present));
-        assert_eq!(urn.get_tag("secure"), Some(&Constraint::Present));
+        assert_eq!(urn.get_tag("optimize"), Some(&Constraint::present()));
+        assert_eq!(urn.get_tag("fast"), Some(&Constraint::present()));
+        assert_eq!(urn.get_tag("secure"), Some(&Constraint::present()));
         assert_eq!(urn.to_string(), "cap:fast;optimize;secure");
     }
 
@@ -2756,7 +2941,7 @@ mod tests {
     #[test]
     fn test0567_unspecified_question_mark_parsing() {
         let urn = TaggedUrn::from_string("cap:ext=?").unwrap();
-        assert_eq!(urn.get_tag("ext"), Some(&Constraint::Unconstrained));
+        assert_eq!(urn.get_tag("ext"), Some(&Constraint::unconstrained()));
         // Canonical form is `?ext` (prefix), not `ext=?`.
         assert_eq!(urn.to_string(), "cap:?ext");
     }
@@ -2767,7 +2952,7 @@ mod tests {
     #[test]
     fn test0568_must_not_have_exclamation_parsing() {
         let urn = TaggedUrn::from_string("cap:ext=!").unwrap();
-        assert_eq!(urn.get_tag("ext"), Some(&Constraint::Absent));
+        assert_eq!(urn.get_tag("ext"), Some(&Constraint::absent()));
         // Canonical form is `!ext` (prefix), not `ext=!`.
         assert_eq!(urn.to_string(), "cap:!ext");
     }
@@ -3238,6 +3423,97 @@ mod tests {
         }
     }
 
+    // TEST7224: Each set form parses to the set it writes and prints canonically — values once,
+    // in increasing order, `!` last — reading back as itself; the qualifier aliases write the same sets.
+    #[test]
+    fn test7224_set_forms_parse_and_print() {
+        let cases = [
+            ("t:x=b|a", Constraint::one_of(["a".into(), "b".into()], false), "t:x=a|b"),
+            ("t:x!=b|a", Constraint::none_of(["a".into(), "b".into()], false), "t:x!=a|b"),
+            ("t:x?=b|a", Constraint::none_of(["a".into(), "b".into()], true), "t:x?=a|b"),
+            ("t:x=b|!|a", Constraint::one_of(["a".into(), "b".into()], true), "t:x=a|b|!"),
+            ("t:x=a|!", Constraint::one_of(["a".into()], true), "t:x=a|!"),
+            (
+                "t:x=\"a|b\"|c",
+                Constraint::one_of(["a|b".into(), "c".into()], false),
+                "t:x=\"a|b\"|c",
+            ),
+            ("t:!x=a|b", Constraint::none_of(["a".into(), "b".into()], false), "t:x!=a|b"),
+            ("t:?x=a|b", Constraint::none_of(["a".into(), "b".into()], true), "t:x?=a|b"),
+        ];
+        for (text, constraint, printed) in cases {
+            let urn = TaggedUrn::from_string(text).unwrap_or_else(|e| panic!("{text}: {e}"));
+            assert_eq!(urn.get_tag("x"), Some(&constraint), "{}", text);
+            assert_eq!(urn.to_string(), printed, "{}", text);
+            assert_eq!(TaggedUrn::from_string(printed).unwrap(), urn, "{}", printed);
+        }
+        // One value is the single form it always was.
+        assert_eq!(
+            TaggedUrn::from_string("t:x=a").unwrap().get_tag("x"),
+            Some(&Constraint::exact("a"))
+        );
+    }
+
+    // TEST7225: A set of values refuses a value given twice, an empty member, a bare sigil or
+    // qualifier among its values, and `!` under a qualifier; a literal `|` is quoted.
+    #[test]
+    fn test7225_set_forms_refused() {
+        for text in ["t:x=a|a", "t:x=a|!|!", "t:x!=a|a"] {
+            assert!(
+                matches!(TaggedUrn::from_string(text), Err(TaggedUrnError::DuplicateValue(_))),
+                "{}",
+                text
+            );
+        }
+        for text in ["t:x=a|*", "t:x=a|?", "t:x=?a|b", "t:x=a|!b", "t:x!=a|!", "t:x?=a|!"] {
+            assert!(
+                matches!(TaggedUrn::from_string(text), Err(TaggedUrnError::InvalidCharacter(_))),
+                "{}",
+                text
+            );
+        }
+        for text in ["t:x=a|", "t:x=a||b", "t:x=|a", "t:x=!|!"] {
+            assert!(TaggedUrn::from_string(text).is_err(), "{}", text);
+        }
+        let quoted = TaggedUrn::from_string("t:x=\"a|b\"").unwrap();
+        assert_eq!(quoted.get_tag("x"), Some(&Constraint::exact("a|b")));
+        assert_eq!(quoted.to_string(), "t:x=\"a|b\"");
+    }
+
+    // TEST7226: The bound of several URNs is exact per key: png and jpeg are bound by
+    // ext=jpeg|png, a value and its absence by ext=v|!, and a value and any value by ext.
+    #[test]
+    fn test7226_bound_is_exact_per_key() {
+        let p = |s: &str| TaggedUrn::from_string(s).unwrap();
+        let bound = |us: &[&str]| {
+            TaggedUrn::least_upper_bound("media", &us.iter().map(|u| p(u)).collect::<Vec<_>>())
+                .unwrap()
+                .to_string()
+        };
+        assert_eq!(bound(&["media:ext=png", "media:ext=jpeg"]), "media:ext=jpeg|png");
+        assert_eq!(bound(&["media:ext=png", "media:!ext"]), "media:ext=png|!");
+        assert_eq!(bound(&["media:ext=png", "media:ext"]), "media:ext");
+        assert_eq!(bound(&["media:ext=a|b", "media:ext=b|c"]), "media:ext=a|b|c");
+        assert_eq!(bound(&["media:ext!=a", "media:ext=a"]), "media:ext");
+    }
+
+    // TEST7227: A set scores by what it allows — two or more values 3, absence and some
+    // values 1 — and narrowing never lowers a score, though two on one chain can tie.
+    #[test]
+    fn test7227_set_scores() {
+        let score = |s: &str| TaggedUrn::from_string(s).unwrap().specificity();
+        assert_eq!(score("t:x=a|b"), 3);
+        assert_eq!(score("t:x!=a|b"), 3);
+        assert_eq!(score("t:x?=a|b"), 1);
+        assert_eq!(score("t:x=a|!"), 1);
+        assert_eq!(score("t:x=a|b|c"), 3);
+        assert!(score("t:x=a|b") >= score("t:x"));
+        assert_eq!(
+            TaggedUrn::from_string("t:x=a|b;y=a|!;z").unwrap().specificity_tuple(),
+            (0, 0, 1, 1, 1)
+        );
+    }
+
     // TEST7210: A written tag lets its key be absent exactly when it is !k, ?k or k?=v;
     // a key the URN does not mention says nothing of it, so it allows absence too.
     #[test]
@@ -3470,7 +3746,7 @@ mod tests {
         assert_eq!(wildcard_pattern.specificity(), 10); // 2 exact × 4 + 1 * × 2 = 8 + 2 = 10
     }
 
-    // TEST392: the bound of several URNs: the values they share, a key every one sets to differing values as "some value", the coarser of two comparable URNs, nothing for none, and another prefix refused
+    // TEST392: the bound of several URNs: the values they share, a key every one sets to differing values as the set of those values, the coarser of two comparable URNs, nothing for none, and another prefix refused
     #[test]
     fn test392_least_upper_bound() {
         let p = |s: &str| TaggedUrn::from_string(s).unwrap();
@@ -3478,7 +3754,7 @@ mod tests {
 
         assert_eq!(
             bound(&[p("media:ext=png;image"), p("media:ext=jpeg;image")]),
-            p("media:ext;image")
+            p("media:ext=jpeg|png;image")
         );
         // One input already holds the other: the bound is that input, not the wider `ext`.
         assert_eq!(
@@ -3512,13 +3788,13 @@ mod tests {
         assert_eq!(p("t:x=?v").to_string(), "t:x?=v");
         assert_eq!(
             p("t:x=?v").get_tag("x"),
-            Some(&Constraint::OptionalNot { value: "v".into() })
+            Some(&Constraint::optional_not("v"))
         );
         assert_eq!(p("t:x=!v"), p("t:x!=v"));
         assert_eq!(p("t:x=!v").to_string(), "t:x!=v");
         assert_eq!(
             p("t:x=!v").get_tag("x"),
-            Some(&Constraint::PresentNot { value: "v".into() })
+            Some(&Constraint::present_not("v"))
         );
 
         for refused in [
@@ -3640,14 +3916,19 @@ mod tests {
         }
     }
 
-    // TEST6755: An unquoted value takes any character but ; = " \ and whitespace
+    // TEST6755: An unquoted value takes any character but ; = | " \ and whitespace
     #[test]
     fn test6755_unquoted_value_takes_any_non_separator() {
         let urn = TaggedUrn::from_string("t:k=a,b(c)").unwrap();
         assert_eq!(urn.get_tag("k"), Some(&exact("a,b(c)")));
 
-        let symbols = TaggedUrn::from_string("t:k=x@y#z+%&~'[]{}<>^$|").unwrap();
-        assert_eq!(symbols.get_tag("k"), Some(&exact("x@y#z+%&~'[]{}<>^$|")));
+        let symbols = TaggedUrn::from_string("t:k=x@y#z+%&~'[]{}<>^$").unwrap();
+        assert_eq!(symbols.get_tag("k"), Some(&exact("x@y#z+%&~'[]{}<>^$")));
+        // `|` separates the values of a set.
+        assert_eq!(
+            TaggedUrn::from_string("t:k=a|b").unwrap().get_tag("k"),
+            Some(&Constraint::one_of(["a".into(), "b".into()], false))
+        );
 
         assert_eq!(
             TaggedUrn::from_string("t:k=A,B").unwrap().get_tag("k"),
@@ -3687,7 +3968,7 @@ mod tests {
         let optional = p(r#"t:?x="*""#);
         assert_eq!(
             optional.get_tag("x"),
-            Some(&Constraint::OptionalNot { value: "*".into() })
+            Some(&Constraint::optional_not("*"))
         );
         assert_eq!(optional.to_string(), r#"t:x?="*""#);
         assert_eq!(p(&optional.to_string()), optional);

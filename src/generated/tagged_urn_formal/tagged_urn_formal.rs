@@ -8,6 +8,7 @@ pub mod __lng {
     const _: () = rt::assert_abi::<3>();
 
     include!("modules/Init-Core.rs");
+    include!("modules/Init-Data-Array-Basic.rs");
     include!("modules/Init-Data-ByteArray-Basic.rs");
     include!("modules/Init-Data-ByteArray-Extra.rs");
     include!("modules/Init-Data-Format-Basic.rs");
@@ -15,7 +16,6 @@ pub mod __lng {
     include!("modules/Init-Data-Int-Repr.rs");
     include!("modules/Init-Data-List-Basic.rs");
     include!("modules/Init-Data-Nat-Bitwise-Basic.rs");
-    include!("modules/Init-Data-Option-Basic.rs");
     include!("modules/Init-Data-Random.rs");
     include!("modules/Init-Data-Repr.rs");
     include!("modules/Init-Data-String-Basic.rs");
@@ -34,12 +34,13 @@ pub mod __lng {
     include!("modules/Init-Util.rs");
     include!("modules/Lean-Data-Iterators-Producers-PersistentHashMap.rs");
     include!("modules/Lean-Elab-Structure.rs");
-    include!("modules/Std-Http-Data-URI-Basic.rs");
+    include!("modules/Lungo-Attr-Names.rs");
     include!("modules/TaggedUrn-Constraint.rs");
     include!("modules/TaggedUrn-Exec.rs");
     include!("modules/TaggedUrn-Join.rs");
     include!("modules/TaggedUrn-Patch.rs");
     include!("modules/TaggedUrn-Sorted.rs");
+    include!("modules/TaggedUrn-Split.rs");
     include!("modules/TaggedUrn-Urn.rs");
 
     // The runtime calls IO.Error.toString as `lean_io_error_to_string`.
@@ -253,16 +254,11 @@ pub mod __lng {
 #[derive(Clone, Debug, PartialEq, Eq, Hash)]
 pub enum Constraint {
     Missing,
-    Unconstrained,
-    OptionalNot { value: ::std::string::String },
-    Present,
-    PresentNot { value: ::std::string::String },
-    Exact { value: ::std::string::String },
-    Absent,
+    Written { absent: bool, values: Values },
 }
 
 impl ::lungo::LeanLayout for Constraint {
-    const FINGERPRINT: &'static str = "481fc09e23c6415a7c3f05887577ec940a6ecc84b005e63476c1060b59edcac7";
+    const FINGERPRINT: &'static str = "b65d5193904316a2793952f589e3aac63bfc80f801ab20f2693643fcf9894159";
 }
 
 #[allow(unused_imports, unused_unsafe)]
@@ -274,29 +270,11 @@ unsafe impl ::lungo::LeanType<::lungo::RustBackend> for Constraint {
                 Constraint::Missing => {
                     rt::lean_box(0)
                 }
-                Constraint::Unconstrained => {
-                    rt::lean_box(1)
-                }
-                Constraint::OptionalNot { value: f0 } => {
-                    let o = ::lungo::__facade::alloc_ctor::<::lungo::RustBackend>(2, 1, 0);
-                    rt::lean_ctor_set(o, 0, ::lungo::LeanType::<::lungo::RustBackend>::into_lean(f0));
+                Constraint::Written { absent: f0, values: f1 } => {
+                    let o = ::lungo::__facade::alloc_ctor::<::lungo::RustBackend>(1, 1, 1);
+                    rt::lean_ctor_set_uint8(o, ::core::mem::size_of::<usize>(), ::lungo::__facade::to_small::<::lungo::RustBackend, _>(f0) as u8);
+                    rt::lean_ctor_set(o, 0, ::lungo::LeanType::<::lungo::RustBackend>::into_lean(f1));
                     o
-                }
-                Constraint::Present => {
-                    rt::lean_box(3)
-                }
-                Constraint::PresentNot { value: f0 } => {
-                    let o = ::lungo::__facade::alloc_ctor::<::lungo::RustBackend>(4, 1, 0);
-                    rt::lean_ctor_set(o, 0, ::lungo::LeanType::<::lungo::RustBackend>::into_lean(f0));
-                    o
-                }
-                Constraint::Exact { value: f0 } => {
-                    let o = ::lungo::__facade::alloc_ctor::<::lungo::RustBackend>(5, 1, 0);
-                    rt::lean_ctor_set(o, 0, ::lungo::LeanType::<::lungo::RustBackend>::into_lean(f0));
-                    o
-                }
-                Constraint::Absent => {
-                    rt::lean_box(6)
                 }
             }
         }
@@ -306,13 +284,50 @@ unsafe impl ::lungo::LeanType<::lungo::RustBackend> for Constraint {
         unsafe {
             match rt::lean_obj_tag(o) {
                 0 => Constraint::Missing,
-                1 => Constraint::Unconstrained,
-                2 => Constraint::OptionalNot { value: <::std::string::String as ::lungo::LeanType<::lungo::RustBackend>>::from_lean(rt::lean_ctor_get(o, 0)) },
-                3 => Constraint::Present,
-                4 => Constraint::PresentNot { value: <::std::string::String as ::lungo::LeanType<::lungo::RustBackend>>::from_lean(rt::lean_ctor_get(o, 0)) },
-                5 => Constraint::Exact { value: <::std::string::String as ::lungo::LeanType<::lungo::RustBackend>>::from_lean(rt::lean_ctor_get(o, 0)) },
-                6 => Constraint::Absent,
+                1 => Constraint::Written { absent: ::lungo::__facade::from_small::<::lungo::RustBackend, bool>(rt::lean_ctor_get_uint8(o, ::core::mem::size_of::<usize>()) as usize), values: <Values as ::lungo::LeanType<::lungo::RustBackend>>::from_lean(rt::lean_ctor_get(o, 0)) },
                 tag => rt::lean_internal_panic(&::std::format!("invalid constructor tag {tag} for TaggedUrn.Constraint")),
+            }
+        }
+    }
+}
+
+/// Lean: `TaggedUrn.Values`
+#[derive(Clone, Debug, PartialEq, Eq, Hash)]
+pub enum Values {
+    OneOf { vs: ::lungo::List<::std::string::String> },
+    NoneOf { vs: ::lungo::List<::std::string::String> },
+}
+
+impl ::lungo::LeanLayout for Values {
+    const FINGERPRINT: &'static str = "d39e9210a7238d1db8ec7497149536d75384770f7494bb031e64d4e3c61925f6";
+}
+
+#[allow(unused_imports, unused_unsafe)]
+unsafe impl ::lungo::LeanType<::lungo::RustBackend> for Values {
+    fn into_lean(self) -> ::lungo::__runtime::Obj {
+        use ::lungo::__runtime as rt;
+        unsafe {
+            match self {
+                Values::OneOf { vs: f0 } => {
+                    let o = ::lungo::__facade::alloc_ctor::<::lungo::RustBackend>(0, 1, 0);
+                    rt::lean_ctor_set(o, 0, ::lungo::LeanType::<::lungo::RustBackend>::into_lean(f0));
+                    o
+                }
+                Values::NoneOf { vs: f0 } => {
+                    let o = ::lungo::__facade::alloc_ctor::<::lungo::RustBackend>(1, 1, 0);
+                    rt::lean_ctor_set(o, 0, ::lungo::LeanType::<::lungo::RustBackend>::into_lean(f0));
+                    o
+                }
+            }
+        }
+    }
+    unsafe fn from_lean(o: ::lungo::__runtime::Obj) -> Self {
+        use ::lungo::__runtime as rt;
+        unsafe {
+            match rt::lean_obj_tag(o) {
+                0 => Values::OneOf { vs: <::lungo::List<::std::string::String> as ::lungo::LeanType<::lungo::RustBackend>>::from_lean(rt::lean_ctor_get(o, 0)) },
+                1 => Values::NoneOf { vs: <::lungo::List<::std::string::String> as ::lungo::LeanType<::lungo::RustBackend>>::from_lean(rt::lean_ctor_get(o, 0)) },
+                tag => rt::lean_internal_panic(&::std::format!("invalid constructor tag {tag} for TaggedUrn.Values")),
             }
         }
     }
@@ -321,7 +336,7 @@ unsafe impl ::lungo::LeanType<::lungo::RustBackend> for Constraint {
 pub mod exec {
     /// Lean: `TaggedUrn.Exec.comparable : TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:79:1
+    /// Source: TaggedUrn/Exec.lean:80:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn comparable(a: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>, b: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -338,7 +353,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.equivalent : TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:72:1
+    /// Source: TaggedUrn/Exec.lean:73:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn equivalent(a: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>, b: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -355,7 +370,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.leastUpperBound : String → List TaggedUrn.Exec.Wf → Option (List (String × TaggedUrn.Constraint))`
     /// 
-    /// Source: TaggedUrn/Exec.lean:153:1
+    /// Source: TaggedUrn/Exec.lean:160:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn least_upper_bound(scheme: ::std::string::String, us: ::lungo::List<::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>>) -> ::core::option::Option<::lungo::List<(::std::string::String, super::Constraint)>> {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -371,7 +386,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.make : String → List (String × TaggedUrn.Constraint) → Option TaggedUrn.Exec.Wf`
     /// 
-    /// Source: TaggedUrn/Exec.lean:27:1
+    /// Source: TaggedUrn/Exec.lean:28:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn make(scheme: ::std::string::String, tags: ::lungo::List<(::std::string::String, super::Constraint)>) -> ::core::option::Option<::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>> {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -386,7 +401,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.meets : TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:99:1
+    /// Source: TaggedUrn/Exec.lean:106:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn meets(a: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>, b: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -401,7 +416,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.meetsClosed : TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:125:1
+    /// Source: TaggedUrn/Exec.lean:132:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn meets_closed(a: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>, b: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -416,7 +431,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.parts : TaggedUrn.Exec.Wf → String × List (String × TaggedUrn.Constraint)`
     /// 
-    /// Source: TaggedUrn/Exec.lean:47:1
+    /// Source: TaggedUrn/Exec.lean:48:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn parts(w: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> (::std::string::String, ::lungo::List<(::std::string::String, super::Constraint)>) {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -430,7 +445,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.refines : TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:64:1
+    /// Source: TaggedUrn/Exec.lean:65:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn refines(a: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>, b: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -447,7 +462,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.refinesBothClosed : TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:135:1
+    /// Source: TaggedUrn/Exec.lean:142:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn refines_both_closed(a: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>, b: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -462,7 +477,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.refinesClosed : TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:114:1
+    /// Source: TaggedUrn/Exec.lean:121:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn refines_closed(a: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>, b: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -477,7 +492,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.specificity : TaggedUrn.Exec.Wf → Nat`
     /// 
-    /// Source: TaggedUrn/Exec.lean:86:1
+    /// Source: TaggedUrn/Exec.lean:87:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn specificity(a: ::lungo::LeanValue<super::__opaque::Wf, ::lungo::RustBackend>) -> ::lungo::Nat {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -489,9 +504,24 @@ pub mod exec {
         }
     }
 
+    /// Lean: `TaggedUrn.Exec.tagSpecificity : TaggedUrn.Constraint → Nat`
+    /// 
+    /// Source: TaggedUrn/Exec.lean:93:1
+    #[allow(unused_imports, unused_unsafe, clippy::all)]
+    pub fn tag_specificity(c: super::Constraint) -> ::lungo::Nat {
+        use ::lungo::__runtime::{self as rt, Obj};
+        super::__lng::__initialize();
+        unsafe {
+            let __p0: Obj = ::lungo::LeanType::<::lungo::RustBackend>::into_lean(c);
+            let __r: Obj = super::__lng::l_TaggedUrn_dExec_dtagSpecificity(__p0);
+            ::lungo::__facade::dec::<::lungo::RustBackend>(__p0);
+            ::lungo::__facade::take::<::lungo::RustBackend, ::lungo::Nat>(__r)
+        }
+    }
+
     /// Lean: `TaggedUrn.Exec.valuesMatch : TaggedUrn.Constraint → TaggedUrn.Constraint → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:92:1
+    /// Source: TaggedUrn/Exec.lean:99:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn values_match(inst: super::Constraint, patt: super::Constraint) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -508,7 +538,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.valuesMatchClosed : TaggedUrn.Constraint → TaggedUrn.Constraint → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:145:1
+    /// Source: TaggedUrn/Exec.lean:152:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn values_match_closed(inst: super::Constraint, patt: super::Constraint) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -525,7 +555,7 @@ pub mod exec {
 
     /// Lean: `TaggedUrn.Exec.valuesMeet : TaggedUrn.Constraint → TaggedUrn.Constraint → Bool`
     /// 
-    /// Source: TaggedUrn/Exec.lean:107:1
+    /// Source: TaggedUrn/Exec.lean:114:1
     #[allow(unused_imports, unused_unsafe, clippy::all)]
     pub fn values_meet(a: super::Constraint, b: super::Constraint) -> bool {
         use ::lungo::__runtime::{self as rt, Obj};
@@ -548,7 +578,7 @@ pub mod __opaque {
     /// Values of Lean type `TaggedUrn.Exec.Wf`.
     pub enum Wf {}
     impl ::lungo::LeanLayout for Wf {
-        const FINGERPRINT: &'static str = "20e9f81ad195b2f4a481e7a5dcae2b3d0de6efe7b3dc720db0e2aa3b52527785";
+        const FINGERPRINT: &'static str = "4fed413de2fb915a7facb2d88381b8a592cbf88ecfc0037e9ed1d5892c5169de";
     }
 }
 
@@ -565,7 +595,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.comparable",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 79, column: 1 }, end: ::lungo::SourcePosition { line: 79, column: 63 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 80, column: 1 }, end: ::lungo::SourcePosition { line: 80, column: 63 } }),
             lean_type: "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
             compiled_signature: "(@& obj, @& obj) -> u8",
             rust_path: "exec::comparable",
@@ -588,7 +618,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.equivalent",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 72, column: 1 }, end: ::lungo::SourcePosition { line: 72, column: 63 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 73, column: 1 }, end: ::lungo::SourcePosition { line: 73, column: 63 } }),
             lean_type: "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
             compiled_signature: "(@& obj, @& obj) -> u8",
             rust_path: "exec::equivalent",
@@ -611,7 +641,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.leastUpperBound",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 153, column: 1 }, end: ::lungo::SourcePosition { line: 159, column: 12 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 160, column: 1 }, end: ::lungo::SourcePosition { line: 166, column: 12 } }),
             lean_type: "String → List TaggedUrn.Exec.Wf → Option (List (String × TaggedUrn.Constraint))",
             compiled_signature: "(@& obj, tobj) -> tobj",
             rust_path: "exec::least_upper_bound",
@@ -634,7 +664,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.make",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 27, column: 1 }, end: ::lungo::SourcePosition { line: 30, column: 61 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 28, column: 1 }, end: ::lungo::SourcePosition { line: 31, column: 61 } }),
             lean_type: "String → List (String × TaggedUrn.Constraint) → Option TaggedUrn.Exec.Wf",
             compiled_signature: "(obj, tobj) -> tobj",
             rust_path: "exec::make",
@@ -657,7 +687,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.meets",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 99, column: 1 }, end: ::lungo::SourcePosition { line: 101, column: 75 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 106, column: 1 }, end: ::lungo::SourcePosition { line: 108, column: 75 } }),
             lean_type: "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
             compiled_signature: "(obj, obj) -> u8",
             rust_path: "exec::meets",
@@ -680,7 +710,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.meetsClosed",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 125, column: 1 }, end: ::lungo::SourcePosition { line: 127, column: 81 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 132, column: 1 }, end: ::lungo::SourcePosition { line: 134, column: 81 } }),
             lean_type: "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
             compiled_signature: "(obj, obj) -> u8",
             rust_path: "exec::meets_closed",
@@ -703,7 +733,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.parts",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 47, column: 1 }, end: ::lungo::SourcePosition { line: 50, column: 87 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 48, column: 1 }, end: ::lungo::SourcePosition { line: 51, column: 87 } }),
             lean_type: "TaggedUrn.Exec.Wf → String × List (String × TaggedUrn.Constraint)",
             compiled_signature: "(obj) -> obj",
             rust_path: "exec::parts",
@@ -726,7 +756,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.refines",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 64, column: 1 }, end: ::lungo::SourcePosition { line: 66, column: 66 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 65, column: 1 }, end: ::lungo::SourcePosition { line: 67, column: 66 } }),
             lean_type: "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
             compiled_signature: "(@& obj, @& obj) -> u8",
             rust_path: "exec::refines",
@@ -749,7 +779,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.refinesBothClosed",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 135, column: 1 }, end: ::lungo::SourcePosition { line: 137, column: 85 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 142, column: 1 }, end: ::lungo::SourcePosition { line: 144, column: 85 } }),
             lean_type: "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
             compiled_signature: "(obj, obj) -> u8",
             rust_path: "exec::refines_both_closed",
@@ -772,7 +802,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.refinesClosed",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 114, column: 1 }, end: ::lungo::SourcePosition { line: 117, column: 81 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 121, column: 1 }, end: ::lungo::SourcePosition { line: 124, column: 81 } }),
             lean_type: "TaggedUrn.Exec.Wf → TaggedUrn.Exec.Wf → Bool",
             compiled_signature: "(obj, obj) -> u8",
             rust_path: "exec::refines_closed",
@@ -795,7 +825,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.specificity",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 86, column: 1 }, end: ::lungo::SourcePosition { line: 87, column: 49 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 87, column: 1 }, end: ::lungo::SourcePosition { line: 88, column: 49 } }),
             lean_type: "TaggedUrn.Exec.Wf → Nat",
             compiled_signature: "(obj) -> tobj",
             rust_path: "exec::specificity",
@@ -804,7 +834,7 @@ pub mod __meta {
                 depends_on_sorry: false,
                 unsafe_dependencies: &[],
                 partial_dependencies: &[],
-                extern_dependencies: &["lean_nat_add"],
+                extern_dependencies: &["lean_nat_add", "lean_string_dec_eq"],
             },
             assurance: ::lungo::ExportAssurance {
                 claims: &["TaggedUrn.Exec.specificity_eq"],
@@ -815,10 +845,33 @@ pub mod __meta {
             },
         },
         ::lungo::DeclarationInfo {
+            lean_name: "TaggedUrn.Exec.tagSpecificity",
+            module: "TaggedUrn.Exec",
+            source_file: Some("TaggedUrn/Exec.lean"),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 93, column: 1 }, end: ::lungo::SourcePosition { line: 94, column: 56 } }),
+            lean_type: "TaggedUrn.Constraint → Nat",
+            compiled_signature: "(@& tobj) -> tobj",
+            rust_path: "exec::tag_specificity",
+            trust: ::lungo::ExportTrust {
+                axioms: &[],
+                depends_on_sorry: false,
+                unsafe_dependencies: &[],
+                partial_dependencies: &[],
+                extern_dependencies: &["lean_string_dec_eq"],
+            },
+            assurance: ::lungo::ExportAssurance {
+                claims: &["TaggedUrn.Exec.tagSpecificity_eq"],
+                assumptions: &[],
+                facilities: &[],
+                roles: &[],
+                asynchronous: false,
+            },
+        },
+        ::lungo::DeclarationInfo {
             lean_name: "TaggedUrn.Exec.valuesMatch",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 92, column: 1 }, end: ::lungo::SourcePosition { line: 93, column: 70 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 99, column: 1 }, end: ::lungo::SourcePosition { line: 100, column: 70 } }),
             lean_type: "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
             compiled_signature: "(@& tobj, @& tobj) -> u8",
             rust_path: "exec::values_match",
@@ -841,7 +894,7 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.valuesMatchClosed",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 145, column: 1 }, end: ::lungo::SourcePosition { line: 146, column: 82 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 152, column: 1 }, end: ::lungo::SourcePosition { line: 153, column: 82 } }),
             lean_type: "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
             compiled_signature: "(@& tobj, @& tobj) -> u8",
             rust_path: "exec::values_match_closed",
@@ -864,12 +917,12 @@ pub mod __meta {
             lean_name: "TaggedUrn.Exec.valuesMeet",
             module: "TaggedUrn.Exec",
             source_file: Some("TaggedUrn/Exec.lean"),
-            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 107, column: 1 }, end: ::lungo::SourcePosition { line: 108, column: 57 } }),
+            range: Some(::lungo::SourceRange { start: ::lungo::SourcePosition { line: 114, column: 1 }, end: ::lungo::SourcePosition { line: 115, column: 57 } }),
             lean_type: "TaggedUrn.Constraint → TaggedUrn.Constraint → Bool",
             compiled_signature: "(@& tobj, @& tobj) -> u8",
             rust_path: "exec::values_meet",
             trust: ::lungo::ExportTrust {
-                axioms: &["propext"],
+                axioms: &[],
                 depends_on_sorry: false,
                 unsafe_dependencies: &[],
                 partial_dependencies: &[],
@@ -886,21 +939,22 @@ pub mod __meta {
     ];
 
     /// The program's assurance document, as `assurance.json` holds it.
-    pub const ASSURANCE_JSON: &str = "{\n  \"schema_version\": 1,\n  \"program\": \"tagged_urn_formal\",\n  \"provenance\": {\n    \"lean_version\": \"4.34.1\",\n    \"lean_githash\": \"5045d0056413266e57c625dcd7c365b10e377c52\",\n    \"lungo_version\": \"1.127.0\",\n    \"bir_version\": 3,\n    \"runtime_abi\": 3\n  },\n  \"library\": {\n    \"package\": \"lungo\",\n    \"schema_version\": 1\n  },\n  \"specifications\": [\n    {\n      \"name\": \"TaggedUrn.Constraint.allows\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Constraint → TaggedUrn.KeyState → Prop\",\n      \"definition\": \"fun x x_1 =>\\n  match x, x_1 with\\n  | TaggedUrn.Constraint.missing, x => True\\n  | TaggedUrn.Constraint.unconstrained, x => True\\n  | TaggedUrn.Constraint.optionalNot p, s => s ≠ TaggedUrn.KeyState.set p\\n  | TaggedUrn.Constraint.present, s => s ≠ TaggedUrn.KeyState.unset\\n  | TaggedUrn.Constraint.presentNot p, s => s ≠ TaggedUrn.KeyState.unset ∧ s ≠ TaggedUrn.KeyState.set p\\n  | TaggedUrn.Constraint.exact p, s => s = TaggedUrn.KeyState.set p\\n  | TaggedUrn.Constraint.absent, s => s = TaggedUrn.KeyState.unset\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"aee80a946434e6281e1210e8eb0085e8ec8f9e2a0fbdb2103966191d5637ecb1\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Constraint.lean\",\n        \"start\": {\n          \"line\": 36,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 44,\n          \"column\": 27\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.comparable\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b => TaggedUrn.refines a b ∨ TaggedUrn.refines b a\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"a383cafc8c675c9125a90a66a5d9c1d5e0183f54485365327b5b702b952fe396\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 72,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 73,\n          \"column\": 63\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.equivalent\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b => TaggedUrn.refines a b ∧ TaggedUrn.refines b a\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"62a798359c0f814cc5a5394753eac1851acacdc70d11ed2b7d2ce62b8f87d09e\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 74,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 75,\n          \"column\": 63\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.meets\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key) (b.tag key) = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"97f190a845fd77fd75c747f99f5d5712b0d48e64d18d4b48d5aad541d77594a1\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 140,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 145,\n          \"column\": 70\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.meetsClosed\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧\\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key).closed (b.tag key) = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"ea159e28955c8c84fb3f58e391783b9414880e49ed323718c41e539e02a9a43d\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 257,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 263,\n          \"column\": 77\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.refines\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key) (b.tag key) = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"6942509bbefdfaf5c81174a0da7421e8743d07ddcb0c63a386b768195f3b3c11\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 27,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 31,\n          \"column\": 70\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.refinesBothClosed\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧\\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key).closed = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"4a0fda7a3a680f164025d12206556982e0119f949ebd16273cf8a0b771ba7278\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 303,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 306,\n          \"column\": 84\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.refinesClosed\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧\\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key) = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"9b564936877f0ec34c42054ba630d51450ae609899c55e3b9ae2568d66c76998\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 200,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 203,\n          \"column\": 77\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.urnScore\",\n      \"kind\": \"lungo.model\",\n      \"statement\": \"TaggedUrn.Urn → Nat\",\n      \"definition\": \"fun u => (List.map (fun pair => TaggedUrn.tagScore pair.snd) u.tags).sum\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"7776afd6ad1380896e6b0b3fa9877251656ee579aa9a52fe97fec91efc508edf\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 366,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 369,\n          \"column\": 49\n        }\n      }\n    }\n  ],\n  \"facilities\": [],\n  \"assumptions\": [],\n  \"claims\": [\n    {\n      \"name\": \"TaggedUrn.Exec.comparable_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.comparable\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.comparable\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.comparable a b = true ↔ TaggedUrn.comparable a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"ca6a514570a3773c7c219fcbab650705b8ec3209cdf2747bc5d1a247d549f441\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 81,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 84,\n          \"column\": 74\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.equivalent_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.equivalent\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.equivalent\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.equivalent a b = true ↔ TaggedUrn.equivalent a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"df5c2ec9f21e6e2e994d7f754d0682b6552c34ec0b91eb3340675177fb51add2\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 74,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 77,\n          \"column\": 75\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_eq\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\\n    out = (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)).tags ∧\\n      TaggedUrn.Sorted (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)).tags\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"115a733718825f3e1f4a36a3caee9fe8d6454f336652eabd03d7191248d203ca\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 168,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 177,\n          \"column\": 12\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_isSome_iff\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ (scheme : String) (us : List TaggedUrn.Exec.Wf),\\n  (TaggedUrn.Exec.leastUpperBound scheme us).isSome = true ↔ ∀ (u : TaggedUrn.Exec.Wf), u ∈ us → u.urn.scheme = scheme\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"fd4f0e45e28d285cb8361305402dc37cd11658a47f365dc0e2b75f62ea97f66c\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 161,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 166,\n          \"column\": 21\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_least\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\\n    us ≠ [] →\\n      ∀ (b : TaggedUrn.Urn),\\n        (∀ (u : TaggedUrn.Exec.Wf), u ∈ us → TaggedUrn.refines u.urn b) →\\n          (∀ (k r : String),\\n              b.tag k = TaggedUrn.Constraint.presentNot r ∨ b.tag k = TaggedUrn.Constraint.optionalNot r →\\n                ∃ u, u ∈ us ∧ (u.urn.tag k).named = some r) →\\n            TaggedUrn.refines (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)) b\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"879df22171190fda9e358ecb2d94cb8808151d59b62c1f9a15bf61fc6e63ea80\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 205,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 224,\n          \"column\": 46\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_no_missing\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\\n    ∀ (p : String × TaggedUrn.Constraint), p ∈ out → p.snd ≠ TaggedUrn.Constraint.missing\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"e05372e3884dc9d35d8eb79e6eaa17d32af8294d827042eb1c849742d46b1d9b\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 179,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 194,\n          \"column\": 12\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_sound\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\\n    ∀ (u : TaggedUrn.Exec.Wf),\\n      u ∈ us → TaggedUrn.refines u.urn (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us))\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"b39ceb9b5509ab9297e0e400884e70e63fa6396313ab7b2d14ed17185c0b87ac\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 196,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 203,\n          \"column\": 67\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.make_isSome_iff\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.make\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {tags : List (String × TaggedUrn.Constraint)},\\n  (TaggedUrn.Exec.make scheme tags).isSome = true ↔ TaggedUrn.Sorted tags\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"3d6be601f0230b53d77e6b9268e6039a279c909d4847b67a80349a369c651102\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 40,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 45,\n          \"column\": 21\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.make_parts\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.parts\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ (w : TaggedUrn.Exec.Wf),\\n  Option.map (fun x => x.urn) (TaggedUrn.Exec.make (TaggedUrn.Exec.parts w).fst (TaggedUrn.Exec.parts w).snd) =\\n    some w.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"c8a0d59be68c4e53ad705b7f8e779e3815628db8b4e74448f5bc1571f7b75d45\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 57,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 62,\n          \"column\": 6\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.make_urn\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.make\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {tags : List (String × TaggedUrn.Constraint)} {w : TaggedUrn.Exec.Wf},\\n  TaggedUrn.Exec.make scheme tags = some w → w.urn = { scheme := scheme, tags := tags }\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"eb8b8b268fa3e023d48a4ca7e20eae3f0a2811c946a39c7a89d9c3f3a93c5a96\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 32,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 38,\n          \"column\": 12\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.meetsClosed_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.meetsClosed\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.meetsClosed\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.meetsClosed a b = true ↔ TaggedUrn.meetsClosed a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"89f769c0a0097cc699aa52a956b77849bc84ff675ee51fdc366ece46b0559b3e\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 129,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 133,\n          \"column\": 16\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.meets_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.meets\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.meets\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.meets a b = true ↔ TaggedUrn.meets a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"796d3d22175ecf4a6767ede9143e1900ff445cd1c826b51c6745c1744a176379\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 103,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 105,\n          \"column\": 90\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.parts_eq\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.parts\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ (w : TaggedUrn.Exec.Wf), TaggedUrn.Exec.parts w = (w.urn.scheme, w.urn.tags) ∧ TaggedUrn.Sorted w.urn.tags\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"3c389a9c5b3d0b92c65d126c934395b16cc6b13be125931cdb80b1afa6d6bab3\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 52,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 55,\n          \"column\": 18\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refinesBothClosed_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.refinesBothClosed\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.refinesBothClosed\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.refinesBothClosed a b = true ↔ TaggedUrn.refinesBothClosed a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"15d236a8d5b863c8cbacddb185d6344d34df12530e083288881b1e1451992a1d\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 139,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 143,\n          \"column\": 34\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refinesClosed_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.refinesClosed\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.refinesClosed\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.refinesClosed a b = true ↔ TaggedUrn.refinesClosed a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"7bc6b885dcedfad9aab7ed91489bad62a953e5ee4cfac5fe04bb5926ab393cc8\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 119,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 123,\n          \"column\": 16\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refines_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.refines\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.refines\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.refines a b = true ↔ TaggedUrn.refines a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"51e6d6fa43ae51d3dbd9e94fe8c45377e8e90b7a1c87f42ce22bee72cb9948a8\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 68,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 70,\n          \"column\": 94\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.specificity_eq\",\n      \"relation\": \"lungo.equals\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.specificity\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.urnScore\"\n      ],\n      \"statement\": \"∀ (a : TaggedUrn.Exec.Wf), TaggedUrn.Exec.specificity a = TaggedUrn.urnScore a.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"5de9289b98772acc1a3bdeb6f5490dc17554f3b80e70cc1134bbad4a7de782d4\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 89,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 90,\n          \"column\": 72\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMatchClosed_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.valuesMatchClosed\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.Constraint.allows\"\n      ],\n      \"statement\": \"∀ (i p : TaggedUrn.Constraint),\\n  TaggedUrn.Exec.valuesMatchClosed i p = true ↔ ∀ (s : TaggedUrn.KeyState), i.closed.allows s → p.allows s\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"70fe94fa81c48ecfc901f59fedb0eac182494901a83ae15e2dbf767985c1c468\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 148,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 151,\n          \"column\": 33\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMatch_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.valuesMatch\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.Constraint.allows\"\n      ],\n      \"statement\": \"∀ (i p : TaggedUrn.Constraint),\\n  TaggedUrn.Exec.valuesMatch i p = true ↔ ∀ (s : TaggedUrn.KeyState), i.allows s → p.allows s\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"f203615e0a8f0df1a8bf18fef1af72a3154cc1bf1760848c11b1502b5d89b1bb\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 95,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 97,\n          \"column\": 85\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMeet_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.valuesMeet\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.Constraint.allows\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Constraint), TaggedUrn.Exec.valuesMeet a b = true ↔ ∃ s, a.allows s ∧ b.allows s\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"fe9f085b676ca28a62abc13fe46fa03a2761f604a851ffb2698ea9b17bf259ac\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 110,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 112,\n          \"column\": 84\n        }\n      }\n    }\n  ],\n  \"roles\": [],\n  \"exports\": [\n    {\n      \"name\": \"TaggedUrn.Exec.comparable\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.comparable_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 79,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 79,\n          \"column\": 63\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.equivalent\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.equivalent_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 72,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 72,\n          \"column\": 63\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_array_push\",\n          \"lean_array_to_list\",\n          \"lean_mk_empty_array_with_capacity\",\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.leastUpperBound_eq\",\n        \"TaggedUrn.Exec.leastUpperBound_isSome_iff\",\n        \"TaggedUrn.Exec.leastUpperBound_least\",\n        \"TaggedUrn.Exec.leastUpperBound_no_missing\",\n        \"TaggedUrn.Exec.leastUpperBound_sound\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 153,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 159,\n          \"column\": 12\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.make\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.make_isSome_iff\",\n        \"TaggedUrn.Exec.make_urn\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 27,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 30,\n          \"column\": 61\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.meets\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.meets_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 99,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 101,\n          \"column\": 75\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.meetsClosed\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.meetsClosed_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 125,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 127,\n          \"column\": 81\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.parts\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": []\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.make_parts\",\n        \"TaggedUrn.Exec.parts_eq\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 47,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 50,\n          \"column\": 87\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refines\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.refines_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 64,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 66,\n          \"column\": 66\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refinesBothClosed\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.refinesBothClosed_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 135,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 137,\n          \"column\": 85\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refinesClosed\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.refinesClosed_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 114,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 117,\n          \"column\": 81\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.specificity\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_nat_add\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.specificity_eq\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 86,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 87,\n          \"column\": 49\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMatch\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.valuesMatch_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 92,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 93,\n          \"column\": 70\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMatchClosed\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.valuesMatchClosed_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 145,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 146,\n          \"column\": 82\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMeet\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.valuesMeet_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 107,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 108,\n          \"column\": 57\n        }\n      }\n    }\n  ]\n}\n";
+    pub const ASSURANCE_JSON: &str = "{\n  \"schema_version\": 1,\n  \"program\": \"tagged_urn_formal\",\n  \"provenance\": {\n    \"lean_version\": \"4.34.1\",\n    \"lean_githash\": \"5045d0056413266e57c625dcd7c365b10e377c52\",\n    \"lungo_version\": \"1.127.0\",\n    \"bir_version\": 3,\n    \"runtime_abi\": 3\n  },\n  \"library\": {\n    \"package\": \"lungo\",\n    \"schema_version\": 1\n  },\n  \"specifications\": [\n    {\n      \"name\": \"TaggedUrn.Constraint.allows\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Constraint → TaggedUrn.KeyState → Prop\",\n      \"definition\": \"fun c x =>\\n  match x with\\n  | TaggedUrn.KeyState.unset => c.mayBeAbsent = true\\n  | TaggedUrn.KeyState.set v => c.vals.allows v = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"d87addcb03fbe00cf243d45db9cbb5817d518471dab54ea00707f9c5f0deff2f\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Constraint.lean\",\n        \"start\": {\n          \"line\": 232,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 236,\n          \"column\": 37\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.comparable\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b => TaggedUrn.refines a b ∨ TaggedUrn.refines b a\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"8de6c2a435501807aacc87948e00f4605fdd0fe748dfe68d8c938fd3ce938435\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 90,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 91,\n          \"column\": 63\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.equivalent\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b => TaggedUrn.refines a b ∧ TaggedUrn.refines b a\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"1739e2478d32a7d38bb82783f3472b0cae33dd06d75030a5e50d79077d539eed\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 92,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 93,\n          \"column\": 63\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.meets\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key) (b.tag key) = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"f7708576cc85b55da1af7fbf2247346d1d6f411d770ab79d61be9ba3de8da43b\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 158,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 163,\n          \"column\": 70\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.meetsClosed\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧\\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key).closed (b.tag key) = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"cdea31c4d6783e8fd489b4894d48f33b30ed176096401ba2b98a66833e3a217b\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 276,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 282,\n          \"column\": 77\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.refines\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key) (b.tag key) = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"39a3119a85ffb2deb9d56a61bdacac71b747a361e203680ed1e7ea2359b04992\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 45,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 49,\n          \"column\": 70\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.refinesBothClosed\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧\\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key).closed = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"ee71b20d9fc9a386e0816090f26337e5ea7475d57fe5476aefda6460ec759b90\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 324,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 327,\n          \"column\": 84\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.refinesClosed\",\n      \"kind\": \"lungo.relation\",\n      \"statement\": \"TaggedUrn.Urn → TaggedUrn.Urn → Prop\",\n      \"definition\": \"fun a b =>\\n  a.scheme = b.scheme ∧\\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key) = true\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"f08fd8db228dd4b040a0fbdf4c53cad99716f2b573d16443090752bb165b61c3\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 218,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 221,\n          \"column\": 77\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.tagScore\",\n      \"kind\": \"lungo.model\",\n      \"statement\": \"TaggedUrn.Constraint → Nat\",\n      \"definition\": \"fun x =>\\n  match x with\\n  | TaggedUrn.Constraint.missing => 0\\n  | TaggedUrn.Constraint.written false (TaggedUrn.Values.oneOf vs) =>\\n    if vs.isEmpty = true then 5 else if TaggedUrn.twoDistinct vs = true then 3 else 4\\n  | TaggedUrn.Constraint.written false (TaggedUrn.Values.noneOf vs) => if vs.isEmpty = true then 2 else 3\\n  | TaggedUrn.Constraint.written true (TaggedUrn.Values.oneOf vs) => if vs.isEmpty = true then 5 else 1\\n  | TaggedUrn.Constraint.written true (TaggedUrn.Values.noneOf vs) => if vs.isEmpty = true then 0 else 1\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"a07ea4bc4564c6b54e8aa1672350cd0047f268ba0287657a608a496ad3d302e7\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 399,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 406,\n          \"column\": 61\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.urnScore\",\n      \"kind\": \"lungo.model\",\n      \"statement\": \"TaggedUrn.Urn → Nat\",\n      \"definition\": \"fun u => (List.map (fun pair => TaggedUrn.tagScore pair.snd) u.tags).sum\",\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"2c02313e746f309546f338bd32c08fbffbbaf1ffa5f95af36a2f4964755ea3f5\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Urn.lean\",\n        \"start\": {\n          \"line\": 415,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 418,\n          \"column\": 49\n        }\n      }\n    }\n  ],\n  \"facilities\": [],\n  \"assumptions\": [],\n  \"claims\": [\n    {\n      \"name\": \"TaggedUrn.Exec.comparable_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.comparable\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.comparable\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.comparable a b = true ↔ TaggedUrn.comparable a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"19621863b21c3b7d87a8512c6323899cdad77d30b70abc1c87d831c77757d1a6\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 82,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 85,\n          \"column\": 74\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.equivalent_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.equivalent\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.equivalent\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.equivalent a b = true ↔ TaggedUrn.equivalent a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"b3ac2ffe13c920ddecc2b1df39ac8a23e257e46282f2465ff5ec1d21568fe5a8\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 75,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 78,\n          \"column\": 75\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_eq\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\\n    out = (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)).tags ∧\\n      TaggedUrn.Sorted (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)).tags\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"8e311f0d1e5fc8799f2dfed355c9d02eed42ce182545906eed041cf0a4a1bb50\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 175,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 184,\n          \"column\": 12\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_isSome_iff\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ (scheme : String) (us : List TaggedUrn.Exec.Wf),\\n  (TaggedUrn.Exec.leastUpperBound scheme us).isSome = true ↔ ∀ (u : TaggedUrn.Exec.Wf), u ∈ us → u.urn.scheme = scheme\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"9670f2e6209c9141d4ed7c0a091236bba0528958213113fb9f0e49f4ccdb525d\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 168,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 173,\n          \"column\": 21\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_least\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\\n    us ≠ [] →\\n      ∀ (b : TaggedUrn.Urn),\\n        (∀ (u : TaggedUrn.Exec.Wf), u ∈ us → TaggedUrn.refines u.urn b) →\\n          TaggedUrn.refines (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)) b\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"2c947e92e39f417180367d10c4ddcf8c1409dadcc2a306829914a14cda3282f6\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 212,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 225,\n          \"column\": 46\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_no_missing\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\\n    ∀ (p : String × TaggedUrn.Constraint), p ∈ out → p.snd ≠ TaggedUrn.Constraint.missing\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"e118ba0ca88a24dec5c5249fce309dd1031259e5ee180eeabbacfbb168d7f4cc\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 186,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 201,\n          \"column\": 12\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound_sound\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.leastUpperBound\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\\n    ∀ (u : TaggedUrn.Exec.Wf),\\n      u ∈ us → TaggedUrn.refines u.urn (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us))\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"35524e13de3af1435de69a06d7e319f0de2572781d87860c3acdc40519a88e40\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 203,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 210,\n          \"column\": 67\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.make_isSome_iff\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.make\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {tags : List (String × TaggedUrn.Constraint)},\\n  (TaggedUrn.Exec.make scheme tags).isSome = true ↔ TaggedUrn.Sorted tags\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"aaa35e5167550e716b6286127ef522b3e83ef8db8c822eaf4b733687e693469b\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 41,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 46,\n          \"column\": 21\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.make_parts\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.parts\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ (w : TaggedUrn.Exec.Wf),\\n  Option.map (fun x => x.urn) (TaggedUrn.Exec.make (TaggedUrn.Exec.parts w).fst (TaggedUrn.Exec.parts w).snd) =\\n    some w.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"6f055e7403a1c7d1c5fa1d38e83be4f88961861fd438d459dc73ab9ba0f0d850\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 58,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 63,\n          \"column\": 6\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.make_urn\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.make\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ {scheme : String} {tags : List (String × TaggedUrn.Constraint)} {w : TaggedUrn.Exec.Wf},\\n  TaggedUrn.Exec.make scheme tags = some w → w.urn = { scheme := scheme, tags := tags }\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"fcf94db2a477e409d7182efa0c00672681547d5a022d10dcdfee75e3b71bc63d\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 33,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 39,\n          \"column\": 12\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.meetsClosed_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.meetsClosed\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.meetsClosed\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.meetsClosed a b = true ↔ TaggedUrn.meetsClosed a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"8d956ad2a0a0d8c6478cc5a7a609a026ed8fd3208626facd271aabea03992b45\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 136,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 140,\n          \"column\": 16\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.meets_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.meets\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.meets\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.meets a b = true ↔ TaggedUrn.meets a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"d199536dae1c43220d3bb0fbdb45e9ee38f481a3e59c71ae8def6577af69b82b\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 110,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 112,\n          \"column\": 90\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.parts_eq\",\n      \"relation\": \"lungo.law\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.parts\"\n      ],\n      \"specifications\": [],\n      \"statement\": \"∀ (w : TaggedUrn.Exec.Wf), TaggedUrn.Exec.parts w = (w.urn.scheme, w.urn.tags) ∧ TaggedUrn.Sorted w.urn.tags\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"15095d672f7a28cfdde3f60c5ae45ca635025541a582b7d892238694d0741f63\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 53,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 56,\n          \"column\": 18\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refinesBothClosed_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.refinesBothClosed\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.refinesBothClosed\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.refinesBothClosed a b = true ↔ TaggedUrn.refinesBothClosed a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"d0e7573ded5679260f93759792afcfa5086a472fdc9309e3e5dfe51037b4638a\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 146,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 150,\n          \"column\": 34\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refinesClosed_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.refinesClosed\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.refinesClosed\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.refinesClosed a b = true ↔ TaggedUrn.refinesClosed a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"fddbe6e88eaf1c2f6afd468ee1970200ad1e45db9af694ccafc439b23a6c258f\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 126,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 130,\n          \"column\": 16\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refines_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.refines\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.refines\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Exec.Wf), TaggedUrn.Exec.refines a b = true ↔ TaggedUrn.refines a.urn b.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"175907228521fb7d79e10fb6c0757ea7648d84db636f084938233d68ebb92419\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 69,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 71,\n          \"column\": 94\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.specificity_eq\",\n      \"relation\": \"lungo.equals\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.specificity\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.urnScore\"\n      ],\n      \"statement\": \"∀ (a : TaggedUrn.Exec.Wf), TaggedUrn.Exec.specificity a = TaggedUrn.urnScore a.urn\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"3cf172bdac7846c9af925111ba9337558954bfd3ca68fccaef9f0c5859dd4756\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 90,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 91,\n          \"column\": 72\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.tagSpecificity_eq\",\n      \"relation\": \"lungo.equals\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.tagSpecificity\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.tagScore\"\n      ],\n      \"statement\": \"∀ (c : TaggedUrn.Constraint), TaggedUrn.Exec.tagSpecificity c = TaggedUrn.tagScore c\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"d845f4b85d6d4667fe961b79c26e6c660f689b1fac7ae3d6993178458039e7c8\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 96,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 97,\n          \"column\": 82\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMatchClosed_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.valuesMatchClosed\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.Constraint.allows\"\n      ],\n      \"statement\": \"∀ (i p : TaggedUrn.Constraint),\\n  TaggedUrn.Exec.valuesMatchClosed i p = true ↔ ∀ (s : TaggedUrn.KeyState), i.closed.allows s → p.allows s\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"643de0330cb767f0a8fbd0318ecaec6354e8623e9ff00f644bbcd6553f7e08cd\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 155,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 158,\n          \"column\": 33\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMatch_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.valuesMatch\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.Constraint.allows\"\n      ],\n      \"statement\": \"∀ (i p : TaggedUrn.Constraint),\\n  TaggedUrn.Exec.valuesMatch i p = true ↔ ∀ (s : TaggedUrn.KeyState), i.allows s → p.allows s\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"6b16797143839fa3231f3d7ff80eacdd63d67654186b4fa313807d7402c92980\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 102,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 104,\n          \"column\": 85\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMeet_decides\",\n      \"relation\": \"lungo.decides\",\n      \"subjects\": [\n        \"TaggedUrn.Exec.valuesMeet\"\n      ],\n      \"specifications\": [\n        \"TaggedUrn.Constraint.allows\"\n      ],\n      \"statement\": \"∀ (a b : TaggedUrn.Constraint), TaggedUrn.Exec.valuesMeet a b = true ↔ ∃ s, a.allows s ∧ b.allows s\",\n      \"status\": \"proved\",\n      \"evidence_trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false\n      },\n      \"assumptions\": [],\n      \"package\": \"tagged_urn_formal\",\n      \"fingerprint\": \"a6f21c607f3b246f444c664260828a52f723d17247a2aa3db8cb2f1ecfc4ed94\",\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 117,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 119,\n          \"column\": 84\n        }\n      }\n    }\n  ],\n  \"roles\": [],\n  \"exports\": [\n    {\n      \"name\": \"TaggedUrn.Exec.comparable\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.comparable_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 80,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 80,\n          \"column\": 63\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.equivalent\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.equivalent_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 73,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 73,\n          \"column\": 63\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.leastUpperBound\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_array_push\",\n          \"lean_array_to_list\",\n          \"lean_mk_empty_array_with_capacity\",\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.leastUpperBound_eq\",\n        \"TaggedUrn.Exec.leastUpperBound_isSome_iff\",\n        \"TaggedUrn.Exec.leastUpperBound_least\",\n        \"TaggedUrn.Exec.leastUpperBound_no_missing\",\n        \"TaggedUrn.Exec.leastUpperBound_sound\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 160,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 166,\n          \"column\": 12\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.make\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.make_isSome_iff\",\n        \"TaggedUrn.Exec.make_urn\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 28,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 31,\n          \"column\": 61\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.meets\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.meets_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 106,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 108,\n          \"column\": 75\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.meetsClosed\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.meetsClosed_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 132,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 134,\n          \"column\": 81\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.parts\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": []\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.make_parts\",\n        \"TaggedUrn.Exec.parts_eq\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 48,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 51,\n          \"column\": 87\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refines\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.refines_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 65,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 67,\n          \"column\": 66\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refinesBothClosed\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.refinesBothClosed_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 142,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 144,\n          \"column\": 85\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.refinesClosed\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\",\n          \"lean_string_dec_lt\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.refinesClosed_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 121,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 124,\n          \"column\": 81\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.specificity\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"Classical.choice\",\n          \"Quot.sound\",\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_nat_add\",\n          \"lean_string_dec_eq\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.specificity_eq\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 87,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 88,\n          \"column\": 49\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.tagSpecificity\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.tagSpecificity_eq\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 93,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 94,\n          \"column\": 56\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMatch\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.valuesMatch_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 99,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 100,\n          \"column\": 70\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMatchClosed\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [\n          \"propext\"\n        ],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.valuesMatchClosed_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 152,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 153,\n          \"column\": 82\n        }\n      }\n    },\n    {\n      \"name\": \"TaggedUrn.Exec.valuesMeet\",\n      \"module\": \"TaggedUrn.Exec\",\n      \"async\": false,\n      \"trust\": {\n        \"axioms\": [],\n        \"depends_on_sorry\": false,\n        \"unsafe_dependencies\": [],\n        \"partial_dependencies\": [],\n        \"extern_dependencies\": [\n          \"lean_string_dec_eq\"\n        ]\n      },\n      \"claims\": [\n        \"TaggedUrn.Exec.valuesMeet_decides\"\n      ],\n      \"assumptions\": [],\n      \"facilities\": [],\n      \"roles\": [],\n      \"source\": {\n        \"package\": \"tagged_urn_formal\",\n        \"file\": \"TaggedUrn/Exec.lean\",\n        \"start\": {\n          \"line\": 114,\n          \"column\": 1\n        },\n        \"end\": {\n          \"line\": 115,\n          \"column\": 57\n        }\n      }\n    }\n  ]\n}\n";
 
     static ASSURANCE: ::lungo::Assurance = ::lungo::Assurance {
         schema_version: 1,
         program: "tagged_urn_formal",
         specifications: &[
-            ::lungo::Specification { name: "TaggedUrn.Constraint.allows", kind: "lungo.relation", statement: "TaggedUrn.Constraint → TaggedUrn.KeyState → Prop", definition: Some("fun x x_1 =>\n  match x, x_1 with\n  | TaggedUrn.Constraint.missing, x => True\n  | TaggedUrn.Constraint.unconstrained, x => True\n  | TaggedUrn.Constraint.optionalNot p, s => s ≠ TaggedUrn.KeyState.set p\n  | TaggedUrn.Constraint.present, s => s ≠ TaggedUrn.KeyState.unset\n  | TaggedUrn.Constraint.presentNot p, s => s ≠ TaggedUrn.KeyState.unset ∧ s ≠ TaggedUrn.KeyState.set p\n  | TaggedUrn.Constraint.exact p, s => s = TaggedUrn.KeyState.set p\n  | TaggedUrn.Constraint.absent, s => s = TaggedUrn.KeyState.unset"), package: Some("tagged_urn_formal"), fingerprint: "aee80a946434e6281e1210e8eb0085e8ec8f9e2a0fbdb2103966191d5637ecb1" },
-            ::lungo::Specification { name: "TaggedUrn.comparable", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b => TaggedUrn.refines a b ∨ TaggedUrn.refines b a"), package: Some("tagged_urn_formal"), fingerprint: "a383cafc8c675c9125a90a66a5d9c1d5e0183f54485365327b5b702b952fe396" },
-            ::lungo::Specification { name: "TaggedUrn.equivalent", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b => TaggedUrn.refines a b ∧ TaggedUrn.refines b a"), package: Some("tagged_urn_formal"), fingerprint: "62a798359c0f814cc5a5394753eac1851acacdc70d11ed2b7d2ce62b8f87d09e" },
-            ::lungo::Specification { name: "TaggedUrn.meets", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key) (b.tag key) = true"), package: Some("tagged_urn_formal"), fingerprint: "97f190a845fd77fd75c747f99f5d5712b0d48e64d18d4b48d5aad541d77594a1" },
-            ::lungo::Specification { name: "TaggedUrn.meetsClosed", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key).closed (b.tag key) = true"), package: Some("tagged_urn_formal"), fingerprint: "ea159e28955c8c84fb3f58e391783b9414880e49ed323718c41e539e02a9a43d" },
-            ::lungo::Specification { name: "TaggedUrn.refines", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key) (b.tag key) = true"), package: Some("tagged_urn_formal"), fingerprint: "6942509bbefdfaf5c81174a0da7421e8743d07ddcb0c63a386b768195f3b3c11" },
-            ::lungo::Specification { name: "TaggedUrn.refinesBothClosed", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key).closed = true"), package: Some("tagged_urn_formal"), fingerprint: "4a0fda7a3a680f164025d12206556982e0119f949ebd16273cf8a0b771ba7278" },
-            ::lungo::Specification { name: "TaggedUrn.refinesClosed", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key) = true"), package: Some("tagged_urn_formal"), fingerprint: "9b564936877f0ec34c42054ba630d51450ae609899c55e3b9ae2568d66c76998" },
-            ::lungo::Specification { name: "TaggedUrn.urnScore", kind: "lungo.model", statement: "TaggedUrn.Urn → Nat", definition: Some("fun u => (List.map (fun pair => TaggedUrn.tagScore pair.snd) u.tags).sum"), package: Some("tagged_urn_formal"), fingerprint: "7776afd6ad1380896e6b0b3fa9877251656ee579aa9a52fe97fec91efc508edf" },
+            ::lungo::Specification { name: "TaggedUrn.Constraint.allows", kind: "lungo.relation", statement: "TaggedUrn.Constraint → TaggedUrn.KeyState → Prop", definition: Some("fun c x =>\n  match x with\n  | TaggedUrn.KeyState.unset => c.mayBeAbsent = true\n  | TaggedUrn.KeyState.set v => c.vals.allows v = true"), package: Some("tagged_urn_formal"), fingerprint: "d87addcb03fbe00cf243d45db9cbb5817d518471dab54ea00707f9c5f0deff2f" },
+            ::lungo::Specification { name: "TaggedUrn.comparable", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b => TaggedUrn.refines a b ∨ TaggedUrn.refines b a"), package: Some("tagged_urn_formal"), fingerprint: "8de6c2a435501807aacc87948e00f4605fdd0fe748dfe68d8c938fd3ce938435" },
+            ::lungo::Specification { name: "TaggedUrn.equivalent", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b => TaggedUrn.refines a b ∧ TaggedUrn.refines b a"), package: Some("tagged_urn_formal"), fingerprint: "1739e2478d32a7d38bb82783f3472b0cae33dd06d75030a5e50d79077d539eed" },
+            ::lungo::Specification { name: "TaggedUrn.meets", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key) (b.tag key) = true"), package: Some("tagged_urn_formal"), fingerprint: "f7708576cc85b55da1af7fbf2247346d1d6f411d770ab79d61be9ba3de8da43b" },
+            ::lungo::Specification { name: "TaggedUrn.meetsClosed", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMeets (a.tag key).closed (b.tag key) = true"), package: Some("tagged_urn_formal"), fingerprint: "cdea31c4d6783e8fd489b4894d48f33b30ed176096401ba2b98a66833e3a217b" },
+            ::lungo::Specification { name: "TaggedUrn.refines", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧ ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key) (b.tag key) = true"), package: Some("tagged_urn_formal"), fingerprint: "39a3119a85ffb2deb9d56a61bdacac71b747a361e203680ed1e7ea2359b04992" },
+            ::lungo::Specification { name: "TaggedUrn.refinesBothClosed", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key).closed = true"), package: Some("tagged_urn_formal"), fingerprint: "ee71b20d9fc9a386e0816090f26337e5ea7475d57fe5476aefda6460ec759b90" },
+            ::lungo::Specification { name: "TaggedUrn.refinesClosed", kind: "lungo.relation", statement: "TaggedUrn.Urn → TaggedUrn.Urn → Prop", definition: Some("fun a b =>\n  a.scheme = b.scheme ∧\n    ∀ (key : String), key ∈ a.keys ++ b.keys → TaggedUrn.tagMatch (a.tag key).closed (b.tag key) = true"), package: Some("tagged_urn_formal"), fingerprint: "f08fd8db228dd4b040a0fbdf4c53cad99716f2b573d16443090752bb165b61c3" },
+            ::lungo::Specification { name: "TaggedUrn.tagScore", kind: "lungo.model", statement: "TaggedUrn.Constraint → Nat", definition: Some("fun x =>\n  match x with\n  | TaggedUrn.Constraint.missing => 0\n  | TaggedUrn.Constraint.written false (TaggedUrn.Values.oneOf vs) =>\n    if vs.isEmpty = true then 5 else if TaggedUrn.twoDistinct vs = true then 3 else 4\n  | TaggedUrn.Constraint.written false (TaggedUrn.Values.noneOf vs) => if vs.isEmpty = true then 2 else 3\n  | TaggedUrn.Constraint.written true (TaggedUrn.Values.oneOf vs) => if vs.isEmpty = true then 5 else 1\n  | TaggedUrn.Constraint.written true (TaggedUrn.Values.noneOf vs) => if vs.isEmpty = true then 0 else 1"), package: Some("tagged_urn_formal"), fingerprint: "a07ea4bc4564c6b54e8aa1672350cd0047f268ba0287657a608a496ad3d302e7" },
+            ::lungo::Specification { name: "TaggedUrn.urnScore", kind: "lungo.model", statement: "TaggedUrn.Urn → Nat", definition: Some("fun u => (List.map (fun pair => TaggedUrn.tagScore pair.snd) u.tags).sum"), package: Some("tagged_urn_formal"), fingerprint: "2c02313e746f309546f338bd32c08fbffbbaf1ffa5f95af36a2f4964755ea3f5" },
         ],
         facilities: &[
         ],
@@ -917,7 +971,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "ca6a514570a3773c7c219fcbab650705b8ec3209cdf2747bc5d1a247d549f441",
+                fingerprint: "19621863b21c3b7d87a8512c6323899cdad77d30b70abc1c87d831c77757d1a6",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.equivalent_decides",
@@ -929,7 +983,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "df5c2ec9f21e6e2e994d7f754d0682b6552c34ec0b91eb3340675177fb51add2",
+                fingerprint: "b3ac2ffe13c920ddecc2b1df39ac8a23e257e46282f2465ff5ec1d21568fe5a8",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.leastUpperBound_eq",
@@ -941,7 +995,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "115a733718825f3e1f4a36a3caee9fe8d6454f336652eabd03d7191248d203ca",
+                fingerprint: "8e311f0d1e5fc8799f2dfed355c9d02eed42ce182545906eed041cf0a4a1bb50",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.leastUpperBound_isSome_iff",
@@ -953,19 +1007,19 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "fd4f0e45e28d285cb8361305402dc37cd11658a47f365dc0e2b75f62ea97f66c",
+                fingerprint: "9670f2e6209c9141d4ed7c0a091236bba0528958213113fb9f0e49f4ccdb525d",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.leastUpperBound_least",
                 relation: "lungo.law",
                 subjects: &["TaggedUrn.Exec.leastUpperBound"],
                 specifications: &[],
-                statement: "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    us ≠ [] →\n      ∀ (b : TaggedUrn.Urn),\n        (∀ (u : TaggedUrn.Exec.Wf), u ∈ us → TaggedUrn.refines u.urn b) →\n          (∀ (k r : String),\n              b.tag k = TaggedUrn.Constraint.presentNot r ∨ b.tag k = TaggedUrn.Constraint.optionalNot r →\n                ∃ u, u ∈ us ∧ (u.urn.tag k).named = some r) →\n            TaggedUrn.refines (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)) b",
+                statement: "∀ {scheme : String} {us : List TaggedUrn.Exec.Wf} {out : List (String × TaggedUrn.Constraint)},\n  TaggedUrn.Exec.leastUpperBound scheme us = some out →\n    us ≠ [] →\n      ∀ (b : TaggedUrn.Urn),\n        (∀ (u : TaggedUrn.Exec.Wf), u ∈ us → TaggedUrn.refines u.urn b) →\n          TaggedUrn.refines (TaggedUrn.boundUrn scheme (List.map (fun x => x.urn) us)) b",
                 status: ::lungo::ClaimStatus::Proved,
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "879df22171190fda9e358ecb2d94cb8808151d59b62c1f9a15bf61fc6e63ea80",
+                fingerprint: "2c947e92e39f417180367d10c4ddcf8c1409dadcc2a306829914a14cda3282f6",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.leastUpperBound_no_missing",
@@ -977,7 +1031,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "e05372e3884dc9d35d8eb79e6eaa17d32af8294d827042eb1c849742d46b1d9b",
+                fingerprint: "e118ba0ca88a24dec5c5249fce309dd1031259e5ee180eeabbacfbb168d7f4cc",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.leastUpperBound_sound",
@@ -989,7 +1043,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "b39ceb9b5509ab9297e0e400884e70e63fa6396313ab7b2d14ed17185c0b87ac",
+                fingerprint: "35524e13de3af1435de69a06d7e319f0de2572781d87860c3acdc40519a88e40",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.make_isSome_iff",
@@ -1001,7 +1055,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "3d6be601f0230b53d77e6b9268e6039a279c909d4847b67a80349a369c651102",
+                fingerprint: "aaa35e5167550e716b6286127ef522b3e83ef8db8c822eaf4b733687e693469b",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.make_parts",
@@ -1013,7 +1067,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "c8a0d59be68c4e53ad705b7f8e779e3815628db8b4e74448f5bc1571f7b75d45",
+                fingerprint: "6f055e7403a1c7d1c5fa1d38e83be4f88961861fd438d459dc73ab9ba0f0d850",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.make_urn",
@@ -1025,7 +1079,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "eb8b8b268fa3e023d48a4ca7e20eae3f0a2811c946a39c7a89d9c3f3a93c5a96",
+                fingerprint: "fcf94db2a477e409d7182efa0c00672681547d5a022d10dcdfee75e3b71bc63d",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.meetsClosed_decides",
@@ -1037,7 +1091,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "89f769c0a0097cc699aa52a956b77849bc84ff675ee51fdc366ece46b0559b3e",
+                fingerprint: "8d956ad2a0a0d8c6478cc5a7a609a026ed8fd3208626facd271aabea03992b45",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.meets_decides",
@@ -1049,7 +1103,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "796d3d22175ecf4a6767ede9143e1900ff445cd1c826b51c6745c1744a176379",
+                fingerprint: "d199536dae1c43220d3bb0fbdb45e9ee38f481a3e59c71ae8def6577af69b82b",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.parts_eq",
@@ -1061,7 +1115,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "3c389a9c5b3d0b92c65d126c934395b16cc6b13be125931cdb80b1afa6d6bab3",
+                fingerprint: "15095d672f7a28cfdde3f60c5ae45ca635025541a582b7d892238694d0741f63",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.refinesBothClosed_decides",
@@ -1073,7 +1127,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "15d236a8d5b863c8cbacddb185d6344d34df12530e083288881b1e1451992a1d",
+                fingerprint: "d0e7573ded5679260f93759792afcfa5086a472fdc9309e3e5dfe51037b4638a",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.refinesClosed_decides",
@@ -1085,7 +1139,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "7bc6b885dcedfad9aab7ed91489bad62a953e5ee4cfac5fe04bb5926ab393cc8",
+                fingerprint: "fddbe6e88eaf1c2f6afd468ee1970200ad1e45db9af694ccafc439b23a6c258f",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.refines_decides",
@@ -1097,7 +1151,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "51e6d6fa43ae51d3dbd9e94fe8c45377e8e90b7a1c87f42ce22bee72cb9948a8",
+                fingerprint: "175907228521fb7d79e10fb6c0757ea7648d84db636f084938233d68ebb92419",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.specificity_eq",
@@ -1109,7 +1163,19 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "5de9289b98772acc1a3bdeb6f5490dc17554f3b80e70cc1134bbad4a7de782d4",
+                fingerprint: "3cf172bdac7846c9af925111ba9337558954bfd3ca68fccaef9f0c5859dd4756",
+            },
+            ::lungo::Claim {
+                name: "TaggedUrn.Exec.tagSpecificity_eq",
+                relation: "lungo.equals",
+                subjects: &["TaggedUrn.Exec.tagSpecificity"],
+                specifications: &["TaggedUrn.tagScore"],
+                statement: "∀ (c : TaggedUrn.Constraint), TaggedUrn.Exec.tagSpecificity c = TaggedUrn.tagScore c",
+                status: ::lungo::ClaimStatus::Proved,
+                evidence_axioms: &[],
+                assumptions: &[],
+                package: Some("tagged_urn_formal"),
+                fingerprint: "d845f4b85d6d4667fe961b79c26e6c660f689b1fac7ae3d6993178458039e7c8",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.valuesMatchClosed_decides",
@@ -1121,7 +1187,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "70fe94fa81c48ecfc901f59fedb0eac182494901a83ae15e2dbf767985c1c468",
+                fingerprint: "643de0330cb767f0a8fbd0318ecaec6354e8623e9ff00f644bbcd6553f7e08cd",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.valuesMatch_decides",
@@ -1133,7 +1199,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "f203615e0a8f0df1a8bf18fef1af72a3154cc1bf1760848c11b1502b5d89b1bb",
+                fingerprint: "6b16797143839fa3231f3d7ff80eacdd63d67654186b4fa313807d7402c92980",
             },
             ::lungo::Claim {
                 name: "TaggedUrn.Exec.valuesMeet_decides",
@@ -1145,7 +1211,7 @@ pub mod __meta {
                 evidence_axioms: &["Classical.choice", "Quot.sound", "propext"],
                 assumptions: &[],
                 package: Some("tagged_urn_formal"),
-                fingerprint: "fe9f085b676ca28a62abc13fe46fa03a2761f604a851ffb2698ea9b17bf259ac",
+                fingerprint: "a6f21c607f3b246f444c664260828a52f723d17247a2aa3db8cb2f1ecfc4ed94",
             },
         ],
         roles: &[
