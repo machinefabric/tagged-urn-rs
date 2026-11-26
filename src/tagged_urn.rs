@@ -2754,6 +2754,11 @@ mod tests {
     // Reading `ext` as "whatever the pattern wants" made `ext` and `ext=pdf`
     // refine each other — equivalent — and refinement non-transitive. Refinement
     // is inclusion of what each form allows: every pdf is some ext.
+    //
+    // It is kept so this path is not taken again: with `ext` equivalent to both
+    // `ext=pdf` and `ext=docx`, equivalence was not transitive, and alias lookup and
+    // stream matching, which use it as "the same tag set", matched one for the other
+    // (tagged-urn formal, marker_is_not_exact).
     #[test]
     fn test0558_valueless_tag_matching() {
         let urn = TaggedUrn::from_string("cap:ext;generate;in=media:;out=media:").unwrap();

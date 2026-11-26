@@ -23,13 +23,13 @@
     "<package:lungo>/Lungo/Spec/State.lean": "a5a5aa8ccb208f06dd45005e5740c4e7096b1a7f8d484f6cc19d4835e816979e",
     "<package:lungo>/Lungo/Trace.lean": "f6f0735df8f533ef42e71cc5f5be73462fcac902c38f56f3d3411b28816a57bf",
     "<package:lungo>/lakefile.toml": "57abcf8dfaafd1339335d30216342b7f7892b1cecea42ee0a9f4056673f53b73",
-    "TaggedUrn/Constraint.lean": "2f99b8ccd528131a22f5c9eb398d9ce9f12ffb79c119c35192302acc716cca9e",
+    "TaggedUrn/Constraint.lean": "2b3fbe0cfc8bf88a9f03cc6335f937caf58cda4958090773f1bc8b948af7c6ad",
     "TaggedUrn/Exec.lean": "b404ab7ea5d41c4fef79d8ac7787e7d9b8e9da630f8b271bfa56ee7e4fdba97c",
     "TaggedUrn/Join.lean": "0e9b1e6de23902bfae8ea844cf7e4d3599294b040060bcb9199873fb42e059ba",
     "TaggedUrn/Patch.lean": "e1d950494040a36b2bbc26402ba4be57e4720b7d247d75baa712bd73985723ad",
     "TaggedUrn/Sorted.lean": "b20cb55a53046a686f98a85baab2758ef541adafb94729afed2c94fae0e7288b",
     "TaggedUrn/Split.lean": "f65ebdd673c7e895cedc48f44abf6f58dc8446c53705806ca34a79f2240486c2",
-    "TaggedUrn/Urn.lean": "3c25021883e595005cdd792225e02c5b1e4e9df2b9fee3188e9b12bdcfc0d3dc",
+    "TaggedUrn/Urn.lean": "6738702f276c103c5c680f9fae3994a80b4b1b354ba6878a22e5ae06ef8b3236",
     "lake-manifest.json": "6fc7cf00479951a2d966cc057bbf91708c78a4895fe8aedfa4d9cf80bf2c9965",
     "lakefile.toml": "d84612abc4598b3b2ed8436aaa4ffe8f3b5cf85caf44866489a482be4e558501",
     "lean-toolchain": "7fc3c9ca176374a841abdad2bb4fa8c3c57363d50b728a512b513374610ae696"
@@ -37,7 +37,7 @@
   "project": ".",
   "link_directives": [],
   "output_digests": {
-    "assurance.json": "83c92b9c87889b9dc63fb1f4be5573445951614aee7dd5b1c40d4d60e59d3f82",
+    "assurance.json": "d50059cbd53de6da20d22af9477a19d981d2cee654239efc3aff0a4cfdea0bf2",
     "externs.json": "f9284a5ccef688197990b89323b097f72b108a14298bdbafcff395321a51d9f9",
     "manifest.json": "127e850eddd07b877192fe0c8e716d15dead6987d4c6869a5f3e9978e5a29668",
     "modules/Init-Core.rs": "aedd8c212ce64038c340c32491a83469ae7d010415d55d4628c37f0efdac5c3f",
@@ -68,16 +68,16 @@
     "modules/Lean-Data-Iterators-Producers-PersistentHashMap.rs": "230e0dc6008b884354d2c345710c71e8022d1444dc8037640f4fa98a17179318",
     "modules/Lean-Elab-Structure.rs": "d53110fba6cf7210f04ff528c5c5169b6b76e378438f590940884878757dface",
     "modules/Lungo-Attr-Names.rs": "50c99163a7f48f35bd4d595df31e2e47aeb6126100f49f7a36e3b87393e9f523",
-    "modules/TaggedUrn-Constraint.rs": "cbb2f7a8bb2de959fddacb50ada4bf9a705c74490b46bb95eb605ae0f4402911",
+    "modules/TaggedUrn-Constraint.rs": "ca770c094dc9ac541db54e787877b84ac171872ab7f3c3aba65ec6c4da5a16cf",
     "modules/TaggedUrn-Exec.rs": "4cc9735a62d85f97fe4b1ff59a622ee1c9e10c23cdb3a97535b7ddaaa192212a",
     "modules/TaggedUrn-Join.rs": "2f729ca0b3beae9ad7aad0a47885c9bbc6238a1858ece41438f628cf99043e02",
     "modules/TaggedUrn-Patch.rs": "2d26248b7fbf702ada97a73f78f6178a97235e310d3e02bc592b2b7533b6a984",
     "modules/TaggedUrn-Sorted.rs": "39a7481ceade0e7e0e85982983775f84c37b490893bddbefbcea42f4382b2aaf",
     "modules/TaggedUrn-Split.rs": "2c3bdea71a1bafa7dbfbf91c909d66f0f658f110aa6e878fdeeda4ab3c0569c0",
-    "modules/TaggedUrn-Urn.rs": "f60033d904e5b2028ff2429f8170e8d8fb553cebacbc1297349a5dbf7704cb95",
+    "modules/TaggedUrn-Urn.rs": "267df70778adc8894968d9d7d202c1327f5eaa6704df0646c5ff970b4c69e054",
     "names.json": "ce5e49e60f3409aaab36327972e7b26f4e425e51ef0584ed6f6e1b963263caba",
-    "sources.json": "9975de9623779394c82a8682b13621886613167cca326659769b8ebe7754aba0",
-    "tagged_urn_formal.rs": "0170f3391e20b2e68937b210c9485561a8777ee3256b314efffd578c04fb843d"
+    "sources.json": "90446872ac85485b8d63c22b1d1d684e8732cad46f3db030e35d3650f58fb395",
+    "tagged_urn_formal.rs": "db14b72b719edc59d0d26c093140b14534579577c58354dc628fde73ff7bedb3"
   },
   "platform_products": []
 }

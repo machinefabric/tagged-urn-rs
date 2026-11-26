@@ -323,7 +323,7 @@ pub(crate) unsafe extern "C" fn l_List_dmapTR_dloop_d__at___dTaggedUrn_dfresh_ds
 }
 
 // Lean: TaggedUrn.Constraint.absent
-// Source: TaggedUrn/Constraint.lean:219:1
+// Source: TaggedUrn/Constraint.lean:220:1
 static C_l_TaggedUrn_dConstraint_dabsent: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dabsent__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dConstraint_dabsent_d__closed__1();
@@ -336,7 +336,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dabsent() -> Obj {
 
 // Lean: TaggedUrn.Constraint.absent._closed_0
 // Compiled from: TaggedUrn.Constraint.absent
-// Source: TaggedUrn/Constraint.lean:219:1
+// Source: TaggedUrn/Constraint.lean:220:1
 static C_l_TaggedUrn_dConstraint_dabsent_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dabsent_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_box(0);
@@ -351,7 +351,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dabsent_d__closed__0() -> Obj {
 
 // Lean: TaggedUrn.Constraint.absent._closed_1
 // Compiled from: TaggedUrn.Constraint.absent
-// Source: TaggedUrn/Constraint.lean:219:1
+// Source: TaggedUrn/Constraint.lean:220:1
 static C_l_TaggedUrn_dConstraint_dabsent_d__closed__1: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dabsent_d__closed__1__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dConstraint_dabsent_d__closed__0();
@@ -367,7 +367,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dabsent_d__closed__1() -> Obj {
 }
 
 // Lean: TaggedUrn.Constraint.admitsAbsence
-// Source: TaggedUrn/Constraint.lean:472:1
+// Source: TaggedUrn/Constraint.lean:473:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dadmitsAbsence(x_1: Obj) -> u8 {
     let x_2: u8 = l_TaggedUrn_dConstraint_dmayBeAbsent(x_1);
     return x_2;
@@ -375,7 +375,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dadmitsAbsence(x_1: Obj)
 
 // Lean: TaggedUrn.Constraint.admitsAbsence._boxed
 // Compiled from: TaggedUrn.Constraint.admitsAbsence
-// Source: TaggedUrn/Constraint.lean:472:1
+// Source: TaggedUrn/Constraint.lean:473:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dadmitsAbsence_d__boxed(x_1: Obj) -> Obj {
     let x_2: u8 = l_TaggedUrn_dConstraint_dadmitsAbsence(x_1);
     rt::lean_dec(x_1);
@@ -384,7 +384,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dadmitsAbsence_d__boxed(
 }
 
 // Lean: TaggedUrn.Constraint.closed
-// Source: TaggedUrn/Constraint.lean:489:1
+// Source: TaggedUrn/Constraint.lean:490:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dclosed(x_1: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -400,7 +400,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dclosed(x_1: Obj) -> Obj
 
 // Lean: TaggedUrn.Constraint.closed._boxed
 // Compiled from: TaggedUrn.Constraint.closed
-// Source: TaggedUrn/Constraint.lean:489:1
+// Source: TaggedUrn/Constraint.lean:490:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dclosed_d__boxed(x_1: Obj) -> Obj {
     let x_2: Obj = l_TaggedUrn_dConstraint_dclosed(x_1);
     rt::lean_dec(x_1);
@@ -408,7 +408,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dclosed_d__boxed(x_1: Ob
 }
 
 // Lean: TaggedUrn.Constraint.ctorElim
-// Source: TaggedUrn/Constraint.lean:54:1
+// Source: TaggedUrn/Constraint.lean:55:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dctorElim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj) -> Obj {
     let x_6: Obj = l_TaggedUrn_dConstraint_dctorElim_d__redArg(x_3, x_5);
     return x_6;
@@ -416,7 +416,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dctorElim(x_1: Obj, x_2:
 
 // Lean: TaggedUrn.Constraint.ctorElim._boxed
 // Compiled from: TaggedUrn.Constraint.ctorElim
-// Source: TaggedUrn/Constraint.lean:54:1
+// Source: TaggedUrn/Constraint.lean:55:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dctorElim_d__boxed(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj) -> Obj {
     let x_6: Obj = l_TaggedUrn_dConstraint_dctorElim(x_1, x_2, x_3, x_4, x_5);
     rt::lean_dec(x_2);
@@ -425,7 +425,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dctorElim_d__boxed(x_1: 
 
 // Lean: TaggedUrn.Constraint.ctorElim._redArg
 // Compiled from: TaggedUrn.Constraint.ctorElim
-// Source: TaggedUrn/Constraint.lean:54:1
+// Source: TaggedUrn/Constraint.lean:55:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dctorElim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -468,7 +468,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dctorIdx_d__boxed(x_1: O
 }
 
 // Lean: TaggedUrn.Constraint.empty
-// Source: TaggedUrn/Constraint.lean:319:1
+// Source: TaggedUrn/Constraint.lean:320:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dempty(x_1: Obj) -> u8 {
     let x_2: u8 = l_TaggedUrn_dConstraint_dmayBeAbsent(x_1);
     match x_2 {
@@ -487,7 +487,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dempty(x_1: Obj) -> u8 {
 
 // Lean: TaggedUrn.Constraint.empty._boxed
 // Compiled from: TaggedUrn.Constraint.empty
-// Source: TaggedUrn/Constraint.lean:319:1
+// Source: TaggedUrn/Constraint.lean:320:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dempty_d__boxed(x_1: Obj) -> Obj {
     let x_2: u8 = l_TaggedUrn_dConstraint_dempty(x_1);
     rt::lean_dec(x_1);
@@ -496,7 +496,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dempty_d__boxed(x_1: Obj
 }
 
 // Lean: TaggedUrn.Constraint.exact
-// Source: TaggedUrn/Constraint.lean:217:1
+// Source: TaggedUrn/Constraint.lean:218:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dexact(x_1: Obj) -> Obj {
     let x_2: u8 = 0u8;
     let x_3: Obj = rt::lean_box(0);
@@ -512,7 +512,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dexact(x_1: Obj) -> Obj 
 }
 
 // Lean: TaggedUrn.Constraint.instDecidableAllows
-// Source: TaggedUrn/Constraint.lean:238:1
+// Source: TaggedUrn/Constraint.lean:239:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dinstDecidableAllows(x_1: Obj, x_2: Obj) -> u8 {
     match rt::lean_obj_tag(x_2) {
         0 => {
@@ -531,7 +531,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dinstDecidableAllows(x_1
 
 // Lean: TaggedUrn.Constraint.instDecidableAllows._boxed
 // Compiled from: TaggedUrn.Constraint.instDecidableAllows
-// Source: TaggedUrn/Constraint.lean:238:1
+// Source: TaggedUrn/Constraint.lean:239:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dinstDecidableAllows_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dConstraint_dinstDecidableAllows(x_1, x_2);
     rt::lean_dec(x_2);
@@ -541,7 +541,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dinstDecidableAllows_d__
 }
 
 // Lean: TaggedUrn.Constraint.isTop
-// Source: TaggedUrn/Constraint.lean:462:1
+// Source: TaggedUrn/Constraint.lean:463:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_disTop(x_1: Obj) -> u8 {
     let x_2: Obj = rt::lean_box(0);
     let x_3: u8 = l_TaggedUrn_dtagMatch(x_2, x_1);
@@ -550,7 +550,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_disTop(x_1: Obj) -> u8 {
 
 // Lean: TaggedUrn.Constraint.isTop._boxed
 // Compiled from: TaggedUrn.Constraint.isTop
-// Source: TaggedUrn/Constraint.lean:462:1
+// Source: TaggedUrn/Constraint.lean:463:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_disTop_d__boxed(x_1: Obj) -> Obj {
     let x_2: u8 = l_TaggedUrn_dConstraint_disTop(x_1);
     rt::lean_dec(x_1);
@@ -559,7 +559,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_disTop_d__boxed(x_1: Obj
 }
 
 // Lean: TaggedUrn.Constraint.join
-// Source: TaggedUrn/Constraint.lean:444:1
+// Source: TaggedUrn/Constraint.lean:445:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_djoin(x_1: Obj, x_2: Obj) -> Obj {
     let mut x_4: u8;
     'b3: {
@@ -587,7 +587,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_djoin(x_1: Obj, x_2: Obj
 
 // Lean: TaggedUrn.Constraint.join._boxed
 // Compiled from: TaggedUrn.Constraint.join
-// Source: TaggedUrn/Constraint.lean:444:1
+// Source: TaggedUrn/Constraint.lean:445:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_djoin_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dConstraint_djoin(x_1, x_2);
     rt::lean_dec(x_2);
@@ -596,7 +596,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_djoin_d__boxed(x_1: Obj,
 }
 
 // Lean: TaggedUrn.Constraint.mayBeAbsent
-// Source: TaggedUrn/Constraint.lean:222:1
+// Source: TaggedUrn/Constraint.lean:223:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmayBeAbsent(x_1: Obj) -> u8 {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -612,7 +612,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmayBeAbsent(x_1: Obj) -
 
 // Lean: TaggedUrn.Constraint.mayBeAbsent._boxed
 // Compiled from: TaggedUrn.Constraint.mayBeAbsent
-// Source: TaggedUrn/Constraint.lean:222:1
+// Source: TaggedUrn/Constraint.lean:223:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmayBeAbsent_d__boxed(x_1: Obj) -> Obj {
     let x_2: u8 = l_TaggedUrn_dConstraint_dmayBeAbsent(x_1);
     rt::lean_dec(x_1);
@@ -621,7 +621,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmayBeAbsent_d__boxed(x_
 }
 
 // Lean: TaggedUrn.Constraint.meet
-// Source: TaggedUrn/Constraint.lean:448:1
+// Source: TaggedUrn/Constraint.lean:449:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmeet(x_1: Obj, x_2: Obj) -> Obj {
     let mut x_4: u8;
     'b3: {
@@ -649,7 +649,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmeet(x_1: Obj, x_2: Obj
 
 // Lean: TaggedUrn.Constraint.meet._boxed
 // Compiled from: TaggedUrn.Constraint.meet
-// Source: TaggedUrn/Constraint.lean:448:1
+// Source: TaggedUrn/Constraint.lean:449:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmeet_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dConstraint_dmeet(x_1, x_2);
     rt::lean_dec(x_2);
@@ -658,7 +658,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmeet_d__boxed(x_1: Obj,
 }
 
 // Lean: TaggedUrn.Constraint.missing.elim
-// Source: TaggedUrn/Constraint.lean:57:3
+// Source: TaggedUrn/Constraint.lean:58:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmissing_delim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj) -> Obj {
     let x_5: Obj = l_TaggedUrn_dConstraint_dctorElim_d__redArg(x_2, x_4);
     return x_5;
@@ -666,14 +666,14 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmissing_delim(x_1: Obj,
 
 // Lean: TaggedUrn.Constraint.missing.elim._redArg
 // Compiled from: TaggedUrn.Constraint.missing.elim
-// Source: TaggedUrn/Constraint.lean:57:3
+// Source: TaggedUrn/Constraint.lean:58:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dmissing_delim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dConstraint_dctorElim_d__redArg(x_1, x_2);
     return x_3;
 }
 
 // Lean: TaggedUrn.Constraint.optionalNot
-// Source: TaggedUrn/Constraint.lean:211:1
+// Source: TaggedUrn/Constraint.lean:212:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_doptionalNot(x_1: Obj) -> Obj {
     let x_2: u8 = 1u8;
     let x_3: Obj = rt::lean_box(0);
@@ -689,7 +689,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_doptionalNot(x_1: Obj) -
 }
 
 // Lean: TaggedUrn.Constraint.present
-// Source: TaggedUrn/Constraint.lean:213:1
+// Source: TaggedUrn/Constraint.lean:214:1
 static C_l_TaggedUrn_dConstraint_dpresent: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dpresent__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dConstraint_dpresent_d__closed__0();
@@ -702,7 +702,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dpresent() -> Obj {
 
 // Lean: TaggedUrn.Constraint.present._closed_0
 // Compiled from: TaggedUrn.Constraint.present
-// Source: TaggedUrn/Constraint.lean:213:1
+// Source: TaggedUrn/Constraint.lean:214:1
 static C_l_TaggedUrn_dConstraint_dpresent_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dpresent_d__closed__0__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dConstraint_dunconstrained_d__closed__0();
@@ -718,7 +718,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dpresent_d__closed__0() -> Obj {
 }
 
 // Lean: TaggedUrn.Constraint.presentNot
-// Source: TaggedUrn/Constraint.lean:215:1
+// Source: TaggedUrn/Constraint.lean:216:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dpresentNot(x_1: Obj) -> Obj {
     let x_2: u8 = 0u8;
     let x_3: Obj = rt::lean_box(0);
@@ -734,7 +734,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dpresentNot(x_1: Obj) ->
 }
 
 // Lean: TaggedUrn.Constraint.unconstrained
-// Source: TaggedUrn/Constraint.lean:209:1
+// Source: TaggedUrn/Constraint.lean:210:1
 static C_l_TaggedUrn_dConstraint_dunconstrained: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dunconstrained__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dConstraint_dunconstrained_d__closed__1();
@@ -747,7 +747,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dunconstrained() -> Obj {
 
 // Lean: TaggedUrn.Constraint.unconstrained._closed_0
 // Compiled from: TaggedUrn.Constraint.unconstrained
-// Source: TaggedUrn/Constraint.lean:209:1
+// Source: TaggedUrn/Constraint.lean:210:1
 static C_l_TaggedUrn_dConstraint_dunconstrained_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dunconstrained_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_box(0);
@@ -762,7 +762,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dunconstrained_d__closed__0() -> Ob
 
 // Lean: TaggedUrn.Constraint.unconstrained._closed_1
 // Compiled from: TaggedUrn.Constraint.unconstrained
-// Source: TaggedUrn/Constraint.lean:209:1
+// Source: TaggedUrn/Constraint.lean:210:1
 static C_l_TaggedUrn_dConstraint_dunconstrained_d__closed__1: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dunconstrained_d__closed__1__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dConstraint_dunconstrained_d__closed__0();
@@ -778,7 +778,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dunconstrained_d__closed__1() -> Ob
 }
 
 // Lean: TaggedUrn.Constraint.vals
-// Source: TaggedUrn/Constraint.lean:227:1
+// Source: TaggedUrn/Constraint.lean:228:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dvals(x_1: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -795,7 +795,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dvals(x_1: Obj) -> Obj {
 
 // Lean: TaggedUrn.Constraint.vals._boxed
 // Compiled from: TaggedUrn.Constraint.vals
-// Source: TaggedUrn/Constraint.lean:227:1
+// Source: TaggedUrn/Constraint.lean:228:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dvals_d__boxed(x_1: Obj) -> Obj {
     let x_2: Obj = l_TaggedUrn_dConstraint_dvals(x_1);
     rt::lean_dec(x_1);
@@ -803,7 +803,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dvals_d__boxed(x_1: Obj)
 }
 
 // Lean: TaggedUrn.Constraint.witness
-// Source: TaggedUrn/Constraint.lean:350:1
+// Source: TaggedUrn/Constraint.lean:351:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness(x_1: Obj) -> Obj {
     let x_2: Obj = l_TaggedUrn_dConstraint_dwitness_x3f_(x_1);
     match rt::lean_obj_tag(x_2) {
@@ -822,7 +822,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness(x_1: Obj) -> Ob
 
 // Lean: TaggedUrn.Constraint.witness._boxed
 // Compiled from: TaggedUrn.Constraint.witness
-// Source: TaggedUrn/Constraint.lean:350:1
+// Source: TaggedUrn/Constraint.lean:351:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness_d__boxed(x_1: Obj) -> Obj {
     let x_2: Obj = l_TaggedUrn_dConstraint_dwitness(x_1);
     rt::lean_dec(x_1);
@@ -830,7 +830,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness_d__boxed(x_1: O
 }
 
 // Lean: TaggedUrn.Constraint.witness?
-// Source: TaggedUrn/Constraint.lean:304:1
+// Source: TaggedUrn/Constraint.lean:305:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness_x3f_(x_1: Obj) -> Obj {
     let x_2: u8 = l_TaggedUrn_dConstraint_dmayBeAbsent(x_1);
     match x_2 {
@@ -894,7 +894,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness_x3f_(x_1: Obj) 
 
 // Lean: TaggedUrn.Constraint.witness?._boxed
 // Compiled from: TaggedUrn.Constraint.witness?
-// Source: TaggedUrn/Constraint.lean:304:1
+// Source: TaggedUrn/Constraint.lean:305:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness_x3f__d__boxed(x_1: Obj) -> Obj {
     let x_2: Obj = l_TaggedUrn_dConstraint_dwitness_x3f_(x_1);
     rt::lean_dec(x_1);
@@ -903,7 +903,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwitness_x3f__d__boxed(x
 
 // Lean: TaggedUrn.Constraint.witness?._closed_0
 // Compiled from: TaggedUrn.Constraint.witness?
-// Source: TaggedUrn/Constraint.lean:304:1
+// Source: TaggedUrn/Constraint.lean:305:1
 static C_l_TaggedUrn_dConstraint_dwitness_x3f__d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dConstraint_dwitness_x3f__d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_box(0);
@@ -917,7 +917,7 @@ pub(crate) unsafe fn l_TaggedUrn_dConstraint_dwitness_x3f__d__closed__0() -> Obj
 }
 
 // Lean: TaggedUrn.Constraint.written.elim
-// Source: TaggedUrn/Constraint.lean:58:3
+// Source: TaggedUrn/Constraint.lean:59:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwritten_delim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj) -> Obj {
     let x_5: Obj = l_TaggedUrn_dConstraint_dctorElim_d__redArg(x_2, x_4);
     return x_5;
@@ -925,14 +925,14 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwritten_delim(x_1: Obj,
 
 // Lean: TaggedUrn.Constraint.written.elim._redArg
 // Compiled from: TaggedUrn.Constraint.written.elim
-// Source: TaggedUrn/Constraint.lean:58:3
+// Source: TaggedUrn/Constraint.lean:59:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dConstraint_dwritten_delim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dConstraint_dctorElim_d__redArg(x_1, x_2);
     return x_3;
 }
 
 // Lean: TaggedUrn.KeyState.ctorElim
-// Source: TaggedUrn/Constraint.lean:40:1
+// Source: TaggedUrn/Constraint.lean:41:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dctorElim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj) -> Obj {
     let x_6: Obj = l_TaggedUrn_dKeyState_dctorElim_d__redArg(x_3, x_5);
     return x_6;
@@ -940,7 +940,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dctorElim(x_1: Obj, x_2: O
 
 // Lean: TaggedUrn.KeyState.ctorElim._boxed
 // Compiled from: TaggedUrn.KeyState.ctorElim
-// Source: TaggedUrn/Constraint.lean:40:1
+// Source: TaggedUrn/Constraint.lean:41:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dctorElim_d__boxed(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj) -> Obj {
     let x_6: Obj = l_TaggedUrn_dKeyState_dctorElim(x_1, x_2, x_3, x_4, x_5);
     rt::lean_dec(x_2);
@@ -949,7 +949,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dctorElim_d__boxed(x_1: Ob
 
 // Lean: TaggedUrn.KeyState.ctorElim._redArg
 // Compiled from: TaggedUrn.KeyState.ctorElim
-// Source: TaggedUrn/Constraint.lean:40:1
+// Source: TaggedUrn/Constraint.lean:41:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dctorElim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -990,7 +990,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dctorIdx_d__boxed(x_1: Obj
 }
 
 // Lean: TaggedUrn.KeyState.set.elim
-// Source: TaggedUrn/Constraint.lean:43:3
+// Source: TaggedUrn/Constraint.lean:44:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dset_delim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj) -> Obj {
     let x_5: Obj = l_TaggedUrn_dKeyState_dctorElim_d__redArg(x_2, x_4);
     return x_5;
@@ -998,14 +998,14 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dset_delim(x_1: Obj, x_2: 
 
 // Lean: TaggedUrn.KeyState.set.elim._redArg
 // Compiled from: TaggedUrn.KeyState.set.elim
-// Source: TaggedUrn/Constraint.lean:43:3
+// Source: TaggedUrn/Constraint.lean:44:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dset_delim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dKeyState_dctorElim_d__redArg(x_1, x_2);
     return x_3;
 }
 
 // Lean: TaggedUrn.KeyState.unset.elim
-// Source: TaggedUrn/Constraint.lean:42:3
+// Source: TaggedUrn/Constraint.lean:43:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dunset_delim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj) -> Obj {
     let x_5: Obj = l_TaggedUrn_dKeyState_dctorElim_d__redArg(x_2, x_4);
     return x_5;
@@ -1013,14 +1013,14 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dunset_delim(x_1: Obj, x_2
 
 // Lean: TaggedUrn.KeyState.unset.elim._redArg
 // Compiled from: TaggedUrn.KeyState.unset.elim
-// Source: TaggedUrn/Constraint.lean:42:3
+// Source: TaggedUrn/Constraint.lean:43:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dKeyState_dunset_delim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dKeyState_dctorElim_d__redArg(x_1, x_2);
     return x_3;
 }
 
 // Lean: TaggedUrn.Values.allows
-// Source: TaggedUrn/Constraint.lean:67:1
+// Source: TaggedUrn/Constraint.lean:68:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dallows(x_1: Obj, x_2: Obj) -> u8 {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1047,7 +1047,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dallows(x_1: Obj, x_2: Obj) 
 
 // Lean: TaggedUrn.Values.allows._boxed
 // Compiled from: TaggedUrn.Values.allows
-// Source: TaggedUrn/Constraint.lean:67:1
+// Source: TaggedUrn/Constraint.lean:68:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dallows_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dValues_dallows(x_1, x_2);
     rt::lean_dec_ref(x_2);
@@ -1057,7 +1057,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dallows_d__boxed(x_1: Obj, x
 }
 
 // Lean: TaggedUrn.Values.ctorElim
-// Source: TaggedUrn/Constraint.lean:46:1
+// Source: TaggedUrn/Constraint.lean:47:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dctorElim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj) -> Obj {
     let x_6: Obj = l_TaggedUrn_dValues_dctorElim_d__redArg(x_3, x_5);
     return x_6;
@@ -1065,7 +1065,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dctorElim(x_1: Obj, x_2: Obj
 
 // Lean: TaggedUrn.Values.ctorElim._boxed
 // Compiled from: TaggedUrn.Values.ctorElim
-// Source: TaggedUrn/Constraint.lean:46:1
+// Source: TaggedUrn/Constraint.lean:47:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dctorElim_d__boxed(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj, x_5: Obj) -> Obj {
     let x_6: Obj = l_TaggedUrn_dValues_dctorElim(x_1, x_2, x_3, x_4, x_5);
     rt::lean_dec(x_2);
@@ -1074,7 +1074,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dctorElim_d__boxed(x_1: Obj,
 
 // Lean: TaggedUrn.Values.ctorElim._redArg
 // Compiled from: TaggedUrn.Values.ctorElim
-// Source: TaggedUrn/Constraint.lean:46:1
+// Source: TaggedUrn/Constraint.lean:47:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dctorElim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = rt::lean_ctor_get(x_1, 0);
     rt::lean_inc(x_3);
@@ -1108,7 +1108,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dctorIdx_d__boxed(x_1: Obj) 
 }
 
 // Lean: TaggedUrn.Values.join
-// Source: TaggedUrn/Constraint.lean:84:1
+// Source: TaggedUrn/Constraint.lean:85:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_djoin(x_1: Obj, x_2: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1302,7 +1302,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_djoin(x_1: Obj, x_2: Obj) ->
 }
 
 // Lean: TaggedUrn.Values.meet
-// Source: TaggedUrn/Constraint.lean:78:1
+// Source: TaggedUrn/Constraint.lean:79:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dmeet(x_1: Obj, x_2: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1496,7 +1496,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dmeet(x_1: Obj, x_2: Obj) ->
 }
 
 // Lean: TaggedUrn.Values.none
-// Source: TaggedUrn/Constraint.lean:90:1
+// Source: TaggedUrn/Constraint.lean:91:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dnone(x_1: Obj) -> u8 {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1513,7 +1513,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dnone(x_1: Obj) -> u8 {
 
 // Lean: TaggedUrn.Values.none._boxed
 // Compiled from: TaggedUrn.Values.none
-// Source: TaggedUrn/Constraint.lean:90:1
+// Source: TaggedUrn/Constraint.lean:91:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dnone_d__boxed(x_1: Obj) -> Obj {
     let x_2: u8 = l_TaggedUrn_dValues_dnone(x_1);
     rt::lean_dec_ref(x_1);
@@ -1522,7 +1522,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dnone_d__boxed(x_1: Obj) -> 
 }
 
 // Lean: TaggedUrn.Values.noneOf.elim
-// Source: TaggedUrn/Constraint.lean:50:3
+// Source: TaggedUrn/Constraint.lean:51:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dnoneOf_delim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj) -> Obj {
     let x_5: Obj = l_TaggedUrn_dValues_dctorElim_d__redArg(x_2, x_4);
     return x_5;
@@ -1530,14 +1530,14 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dnoneOf_delim(x_1: Obj, x_2:
 
 // Lean: TaggedUrn.Values.noneOf.elim._redArg
 // Compiled from: TaggedUrn.Values.noneOf.elim
-// Source: TaggedUrn/Constraint.lean:50:3
+// Source: TaggedUrn/Constraint.lean:51:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dnoneOf_delim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dValues_dctorElim_d__redArg(x_1, x_2);
     return x_3;
 }
 
 // Lean: TaggedUrn.Values.oneOf.elim
-// Source: TaggedUrn/Constraint.lean:48:3
+// Source: TaggedUrn/Constraint.lean:49:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_doneOf_delim(x_1: Obj, x_2: Obj, x_3: Obj, x_4: Obj) -> Obj {
     let x_5: Obj = l_TaggedUrn_dValues_dctorElim_d__redArg(x_2, x_4);
     return x_5;
@@ -1545,14 +1545,14 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_doneOf_delim(x_1: Obj, x_2: 
 
 // Lean: TaggedUrn.Values.oneOf.elim._redArg
 // Compiled from: TaggedUrn.Values.oneOf.elim
-// Source: TaggedUrn/Constraint.lean:48:3
+// Source: TaggedUrn/Constraint.lean:49:3
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_doneOf_delim_d__redArg(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dValues_dctorElim_d__redArg(x_1, x_2);
     return x_3;
 }
 
 // Lean: TaggedUrn.Values.sub
-// Source: TaggedUrn/Constraint.lean:71:1
+// Source: TaggedUrn/Constraint.lean:72:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dsub(x_1: Obj, x_2: Obj) -> u8 {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1590,7 +1590,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dsub(x_1: Obj, x_2: Obj) -> 
 
 // Lean: TaggedUrn.Values.sub._boxed
 // Compiled from: TaggedUrn.Values.sub
-// Source: TaggedUrn/Constraint.lean:71:1
+// Source: TaggedUrn/Constraint.lean:72:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dsub_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dValues_dsub(x_1, x_2);
     rt::lean_dec_ref(x_2);
@@ -1600,7 +1600,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dsub_d__boxed(x_1: Obj, x_2:
 }
 
 // Lean: TaggedUrn.Values.witness
-// Source: TaggedUrn/Constraint.lean:174:1
+// Source: TaggedUrn/Constraint.lean:175:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dwitness(x_1: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1699,7 +1699,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dValues_dwitness(x_1: Obj) -> Obj {
 }
 
 // Lean: TaggedUrn.fresh
-// Source: TaggedUrn/Constraint.lean:99:1
+// Source: TaggedUrn/Constraint.lean:100:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dfresh(x_1: Obj) -> Obj {
     let x_2: Obj = l_TaggedUrn_dfresh_d__closed__0();
     let x_3: Obj = rt::lean_box(0);
@@ -1715,7 +1715,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dfresh(x_1: Obj) -> Obj {
 
 // Lean: TaggedUrn.fresh._closed_0
 // Compiled from: TaggedUrn.fresh
-// Source: TaggedUrn/Constraint.lean:99:1
+// Source: TaggedUrn/Constraint.lean:100:1
 static C_l_TaggedUrn_dfresh_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dfresh_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_mk_string_unchecked(b"", 0);
@@ -1727,7 +1727,7 @@ pub(crate) unsafe fn l_TaggedUrn_dfresh_d__closed__0() -> Obj {
 }
 
 // Lean: TaggedUrn.instDecidableEqConstraint
-// Source: TaggedUrn/Constraint.lean:59:12
+// Source: TaggedUrn/Constraint.lean:60:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqConstraint(x_1: Obj, x_2: Obj) -> u8 {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqConstraint_ddecEq(x_1, x_2);
     return x_3;
@@ -1735,7 +1735,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqConstraint(x_1: Obj,
 
 // Lean: TaggedUrn.instDecidableEqConstraint._boxed
 // Compiled from: TaggedUrn.instDecidableEqConstraint
-// Source: TaggedUrn/Constraint.lean:59:12
+// Source: TaggedUrn/Constraint.lean:60:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqConstraint_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqConstraint(x_1, x_2);
     let x_4: Obj = rt::lean_box(x_3 as usize);
@@ -1743,7 +1743,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqConstraint_d__boxed(
 }
 
 // Lean: TaggedUrn.instDecidableEqConstraint.decEq
-// Source: TaggedUrn/Constraint.lean:59:12
+// Source: TaggedUrn/Constraint.lean:60:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqConstraint_ddecEq(x_1: Obj, x_2: Obj) -> u8 {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1820,7 +1820,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqConstraint_ddecEq(x_
 
 // Lean: TaggedUrn.instDecidableEqConstraint.decEq._boxed
 // Compiled from: TaggedUrn.instDecidableEqConstraint.decEq
-// Source: TaggedUrn/Constraint.lean:59:12
+// Source: TaggedUrn/Constraint.lean:60:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqConstraint_ddecEq_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqConstraint_ddecEq(x_1, x_2);
     let x_4: Obj = rt::lean_box(x_3 as usize);
@@ -1828,7 +1828,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqConstraint_ddecEq_d_
 }
 
 // Lean: TaggedUrn.instDecidableEqKeyState
-// Source: TaggedUrn/Constraint.lean:44:12
+// Source: TaggedUrn/Constraint.lean:45:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqKeyState(x_1: Obj, x_2: Obj) -> u8 {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqKeyState_ddecEq(x_1, x_2);
     return x_3;
@@ -1836,7 +1836,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqKeyState(x_1: Obj, x
 
 // Lean: TaggedUrn.instDecidableEqKeyState._boxed
 // Compiled from: TaggedUrn.instDecidableEqKeyState
-// Source: TaggedUrn/Constraint.lean:44:12
+// Source: TaggedUrn/Constraint.lean:45:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqKeyState_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqKeyState(x_1, x_2);
     rt::lean_dec(x_2);
@@ -1846,7 +1846,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqKeyState_d__boxed(x_
 }
 
 // Lean: TaggedUrn.instDecidableEqKeyState.decEq
-// Source: TaggedUrn/Constraint.lean:44:12
+// Source: TaggedUrn/Constraint.lean:45:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqKeyState_ddecEq(x_1: Obj, x_2: Obj) -> u8 {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1887,7 +1887,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqKeyState_ddecEq(x_1:
 
 // Lean: TaggedUrn.instDecidableEqKeyState.decEq._boxed
 // Compiled from: TaggedUrn.instDecidableEqKeyState.decEq
-// Source: TaggedUrn/Constraint.lean:44:12
+// Source: TaggedUrn/Constraint.lean:45:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqKeyState_ddecEq_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqKeyState_ddecEq(x_1, x_2);
     rt::lean_dec(x_2);
@@ -1897,7 +1897,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqKeyState_ddecEq_d__b
 }
 
 // Lean: TaggedUrn.instDecidableEqValues
-// Source: TaggedUrn/Constraint.lean:52:12
+// Source: TaggedUrn/Constraint.lean:53:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqValues(x_1: Obj, x_2: Obj) -> u8 {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqValues_ddecEq(x_1, x_2);
     return x_3;
@@ -1905,7 +1905,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqValues(x_1: Obj, x_2
 
 // Lean: TaggedUrn.instDecidableEqValues._boxed
 // Compiled from: TaggedUrn.instDecidableEqValues
-// Source: TaggedUrn/Constraint.lean:52:12
+// Source: TaggedUrn/Constraint.lean:53:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqValues_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqValues(x_1, x_2);
     let x_4: Obj = rt::lean_box(x_3 as usize);
@@ -1913,7 +1913,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqValues_d__boxed(x_1:
 }
 
 // Lean: TaggedUrn.instDecidableEqValues.decEq
-// Source: TaggedUrn/Constraint.lean:52:12
+// Source: TaggedUrn/Constraint.lean:53:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqValues_ddecEq(x_1: Obj, x_2: Obj) -> u8 {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -1963,7 +1963,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqValues_ddecEq(x_1: O
 
 // Lean: TaggedUrn.instDecidableEqValues.decEq._boxed
 // Compiled from: TaggedUrn.instDecidableEqValues.decEq
-// Source: TaggedUrn/Constraint.lean:52:12
+// Source: TaggedUrn/Constraint.lean:53:12
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqValues_ddecEq_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dinstDecidableEqValues_ddecEq(x_1, x_2);
     let x_4: Obj = rt::lean_box(x_3 as usize);
@@ -1971,7 +1971,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstDecidableEqValues_ddecEq_d__box
 }
 
 // Lean: TaggedUrn.instReprConstraint
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 static C_l_TaggedUrn_dinstReprConstraint: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprConstraint__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprConstraint_d__closed__0();
@@ -1984,7 +1984,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprConstraint() -> Obj {
 
 // Lean: TaggedUrn.instReprConstraint._closed_0
 // Compiled from: TaggedUrn.instReprConstraint
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 static C_l_TaggedUrn_dinstReprConstraint_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprConstraint_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_alloc_closure(l_TaggedUrn_dinstReprConstraint_drepr_d__boxed as *const (), 2, 0);
@@ -1996,7 +1996,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprConstraint_d__closed__0() -> Obj {
 }
 
 // Lean: TaggedUrn.instReprConstraint.repr
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprConstraint_drepr(x_1: Obj, x_2: Obj) -> Obj {
     let mut x_4: Obj;
     'b3: {
@@ -2113,7 +2113,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprConstraint_drepr(x_1: Obj, 
 
 // Lean: TaggedUrn.instReprConstraint.repr._boxed
 // Compiled from: TaggedUrn.instReprConstraint.repr
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprConstraint_drepr_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dinstReprConstraint_drepr(x_1, x_2);
     rt::lean_dec(x_2);
@@ -2122,7 +2122,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprConstraint_drepr_d__boxed(x
 
 // Lean: TaggedUrn.instReprConstraint.repr._closed_0
 // Compiled from: TaggedUrn.instReprConstraint.repr
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 static C_l_TaggedUrn_dinstReprConstraint_drepr_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_mk_string_unchecked(b"TaggedUrn.Constraint.missing", 28);
@@ -2135,7 +2135,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__0() -> Obj
 
 // Lean: TaggedUrn.instReprConstraint.repr._closed_1
 // Compiled from: TaggedUrn.instReprConstraint.repr
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 static C_l_TaggedUrn_dinstReprConstraint_drepr_d__closed__1: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__1__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprConstraint_drepr_d__closed__0();
@@ -2150,7 +2150,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__1() -> Obj
 
 // Lean: TaggedUrn.instReprConstraint.repr._closed_2
 // Compiled from: TaggedUrn.instReprConstraint.repr
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 static C_l_TaggedUrn_dinstReprConstraint_drepr_d__closed__2: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__2__init() -> Obj {
     let x_1: Obj = rt::lean_mk_string_unchecked(b"TaggedUrn.Constraint.written", 28);
@@ -2163,7 +2163,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__2() -> Obj
 
 // Lean: TaggedUrn.instReprConstraint.repr._closed_3
 // Compiled from: TaggedUrn.instReprConstraint.repr
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 static C_l_TaggedUrn_dinstReprConstraint_drepr_d__closed__3: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__3__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprConstraint_drepr_d__closed__2();
@@ -2178,7 +2178,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__3() -> Obj
 
 // Lean: TaggedUrn.instReprConstraint.repr._closed_4
 // Compiled from: TaggedUrn.instReprConstraint.repr
-// Source: TaggedUrn/Constraint.lean:59:25
+// Source: TaggedUrn/Constraint.lean:60:25
 static C_l_TaggedUrn_dinstReprConstraint_drepr_d__closed__4: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__4__init() -> Obj {
     let x_1: Obj = rt::lean_box(1);
@@ -2194,7 +2194,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprConstraint_drepr_d__closed__4() -> Obj
 }
 
 // Lean: TaggedUrn.instReprKeyState
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprKeyState_d__closed__0();
@@ -2207,7 +2207,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState() -> Obj {
 
 // Lean: TaggedUrn.instReprKeyState._closed_0
 // Compiled from: TaggedUrn.instReprKeyState
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_alloc_closure(l_TaggedUrn_dinstReprKeyState_drepr_d__boxed as *const (), 2, 0);
@@ -2219,7 +2219,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_d__closed__0() -> Obj {
 }
 
 // Lean: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprKeyState_drepr(x_1: Obj, x_2: Obj) -> Obj {
     let mut x_4: Obj;
     'b3: {
@@ -2328,7 +2328,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprKeyState_drepr(x_1: Obj, x_
 
 // Lean: TaggedUrn.instReprKeyState.repr._boxed
 // Compiled from: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprKeyState_drepr_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dinstReprKeyState_drepr(x_1, x_2);
     rt::lean_dec(x_2);
@@ -2337,7 +2337,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprKeyState_drepr_d__boxed(x_1
 
 // Lean: TaggedUrn.instReprKeyState.repr._closed_0
 // Compiled from: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState_drepr_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_mk_string_unchecked(b"TaggedUrn.KeyState.unset", 24);
@@ -2350,7 +2350,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__0() -> Obj {
 
 // Lean: TaggedUrn.instReprKeyState.repr._closed_1
 // Compiled from: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState_drepr_d__closed__1: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__1__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprKeyState_drepr_d__closed__0();
@@ -2365,7 +2365,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__1() -> Obj {
 
 // Lean: TaggedUrn.instReprKeyState.repr._closed_2
 // Compiled from: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState_drepr_d__closed__2: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__2__init() -> Obj {
     let x_1: Obj = rt::nat::lean_usize_to_nat(2);
@@ -2379,7 +2379,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__2() -> Obj {
 
 // Lean: TaggedUrn.instReprKeyState.repr._closed_3
 // Compiled from: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState_drepr_d__closed__3: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__3__init() -> Obj {
     let x_1: Obj = rt::nat::lean_usize_to_nat(1);
@@ -2393,7 +2393,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__3() -> Obj {
 
 // Lean: TaggedUrn.instReprKeyState.repr._closed_4
 // Compiled from: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState_drepr_d__closed__4: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__4__init() -> Obj {
     let x_1: Obj = rt::lean_mk_string_unchecked(b"TaggedUrn.KeyState.set", 22);
@@ -2406,7 +2406,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__4() -> Obj {
 
 // Lean: TaggedUrn.instReprKeyState.repr._closed_5
 // Compiled from: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState_drepr_d__closed__5: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__5__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprKeyState_drepr_d__closed__4();
@@ -2421,7 +2421,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__5() -> Obj {
 
 // Lean: TaggedUrn.instReprKeyState.repr._closed_6
 // Compiled from: TaggedUrn.instReprKeyState.repr
-// Source: TaggedUrn/Constraint.lean:44:25
+// Source: TaggedUrn/Constraint.lean:45:25
 static C_l_TaggedUrn_dinstReprKeyState_drepr_d__closed__6: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__6__init() -> Obj {
     let x_1: Obj = rt::lean_box(1);
@@ -2437,7 +2437,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprKeyState_drepr_d__closed__6() -> Obj {
 }
 
 // Lean: TaggedUrn.instReprValues
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 static C_l_TaggedUrn_dinstReprValues: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprValues__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprValues_d__closed__0();
@@ -2450,7 +2450,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprValues() -> Obj {
 
 // Lean: TaggedUrn.instReprValues._closed_0
 // Compiled from: TaggedUrn.instReprValues
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 static C_l_TaggedUrn_dinstReprValues_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprValues_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_alloc_closure(l_TaggedUrn_dinstReprValues_drepr_d__boxed as *const (), 2, 0);
@@ -2462,7 +2462,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprValues_d__closed__0() -> Obj {
 }
 
 // Lean: TaggedUrn.instReprValues.repr
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprValues_drepr(x_1: Obj, x_2: Obj) -> Obj {
     match rt::lean_obj_tag(x_1) {
         0 => {
@@ -2544,7 +2544,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprValues_drepr(x_1: Obj, x_2:
 
 // Lean: TaggedUrn.instReprValues.repr._boxed
 // Compiled from: TaggedUrn.instReprValues.repr
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprValues_drepr_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dinstReprValues_drepr(x_1, x_2);
     rt::lean_dec(x_2);
@@ -2553,7 +2553,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dinstReprValues_drepr_d__boxed(x_1: 
 
 // Lean: TaggedUrn.instReprValues.repr._closed_0
 // Compiled from: TaggedUrn.instReprValues.repr
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 static C_l_TaggedUrn_dinstReprValues_drepr_d__closed__0: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__0__init() -> Obj {
     let x_1: Obj = rt::lean_mk_string_unchecked(b"TaggedUrn.Values.oneOf", 22);
@@ -2566,7 +2566,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__0() -> Obj {
 
 // Lean: TaggedUrn.instReprValues.repr._closed_1
 // Compiled from: TaggedUrn.instReprValues.repr
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 static C_l_TaggedUrn_dinstReprValues_drepr_d__closed__1: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__1__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprValues_drepr_d__closed__0();
@@ -2581,7 +2581,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__1() -> Obj {
 
 // Lean: TaggedUrn.instReprValues.repr._closed_2
 // Compiled from: TaggedUrn.instReprValues.repr
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 static C_l_TaggedUrn_dinstReprValues_drepr_d__closed__2: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__2__init() -> Obj {
     let x_1: Obj = rt::lean_box(1);
@@ -2598,7 +2598,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__2() -> Obj {
 
 // Lean: TaggedUrn.instReprValues.repr._closed_3
 // Compiled from: TaggedUrn.instReprValues.repr
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 static C_l_TaggedUrn_dinstReprValues_drepr_d__closed__3: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__3__init() -> Obj {
     let x_1: Obj = rt::lean_mk_string_unchecked(b"TaggedUrn.Values.noneOf", 23);
@@ -2611,7 +2611,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__3() -> Obj {
 
 // Lean: TaggedUrn.instReprValues.repr._closed_4
 // Compiled from: TaggedUrn.instReprValues.repr
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 static C_l_TaggedUrn_dinstReprValues_drepr_d__closed__4: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__4__init() -> Obj {
     let x_1: Obj = l_TaggedUrn_dinstReprValues_drepr_d__closed__3();
@@ -2626,7 +2626,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__4() -> Obj {
 
 // Lean: TaggedUrn.instReprValues.repr._closed_5
 // Compiled from: TaggedUrn.instReprValues.repr
-// Source: TaggedUrn/Constraint.lean:52:25
+// Source: TaggedUrn/Constraint.lean:53:25
 static C_l_TaggedUrn_dinstReprValues_drepr_d__closed__5: rt::LazyObj = rt::LazyObj::new();
 unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__5__init() -> Obj {
     let x_1: Obj = rt::lean_box(1);
@@ -2642,7 +2642,7 @@ pub(crate) unsafe fn l_TaggedUrn_dinstReprValues_drepr_d__closed__5() -> Obj {
 }
 
 // Lean: TaggedUrn.meetState
-// Source: TaggedUrn/Constraint.lean:366:1
+// Source: TaggedUrn/Constraint.lean:367:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dmeetState(x_1: Obj, x_2: Obj) -> Obj {
     let mut x_4: u8;
     'b3: {
@@ -2719,7 +2719,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dmeetState(x_1: Obj, x_2: Obj) -> Ob
 
 // Lean: TaggedUrn.meetState._boxed
 // Compiled from: TaggedUrn.meetState
-// Source: TaggedUrn/Constraint.lean:366:1
+// Source: TaggedUrn/Constraint.lean:367:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dmeetState_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: Obj = l_TaggedUrn_dmeetState(x_1, x_2);
     rt::lean_dec(x_2);
@@ -2728,7 +2728,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dmeetState_d__boxed(x_1: Obj, x_2: O
 }
 
 // Lean: TaggedUrn.tagMatch
-// Source: TaggedUrn/Constraint.lean:245:1
+// Source: TaggedUrn/Constraint.lean:246:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatch(x_1: Obj, x_2: Obj) -> u8 {
     'b3: {
         let x_7: u8 = l_TaggedUrn_dConstraint_dmayBeAbsent(x_1);
@@ -2759,7 +2759,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatch(x_1: Obj, x_2: Obj) -> u8 
 
 // Lean: TaggedUrn.tagMatch._boxed
 // Compiled from: TaggedUrn.tagMatch
-// Source: TaggedUrn/Constraint.lean:245:1
+// Source: TaggedUrn/Constraint.lean:246:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatch_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dtagMatch(x_1, x_2);
     rt::lean_dec(x_2);
@@ -2769,7 +2769,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMatch_d__boxed(x_1: Obj, x_2: Ob
 }
 
 // Lean: TaggedUrn.tagMeets
-// Source: TaggedUrn/Constraint.lean:361:1
+// Source: TaggedUrn/Constraint.lean:362:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMeets(x_1: Obj, x_2: Obj) -> u8 {
     let mut x_4: u8;
     'b3: {
@@ -2811,7 +2811,7 @@ pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMeets(x_1: Obj, x_2: Obj) -> u8 
 
 // Lean: TaggedUrn.tagMeets._boxed
 // Compiled from: TaggedUrn.tagMeets
-// Source: TaggedUrn/Constraint.lean:361:1
+// Source: TaggedUrn/Constraint.lean:362:1
 pub(crate) unsafe extern "C" fn l_TaggedUrn_dtagMeets_d__boxed(x_1: Obj, x_2: Obj) -> Obj {
     let x_3: u8 = l_TaggedUrn_dtagMeets(x_1, x_2);
     rt::lean_dec(x_2);

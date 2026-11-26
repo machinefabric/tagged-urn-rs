@@ -1407,11 +1407,11 @@
     "lean_name": "TaggedUrn.Constraint.absent",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      219,
+      220,
       1
     ],
     "end": [
-      220,
+      221,
       52
     ]
   },
@@ -1419,11 +1419,11 @@
     "lean_name": "TaggedUrn.Constraint.admitsAbsence",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      472,
+      473,
       1
     ],
     "end": [
-      474,
+      475,
       70
     ]
   },
@@ -1431,11 +1431,11 @@
     "lean_name": "TaggedUrn.Constraint.closed",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      489,
+      490,
       1
     ],
     "end": [
-      491,
+      492,
       11
     ]
   },
@@ -1443,11 +1443,11 @@
     "lean_name": "TaggedUrn.Constraint.ctorElim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      54,
+      55,
       1
     ],
     "end": [
-      59,
+      60,
       29
     ]
   },
@@ -1461,11 +1461,11 @@
     "lean_name": "TaggedUrn.Constraint.empty",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      319,
+      320,
       1
     ],
     "end": [
-      320,
+      321,
       78
     ]
   },
@@ -1473,11 +1473,11 @@
     "lean_name": "TaggedUrn.Constraint.exact",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      217,
+      218,
       1
     ],
     "end": [
-      218,
+      219,
       66
     ]
   },
@@ -1485,11 +1485,11 @@
     "lean_name": "TaggedUrn.Constraint.instDecidableAllows",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      238,
+      239,
       1
     ],
     "end": [
-      239,
+      240,
       52
     ]
   },
@@ -1497,11 +1497,11 @@
     "lean_name": "TaggedUrn.Constraint.isTop",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      462,
+      463,
       1
     ],
     "end": [
-      463,
+      464,
       67
     ]
   },
@@ -1509,11 +1509,11 @@
     "lean_name": "TaggedUrn.Constraint.join",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      444,
+      445,
       1
     ],
     "end": [
-      446,
+      447,
       64
     ]
   },
@@ -1521,11 +1521,11 @@
     "lean_name": "TaggedUrn.Constraint.mayBeAbsent",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      222,
+      223,
       1
     ],
     "end": [
-      225,
+      226,
       21
     ]
   },
@@ -1533,11 +1533,11 @@
     "lean_name": "TaggedUrn.Constraint.meet",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      448,
+      449,
       1
     ],
     "end": [
-      450,
+      451,
       64
     ]
   },
@@ -1545,11 +1545,11 @@
     "lean_name": "TaggedUrn.Constraint.missing.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      57,
+      58,
       3
     ],
     "end": [
-      57,
+      58,
       12
     ]
   },
@@ -1569,11 +1569,11 @@
     "lean_name": "TaggedUrn.Constraint.optionalNot",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      211,
+      212,
       1
     ],
     "end": [
-      212,
+      213,
       72
     ]
   },
@@ -1593,11 +1593,11 @@
     "lean_name": "TaggedUrn.Constraint.present",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      213,
+      214,
       1
     ],
     "end": [
-      214,
+      215,
       55
     ]
   },
@@ -1605,11 +1605,11 @@
     "lean_name": "TaggedUrn.Constraint.presentNot",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      215,
+      216,
       1
     ],
     "end": [
-      216,
+      217,
       72
     ]
   },
@@ -1617,11 +1617,11 @@
     "lean_name": "TaggedUrn.Constraint.unconstrained",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      209,
+      210,
       1
     ],
     "end": [
-      210,
+      211,
       60
     ]
   },
@@ -1629,11 +1629,11 @@
     "lean_name": "TaggedUrn.Constraint.vals",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      227,
+      228,
       1
     ],
     "end": [
-      230,
+      231,
       23
     ]
   },
@@ -1641,11 +1641,11 @@
     "lean_name": "TaggedUrn.Constraint.witness",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      350,
+      351,
       1
     ],
     "end": [
-      352,
+      353,
       76
     ]
   },
@@ -1653,11 +1653,11 @@
     "lean_name": "TaggedUrn.Constraint.witness?",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      304,
+      305,
       1
     ],
     "end": [
-      306,
+      307,
       63
     ]
   },
@@ -1665,11 +1665,11 @@
     "lean_name": "TaggedUrn.Constraint.written.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      58,
+      59,
       3
     ],
     "end": [
-      58,
+      59,
       46
     ]
   },
@@ -1857,11 +1857,11 @@
     "lean_name": "TaggedUrn.KeyState.ctorElim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      40,
+      41,
       1
     ],
     "end": [
-      44,
+      45,
       29
     ]
   },
@@ -1875,11 +1875,11 @@
     "lean_name": "TaggedUrn.KeyState.set.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      43,
+      44,
       3
     ],
     "end": [
-      43,
+      44,
       25
     ]
   },
@@ -1887,11 +1887,11 @@
     "lean_name": "TaggedUrn.KeyState.unset.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      42,
+      43,
       3
     ],
     "end": [
-      42,
+      43,
       10
     ]
   },
@@ -1959,11 +1959,11 @@
     "lean_name": "TaggedUrn.Values.allows",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      67,
+      68,
       1
     ],
     "end": [
-      69,
+      70,
       36
     ]
   },
@@ -1971,11 +1971,11 @@
     "lean_name": "TaggedUrn.Values.ctorElim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      46,
+      47,
       1
     ],
     "end": [
-      52,
+      53,
       29
     ]
   },
@@ -1989,11 +1989,11 @@
     "lean_name": "TaggedUrn.Values.join",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      84,
+      85,
       1
     ],
     "end": [
-      88,
+      89,
       71
     ]
   },
@@ -2001,11 +2001,11 @@
     "lean_name": "TaggedUrn.Values.meet",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      78,
+      79,
       1
     ],
     "end": [
-      82,
+      83,
       45
     ]
   },
@@ -2013,11 +2013,11 @@
     "lean_name": "TaggedUrn.Values.none",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      90,
+      91,
       1
     ],
     "end": [
-      93,
+      94,
       23
     ]
   },
@@ -2025,11 +2025,11 @@
     "lean_name": "TaggedUrn.Values.noneOf.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      50,
+      51,
       3
     ],
     "end": [
-      51,
+      52,
       30
     ]
   },
@@ -2037,11 +2037,11 @@
     "lean_name": "TaggedUrn.Values.oneOf.elim",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      48,
+      49,
       3
     ],
     "end": [
-      49,
+      50,
       29
     ]
   },
@@ -2049,11 +2049,11 @@
     "lean_name": "TaggedUrn.Values.sub",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      71,
+      72,
       1
     ],
     "end": [
-      76,
+      77,
       58
     ]
   },
@@ -2061,11 +2061,11 @@
     "lean_name": "TaggedUrn.Values.witness",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      174,
+      175,
       1
     ],
     "end": [
-      178,
+      179,
       32
     ]
   },
@@ -2121,11 +2121,11 @@
     "lean_name": "TaggedUrn.fresh",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      99,
+      100,
       1
     ],
     "end": [
-      101,
+      102,
       47
     ]
   },
@@ -2157,11 +2157,11 @@
     "lean_name": "TaggedUrn.instDecidableEqConstraint",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      59,
+      60,
       12
     ],
     "end": [
-      59,
+      60,
       23
     ]
   },
@@ -2169,11 +2169,11 @@
     "lean_name": "TaggedUrn.instDecidableEqConstraint.decEq",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      59,
+      60,
       12
     ],
     "end": [
-      59,
+      60,
       23
     ]
   },
@@ -2181,11 +2181,11 @@
     "lean_name": "TaggedUrn.instDecidableEqKeyState",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      44,
+      45,
       12
     ],
     "end": [
-      44,
+      45,
       23
     ]
   },
@@ -2193,11 +2193,11 @@
     "lean_name": "TaggedUrn.instDecidableEqKeyState.decEq",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      44,
+      45,
       12
     ],
     "end": [
-      44,
+      45,
       23
     ]
   },
@@ -2229,11 +2229,11 @@
     "lean_name": "TaggedUrn.instDecidableEqValues",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      52,
+      53,
       12
     ],
     "end": [
-      52,
+      53,
       23
     ]
   },
@@ -2241,11 +2241,11 @@
     "lean_name": "TaggedUrn.instDecidableEqValues.decEq",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      52,
+      53,
       12
     ],
     "end": [
-      52,
+      53,
       23
     ]
   },
@@ -2253,11 +2253,11 @@
     "lean_name": "TaggedUrn.instDecidableEquivalent",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      95,
+      111,
       1
     ],
     "end": [
-      96,
+      112,
       41
     ]
   },
@@ -2265,11 +2265,11 @@
     "lean_name": "TaggedUrn.instDecidableMeets",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      165,
+      191,
       1
     ],
     "end": [
-      166,
+      192,
       36
     ]
   },
@@ -2277,11 +2277,11 @@
     "lean_name": "TaggedUrn.instDecidableMeetsClosed",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      284,
+      332,
       1
     ],
     "end": [
-      285,
+      333,
       42
     ]
   },
@@ -2301,11 +2301,11 @@
     "lean_name": "TaggedUrn.instDecidableRefinesBothClosed",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      329,
+      377,
       1
     ],
     "end": [
-      330,
+      378,
       48
     ]
   },
@@ -2313,11 +2313,11 @@
     "lean_name": "TaggedUrn.instDecidableRefinesClosed",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      223,
+      260,
       1
     ],
     "end": [
-      224,
+      261,
       44
     ]
   },
@@ -2337,11 +2337,11 @@
     "lean_name": "TaggedUrn.instReprConstraint",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      59,
+      60,
       25
     ],
     "end": [
-      59,
+      60,
       29
     ]
   },
@@ -2349,11 +2349,11 @@
     "lean_name": "TaggedUrn.instReprConstraint.repr",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      59,
+      60,
       25
     ],
     "end": [
-      59,
+      60,
       29
     ]
   },
@@ -2361,11 +2361,11 @@
     "lean_name": "TaggedUrn.instReprKeyState",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      44,
+      45,
       25
     ],
     "end": [
-      44,
+      45,
       29
     ]
   },
@@ -2373,11 +2373,11 @@
     "lean_name": "TaggedUrn.instReprKeyState.repr",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      44,
+      45,
       25
     ],
     "end": [
-      44,
+      45,
       29
     ]
   },
@@ -2409,11 +2409,11 @@
     "lean_name": "TaggedUrn.instReprValues",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      52,
+      53,
       25
     ],
     "end": [
-      52,
+      53,
       29
     ]
   },
@@ -2421,11 +2421,11 @@
     "lean_name": "TaggedUrn.instReprValues.repr",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      52,
+      53,
       25
     ],
     "end": [
-      52,
+      53,
       29
     ]
   },
@@ -2469,11 +2469,11 @@
     "lean_name": "TaggedUrn.meetState",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      366,
+      367,
       1
     ],
     "end": [
-      371,
+      372,
       20
     ]
   },
@@ -2541,11 +2541,11 @@
     "lean_name": "TaggedUrn.tagMatch",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      245,
+      246,
       1
     ],
     "end": [
-      248,
+      249,
       57
     ]
   },
@@ -2577,11 +2577,11 @@
     "lean_name": "TaggedUrn.tagMeets",
     "file": "TaggedUrn/Constraint.lean",
     "start": [
-      361,
+      362,
       1
     ],
     "end": [
-      364,
+      365,
       65
     ]
   },
@@ -2625,11 +2625,11 @@
     "lean_name": "TaggedUrn.tagScore",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      399,
+      447,
       1
     ],
     "end": [
-      406,
+      454,
       61
     ]
   },
@@ -2637,11 +2637,11 @@
     "lean_name": "TaggedUrn.twoDistinct",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      396,
+      444,
       1
     ],
     "end": [
-      397,
+      445,
       84
     ]
   },
@@ -2661,11 +2661,11 @@
     "lean_name": "TaggedUrn.urnScore",
     "file": "TaggedUrn/Urn.lean",
     "start": [
-      415,
+      463,
       1
     ],
     "end": [
-      418,
+      466,
       49
     ]
   },
